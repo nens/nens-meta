@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68.2"]
+
+[project]
+name = "nens-meta"
+description = "Basic project automation and update tool"
+authors = [
+    {name = "Reinout van Rees", email = "reinout.vanrees@nelen-schuurmans.nl"},
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = []
+version = "0.1.dev"
+
+[tool.setuptools]
+packages = ["nens_meta"]
+
+[project.scripts]
+nens-update-project = "nens_meta.update_project:main"
