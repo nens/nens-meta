@@ -12,3 +12,16 @@ The basic idea is **make it easy to write clean and neat and correct code withou
 TODO
 
 Install vscode's editorconfig plung. Lots of other editors have build-in support or have their own plugin.
+
+
+## Installing the project
+
+The regular:
+
+    $ python3 -m venv venv
+    $ . venv/bin/activate
+    $ pip install -r requirements.txt
+
+This gives you:
+
+    $ update-project YOUR_PROJECT_DIR
