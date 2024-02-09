@@ -50,5 +50,6 @@ class OurConfig:
         """
         section = self._contents.get(section)
         if not section:
+            logger.debug(f"Extra configuration for [{section}] not found in .nens.toml")
             return {}
         return dict(section)

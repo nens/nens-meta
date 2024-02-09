@@ -45,9 +45,13 @@ class TemplatedFile:
     def template(self) -> jinja2.Template:
         return self.environment.get_template(self.template_name)
 
+    @property
+    def options(self) -> dict:
+        return self.our_config.section_options(self.section_name)
+
     @cached_property
     def content(self) -> str:
-        return self.template.render()
+        return self.template.render(**self.options)
 
     def write(self):
         """Copy the source template to the target, doing the jinja2 stuff"""
