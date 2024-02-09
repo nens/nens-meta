@@ -26,7 +26,7 @@ class NensToml:
     def __init__(self, project: Path) -> None:
         self.meta_file = project / META_FILENAME
         if not self.meta_file.exists():
-            logger.warn(f"{self.meta_file} doesn't exist, we'll create it")
+            logger.warning(f"{self.meta_file} doesn't exist, we'll create it")
             self.meta_file.write_text("# Empty generated file\n")
         self.meta_config = self.read()
 
