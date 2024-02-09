@@ -21,7 +21,8 @@ dynamic = ["version"]
 [project.optional-dependencies]
 test = [
     "pytest",
-    "pytest-cov"
+    "pytest-cov",
+    "pytest-mock",
 ]
 
 [tool.setuptools]

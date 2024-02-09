@@ -1,40 +1,16 @@
 import logging
+import sys
 from pathlib import Path
 from typing import Annotated
 
 import jinja2
-import tomlkit
 import typer
 
-from nens_meta import utils
+from nens_meta import nens_toml, utils
 
-META_FILENAME = ".nens.toml"
-CONFIG_BASEDIR = Path(__file__).parent / "config"
+TEMPLATES_BASEDIR = Path(__file__).parent / "templates"
 
 logger = logging.getLogger(__name__)
-
-
-class NensToml:
-    """Wrapper around a project's .nens.toml
-
-    See https://tomlkit.readthedocs.io/en/latest/quickstart/
-    """
-
-    meta_file: Path
-    meta_config: tomlkit.TOMLDocument
-
-    def __init__(self, project: Path) -> None:
-        self.meta_file = project / META_FILENAME
-        if not self.meta_file.exists():
-            logger.warning(f"{self.meta_file} doesn't exist, we'll create it")
-            self.meta_file.write_text("# Empty generated file\n")
-        self.meta_config = self.read()
-
-    def read(self) -> tomlkit.TOMLDocument:
-        return tomlkit.parse(self.meta_file.read_text())
-
-    def write(self):
-        utils.write_if_changed(self.meta_file, tomlkit.dumps(self.meta_config))
 
 
 class Editorconfig:
@@ -51,10 +27,8 @@ class Editorconfig:
         environment = jinja2.Environment(
             loader=jinja2.FileSystemLoader(
                 # pass one or more dirs! Handy for our purpose!
-                [CONFIG_BASEDIR / "default"]
+                [TEMPLATES_BASEDIR / "default"]
             ),
-            variable_start_string="%(",
-            variable_end_string=")s",
             keep_trailing_newline=True,
             trim_blocks=True,
             lstrip_blocks=True,
@@ -69,11 +43,23 @@ class Editorconfig:
     #     print "Error occurred while getting EditorConfig properties"
 
 
+def check_prerequisites(project: Path):
+    """Check prerequisites, exit if not met"""
+    if not (project / ".git").exists():
+        logger.error("Project has no .git dir")
+        sys.exit(1)
+    if not nens_toml.nens_toml_file(project).exists():
+        nens_toml.create_if_missing(project)
+        logger.warning("No .nens.toml found, created one. Re-run after checking.")
+        sys.exit(1)
+
+
 def update_project(
     project: Annotated[Path, typer.Argument(exists=True)],
 ):
-    nenstoml = NensToml(project)
-    nenstoml.write()
+    check_prerequisites(project)
+    config = nens_toml.Config(project)
+    config.write()
     # ^^^ TODO: handle versions!
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project)
