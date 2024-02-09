@@ -1,12 +1,12 @@
-from pathlib import Path
-from nens_meta import utils
-from typing_extensions import Annotated
-import editorconfig
-import jinja2
 import logging
+from pathlib import Path
+from typing import Annotated
+
+import jinja2
 import tomlkit
 import typer
 
+from nens_meta import utils
 
 META_FILENAME = ".nens.toml"
 CONFIG_BASEDIR = Path(__file__).parent / "config"
@@ -53,8 +53,8 @@ class Editorconfig:
                 # pass one or more dirs! Handy for our purpose!
                 [CONFIG_BASEDIR / "default"]
             ),
-            variable_start_string='%(',
-            variable_end_string=')s',
+            variable_start_string="%(",
+            variable_end_string=")s",
             keep_trailing_newline=True,
             trim_blocks=True,
             lstrip_blocks=True,
@@ -78,7 +78,6 @@ def update_project(
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project)
     editorconfig.write()
-
 
 
 def main():
