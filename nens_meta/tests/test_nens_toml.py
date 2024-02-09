@@ -15,13 +15,47 @@ def test_create_if_missing(tmp_path: Path):
 
 def test_init(tmp_path: Path):
     nens_toml.nens_toml_file(tmp_path).write_text("year = 1972")
-    config = nens_toml.Config(tmp_path)
+    config = nens_toml.OurConfig(tmp_path)
     assert config._contents["year"] == 1972
 
 
 def test_write(tmp_path: Path):
     nens_toml.nens_toml_file(tmp_path).write_text("year = 1972")
-    config = nens_toml.Config(tmp_path)
+    config = nens_toml.OurConfig(tmp_path)
     config._contents["month"] = 12
     config.write()
     assert "month = 12" in nens_toml.nens_toml_file(tmp_path).read_text()
+
+
+def test_section_options1(tmp_path: Path):
+    nens_toml.nens_toml_file(tmp_path).write_text(
+        """
+    [reinout]
+    year = 1972
+    """
+    )
+    config = nens_toml.OurConfig(tmp_path)
+    assert config.section_options("reinout")["year"] == 1972
+
+
+def test_section_options2(tmp_path: Path):
+    nens_toml.nens_toml_file(tmp_path).write_text(
+        """
+    [reinout]
+    year = 1972
+    """
+    )
+    config = nens_toml.OurConfig(tmp_path)
+    assert config.section_options("rianne") == {}
+
+
+def test_section_options3(tmp_path: Path):
+    nens_toml.nens_toml_file(tmp_path).write_text(
+        """
+    [reinout]
+    # Comment
+    year = 1972
+    """
+    )
+    config = nens_toml.OurConfig(tmp_path)
+    assert list(config.section_options("reinout").keys()) == ["year"]
