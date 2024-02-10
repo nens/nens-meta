@@ -79,7 +79,10 @@ def check_prerequisites(project_dir: Path):
 
 def update_project(
     project_dir: Annotated[Path, typer.Argument(exists=True)],
+    verbose: Annotated[bool, typer.Option(help="Verbose logging")] = False,
 ):
+    log_level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(level=log_level)
     check_prerequisites(project_dir)
     our_config = nens_toml.OurConfig(project_dir)
     our_config.write()
@@ -90,5 +93,7 @@ def update_project(
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
     typer.run(update_project)
+
+
+# Option: typer.lauch("https://reinout/documentation")...
