@@ -11,9 +11,9 @@ Note that [our cookiecutter template](https://github.com/nens/cookiecutter-pytho
 
 ## Editconfig
 
-TODO
-
 Install vscode's editorconfig plugin. Lots of other editors have build-in support or have their own plugin.
+
+The generated setup in `.editorconfig` automatically strips extra spaces at the end of lines and adds an enter at the end of the file. Indentation with spaces in most spaces. Suggested max line lengths for python&co, unlimited line lengths for markdown.
 
 
 ## Installing the project
@@ -39,3 +39,14 @@ And the isort/black/etc stuff that's in "ruff" now:
 (You can also actually install the pre-commit to run it automatically, though that means you really have to behave yourself):
 
     $ pre-commit install
+
+
+## TODO
+
+- `DEVELOPING.md` with instructions?
+
+- pre-commit: this needs "do I have python? do I have ansible?" detection. And a github update action. And a lint action. The ruff settings really need configuration, which means pyproject.toml support.
+
+- tox.ini for python projects
+
+- docker-compose
