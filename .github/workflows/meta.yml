@@ -1,0 +1,43 @@
+# TODO generate this.
+name: Meta
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+# jobs:
+#   qa:
+#     uses: plone/meta/.github/workflows/qa.yml@main
+#   test:
+#     uses: plone/meta/.github/workflows/test.yml@main
+
+jobs:
+  tox:
+    name: Run tox steps as automated by nens-meta.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install tox
+        run: python -m pip install tox
+      - name: Format and lint
+        run: tox -e lint
+      - name: Test
+        run: tox
+        # Tox all by itself also runs lint again, but ok.
+        # Later on when there are multiple python versions I'll have to change it.
+      - name: Code coverage
+        run: |
+          tox -e coverage
+          cat coverage.md >> $GITHUB_STEP_SUMMARY
+      - name: Dependency check
+        run: tox -e dependencies
