@@ -10,9 +10,9 @@ There is a small number of tools/addons you have to install. They'll make life e
 
 (TODO: perhaps add ruff plugin, too? Unless it is already used in the python extension?)
 
-## One-time install: two python packages
+
+## One-time install: one python package
 
 Just pip-install them for your user. (My recommendation is to use [pipx](https://pipx.pypa.io/) to keep your python a bit cleaner, btw).
 
-- `pre-commit` (used for installing and running checker programs).
-- `tox` (used to handle the test/formatting setup).
+- `tox` (for running the test, the formatter, the checker and all sorts of other stuff you now no longer need to install by hand).
