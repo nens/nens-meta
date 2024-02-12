@@ -6,8 +6,4 @@ There is a small number of tools/addons you have to install. They'll make life e
 ## One-time install: vscode plugins
 
 - [Editorconfig plugin](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig). This one automatically reads the config in the `.editorconfig` file and configures line length, an "enter" at the end of the file, indentation, unneeded spaces. No need to do anything by hand anymore.
-
-
-## Other editors
-
-- Most editors support [editorconfig](https://editorconfig.org/) out of the box. Vscode and emacs need a plugin. The website has a list.
+- [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python), of course.
