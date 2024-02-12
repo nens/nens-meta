@@ -40,6 +40,14 @@ norecursedirs="venv .venv data doc etc *.egg-info misc var build lib include"
 python_files = "test_*.py"
 testpaths = "nens_meta"
 
+[tool.coverage.run]
+source = ["nens_meta"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 95
+skip_empty = true
+
 [tool.zest-releaser]
 release = false
 python-file-with-version = "nens_meta/__init__.py"
