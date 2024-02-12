@@ -1,6 +1,8 @@
 """Tests for update_project.py"""
 from pathlib import Path
 
+import pytest
+
 from nens_meta import nens_toml
 
 
@@ -28,17 +30,19 @@ def test_write(tmp_path: Path):
 
 
 def test_section_options1(tmp_path: Path):
+    # Properly read a known variable in a known section.
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
-    [reinout]
-    year = 1972
+    [meta]
+    version = "1972"
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert config.section_options("reinout")["year"] == 1972
+    assert config.section_options("meta")["version"] == "1972"
 
 
 def test_section_options2(tmp_path: Path):
+    # Barf upon an unknown/undocumented section.
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
     [reinout]
@@ -46,16 +50,18 @@ def test_section_options2(tmp_path: Path):
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert config.section_options("rianne") == {}
+    with pytest.raises(nens_toml.MissingDocumentationError):
+        config.section_options("reinout")
 
 
 def test_section_options3(tmp_path: Path):
+    # Don't return values that are unknown.
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
-    [reinout]
+    [meta]
     # Comment
     year = 1972
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert list(config.section_options("reinout").keys()) == ["year"]
+    assert "year" not in config.section_options("meta").keys()
