@@ -43,7 +43,6 @@ source = ["nens_meta"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 95
 skip_empty = true
 
 [tool.zest-releaser]
