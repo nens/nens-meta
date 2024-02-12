@@ -1,0 +1,12 @@
+[run]
+source = nens_meta
+omit = test_*.py
+
+[report]
+show_missing = true
+
+[html]
+directory = htmlcov
+
+[xml]
+output = coverage.xml

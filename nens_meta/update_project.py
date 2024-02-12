@@ -1,86 +1,99 @@
-from pathlib import Path
-from nens_meta import utils
-from typing_extensions import Annotated
-import editorconfig
-import jinja2
 import logging
-import tomlkit
+import sys
+from functools import cached_property
+from pathlib import Path
+from typing import Annotated
+
+import jinja2
 import typer
 
+from nens_meta import nens_toml, utils
 
-META_FILENAME = ".nens.toml"
-CONFIG_BASEDIR = Path(__file__).parent / "config"
+TEMPLATES_BASEDIR = Path(__file__).parent / "templates"
 
 logger = logging.getLogger(__name__)
 
 
-class NensToml:
-    """Wrapper around a project's .nens.toml
+class TemplatedFile:
+    project_dir: Path
+    our_config: nens_toml.OurConfig
+    template_name: str
+    target_name: str  # Note: can be "subdir/some-file.txt"
+    section_name: str
 
-    See https://tomlkit.readthedocs.io/en/latest/quickstart/
-    """
+    def __init__(self, project_dir: Path, our_config: nens_toml.OurConfig) -> None:
+        self.project_dir = project_dir
+        self.our_config = our_config
 
-    meta_file: Path
-    meta_config: tomlkit.TOMLDocument
+    @property
+    def target(self) -> Path:
+        return self.project_dir / self.target_name
 
-    def __init__(self, project: Path) -> None:
-        self.meta_file = project / META_FILENAME
-        if not self.meta_file.exists():
-            logger.warn(f"{self.meta_file} doesn't exist, we'll create it")
-            self.meta_file.write_text("# Empty generated file\n")
-        self.meta_config = self.read()
-
-    def read(self) -> tomlkit.TOMLDocument:
-        return tomlkit.parse(self.meta_file.read_text())
-
-    def write(self):
-        utils.write_if_changed(self.meta_file, tomlkit.dumps(self.meta_config))
-
-
-class Editorconfig:
-    """Wrapper around a project's editorconfig"""
-
-    target: Path
-    template_name: str = "editorconfig.j2"
-
-    def __init__(self, project: Path) -> None:
-        self.target = project / ".editorconfig"
-
-    def write(self):
-        """Copy the source template to the target, doing the jinja2 stuff"""
-        environment = jinja2.Environment(
+    @property
+    def environment(self) -> jinja2.Environment:
+        return jinja2.Environment(
             loader=jinja2.FileSystemLoader(
                 # pass one or more dirs! Handy for our purpose!
-                [CONFIG_BASEDIR / "default"]
+                [TEMPLATES_BASEDIR / "default"]
             ),
-            variable_start_string='%(',
-            variable_end_string=')s',
             keep_trailing_newline=True,
             trim_blocks=True,
             lstrip_blocks=True,
         )
-        template = environment.get_template(self.template_name)
-        content = template.render()
-        utils.write_if_changed(self.target, content)
 
-    # try:
-    #     options = get_properties(filename)
-    # except EditorConfigError:
-    #     print "Error occurred while getting EditorConfig properties"
+    @property
+    def template(self) -> jinja2.Template:
+        return self.environment.get_template(self.template_name)
+
+    @property
+    def options(self) -> dict:
+        return self.our_config.section_options(self.section_name)
+
+    @cached_property
+    def content(self) -> str:
+        return self.template.render(**self.options)
+
+    def write(self):
+        """Copy the source template to the target, doing the jinja2 stuff"""
+        utils.write_if_changed(self.target, self.content)
+
+
+class Editorconfig(TemplatedFile):
+    """Wrapper around a project's editorconfig"""
+
+    template_name = "editorconfig.j2"
+    target_name = ".editorconfig"
+    section_name = "editorconfig"
+
+
+def check_prerequisites(project_dir: Path):
+    """Check prerequisites, exit if not met"""
+    if not (project_dir / ".git").exists():
+        logger.error("Project has no .git dir")
+        sys.exit(1)
+    if not nens_toml.nens_toml_file(project_dir).exists():
+        nens_toml.create_if_missing(project_dir)
+        logger.warning("No .nens.toml found, created one. Re-run after checking.")
+        sys.exit(1)
 
 
 def update_project(
-    project: Annotated[Path, typer.Argument(exists=True)],
+    project_dir: Annotated[Path, typer.Argument(exists=True)],
+    verbose: Annotated[bool, typer.Option(help="Verbose logging")] = False,
 ):
-    nenstoml = NensToml(project)
-    nenstoml.write()
+    log_level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(level=log_level)
+    check_prerequisites(project_dir)
+    our_config = nens_toml.OurConfig(project_dir)
+    our_config.write()
     # ^^^ TODO: handle versions!
     # Grab editorconfig table and pass it along. Or rather the whole thing?
-    editorconfig = Editorconfig(project)
+    editorconfig = Editorconfig(project_dir, our_config)
     editorconfig.write()
 
 
-
 def main():
-    logging.basicConfig(level=logging.DEBUG)
     typer.run(update_project)
+
+
+# Option: typer.lauch("https://reinout/documentation")...
