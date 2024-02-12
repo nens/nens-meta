@@ -38,7 +38,6 @@ jobs:
       - name: Code coverage
         run: |
           tox -q -e coverage
-          ls -l
           cat coverage.md >> $GITHUB_STEP_SUMMARY
       - name: Dependency check
         run: tox -e dependencies
