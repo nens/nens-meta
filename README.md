@@ -50,3 +50,7 @@ And the isort/black/etc stuff that's in "ruff" now:
 - tox.ini for python projects
 
 - docker-compose
+
+- coverage percentage
+
+- Projectnummer
