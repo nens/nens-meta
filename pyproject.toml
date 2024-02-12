@@ -12,7 +12,6 @@ license = {text = "MIT"}
 requires-python = ">=3.11"
 dependencies = [
     "Jinja2",
-    "editorconfig",
     "tomlkit",
     "typer[all]",
 ]
@@ -21,7 +20,6 @@ dynamic = ["version"]
 [project.optional-dependencies]
 test = [
     "pytest",
-    "pytest-cov",
     "pytest-mock",
 ]
 
