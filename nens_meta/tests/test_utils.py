@@ -28,3 +28,14 @@ def test_write_if_changed3(tmp_path: Path, mocker: MockerFixture):
     writer = mocker.spy(Path, "write_text")
     utils.write_if_changed(f, "test")
     writer.assert_not_called()
+
+
+def test_is_python_project1():
+    # We ourselves are a python project.
+    ourselves = Path(__file__).parent.parent.parent
+    assert utils.is_python_project(ourselves)
+
+
+def test_is_python_project2(tmp_path: Path):
+    # An empty dir is not a python project
+    assert not utils.is_python_project(tmp_path)

@@ -20,3 +20,12 @@ def write_if_changed(victim: Path, content: str):
 
     victim.write_text(content)
     logger.info(f"{action} {victim}")
+
+
+def is_python_project(project: Path) -> bool:
+    """Return whether we detect a python project"""
+    for indicator in ["setup.py", "pyproject.toml", "setup.cfg"]:
+        if (project / indicator).exists():
+            logger.debug(f"{indicator} found, assuming it is a python project")
+            return True
+    return False
