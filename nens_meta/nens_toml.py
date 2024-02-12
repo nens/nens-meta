@@ -6,7 +6,7 @@ from pathlib import Path
 
 import tomlkit
 
-from nens_meta import utils
+from nens_meta import __version__, utils
 
 META_FILENAME = ".nens.toml"
 KNOWN_SECTIONS: dict[str, dict[str, str]] = {}
@@ -21,7 +21,9 @@ KNOWN_SECTIONS["editorconfig"] = {
 KNOWN_SECTIONS["tox"] = {
     "minimum_coverage": "Minimum code coverage percentage",
 }
-
+KNOWN_SECTIONS["pre-commit-config"] = {
+    "extra_lines": "Extra content at the end of the file (watch the indentation)",
+}
 logger = logging.getLogger(__name__)
 
 
@@ -64,6 +66,7 @@ class OurConfig:
         """Return detected options that will be added to every section"""
         options = {}
         options["is_python_project"] = utils.is_python_project(self._project)
+        options["our_version"] = __version__
         # TODO: document this.
         return options
 
@@ -80,13 +83,13 @@ class OurConfig:
                 f"Section {section_name} not documented in nens-meta"
             )
         section = self._contents.get(section_name)
-        if not section:
+        options: dict[str, str] = {}
+        if section:
+            for key in KNOWN_SECTIONS[section_name]:
+                options[key] = section.get(key, "")  # Default is an empty string.
+        else:
             logger.debug(
                 f"Extra configuration for [{section_name}] not found in .nens.toml"
             )
-            return {}
-        options: dict[str, str] = {}
-        for key in KNOWN_SECTIONS[section_name]:
-            options[key] = section.get(key, "")  # Default is an empty string.
         options.update(self.global_options)
         return options

@@ -66,6 +66,14 @@ class Editorconfig(TemplatedFile):
     section_name = "editorconfig"
 
 
+class Precommitconfig(TemplatedFile):
+    """Wrapper around a project's .pre-commit-config.yaml"""
+
+    template_name = "pre-commit-config.yaml.j2"
+    target_name = ".pre-commit-config.yaml"
+    section_name = "pre-commit-config"
+
+
 def check_prerequisites(project_dir: Path):
     """Check prerequisites, exit if not met"""
     if not (project_dir / ".git").exists():
@@ -86,10 +94,11 @@ def update_project(
     check_prerequisites(project_dir)
     our_config = nens_toml.OurConfig(project_dir)
     our_config.write()
-    # ^^^ TODO: handle versions!
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project_dir, our_config)
     editorconfig.write()
+    precommitconfig = Precommitconfig(project_dir, our_config)
+    precommitconfig.write()
 
 
 def main():
