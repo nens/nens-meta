@@ -18,6 +18,9 @@ KNOWN_SECTIONS["meta"] = {
 KNOWN_SECTIONS["editorconfig"] = {
     "extra_lines": "Extra content at the end of .editorconfig",
 }
+KNOWN_SECTIONS["tox"] = {
+    "minimum_coverage": "Minimum code coverage percentage",
+}
 
 logger = logging.getLogger(__name__)
 
