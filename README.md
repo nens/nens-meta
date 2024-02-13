@@ -50,7 +50,7 @@ TODO: actually configure it.
 It is being run from tox, TODO describe that.
 
 
-## Coverage
+## Coverage (for python projects)
 
 Configured in `pyproject.toml`, run via `tox -e coverage`. Shows the coverage as a textual summary and generates `htmlcov/index.html` for a nice visual representation. *If* configured to do so, coverage will warn you if the coverage is lower than the configured minimum level.
 
@@ -59,15 +59,30 @@ TODO
 TODO: document minimum coverage level.
 
 
-## Tox
+## Tox (for all projects)
 
 Tox is originally a test runner, but it is often used to run (and install) all sorts of project-related tools. The main advantage: it is an automation tool that runs on both linux, mac and windows. Just `pip install tox` and everything else is handled.
 
  A `tox.ini` defines what can be run. "What can be run" is called an "environment", so the `-e` in calls like `tox -e coverage` means "select the coverage environment and run it.
 
-Anyway, just calling `tox` will run the
+Anyway, just calling `tox` will run the "lint" and "py311" action (by default).
+
+TODO: generate it.
 
 
+## Pre-commit (for all projects)
+
+pre-commit (installed through tox) is a tool to run all sorts of checks and formatters on your code. The big advantage is that pre-commit itself handles the installation of the checkers and formatters so that you don't have to. Everything is done for you.
+
+Even pre-commit doesn't need installing as "tox" does it for you.
+
+*Optionally* you can insert it into your git workflow with `pre-commit install`, then pre-commit will run and will check your files before adding them to a commit.
+
+TODO: suggest a vscode plugin?
+
+Run it with:
+
+    $ tox -e lint
 
 
 ## Installing/developing this project
