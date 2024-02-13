@@ -28,6 +28,8 @@ TODO: actually put the config into pyproject.toml
 
 TODO: handle the "severity" of the settings.
 
+TODO: zap old isort.cfg and .flake8 files.
+
 
 ## Pytest (for python projects)
 
@@ -68,6 +70,8 @@ Tox is originally a test runner, but it is often used to run (and install) all s
 Anyway, just calling `tox` will run the "lint" and "py311" action (by default).
 
 TODO: generate it.
+
+TODO: add tox to the `requirements.txt` and just run it inside the virtualenv? Then no extra install is needed. The requirements.txt should be pretty small anyway as most of the dependencies ought to be in `pyproject.toml`. Perhaps attract a bit of attention to `tox -e dependencies`?
 
 
 ## Pre-commit (for all projects)
@@ -114,14 +118,25 @@ And the isort/black/etc stuff that's in "ruff" now:
 
 ## TODO
 
-- `DEVELOPING.md` with instructions?
+- `DEVELOPING.md` with instructions? "venv" maken.
 
-- pre-commit: this needs "do I have python? do I have ansible?" detection. And a github update action. And a lint action. The ruff settings really need configuration, which means pyproject.toml support.
+- pyproject.toml beginnen.
 
-- tox.ini for python projects
+    - build-system
+    - project.dependencies (leeg aanmaken als het er niet is)
+    - tool.setuptools
+    - tool.pytest/coverage/ruff/pyright
+    - (project:dynamic (version erin))
+    - (tool.setuptools.dynamic: version (check op `__init__`))
+
+- Zap .flake8, isort.cfg, pytest.ini
+
+- setup.cfg weg, maar moet daar nog wat van over? Wordt allemaal wel door mij gezet denk ik?
+
+- requirements.txt
+
+- tox.ini (not only for python projects)
 
 - docker-compose
-
-- coverage percentage
 
 - Projectnummer
