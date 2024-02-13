@@ -37,6 +37,7 @@ nens-update-project = "nens_meta.update_project:main"
 norecursedirs="venv .venv data doc etc *.egg-info misc var build lib include"
 python_files = "test_*.py"
 testpaths = "nens_meta"
+log_level = "DEBUG"
 
 [tool.coverage.run]
 source = ["nens_meta"]
