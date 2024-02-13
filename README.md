@@ -84,6 +84,8 @@ Run it with:
 
     $ tox -e lint
 
+TODO: ansible detection + pre-commit setup.
+
 
 ## Installing/developing this project
 
