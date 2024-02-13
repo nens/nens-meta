@@ -54,3 +54,23 @@ def test_editor_config3(tmp_path: Path):
     editor_config = update_project.Editorconfig(tmp_path, our_config)
     assert "# Need extra lines?" not in editor_config.content
     assert "max_line_length = 1972" in editor_config.content
+
+
+def test_editor_config4(tmp_path: Path):
+    # Don't change the file if told so.
+    (tmp_path / ".nens.toml").write_text(
+        """
+    [editorconfig]
+    leave_alone = true
+    """
+    )
+    (tmp_path / ".editorconfig").write_text(
+        """
+    hurray, totally invalid line
+    which would normally be overwritten
+    """
+    )
+    our_config = nens_toml.OurConfig(tmp_path)
+    editor_config = update_project.Editorconfig(tmp_path, our_config)
+    editor_config.write()
+    assert "hurray" in (tmp_path / ".editorconfig").read_text()
