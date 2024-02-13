@@ -20,10 +20,19 @@ HEADER = """\
 # If you want this file to be left alone, remove this header and add the
 # following to ".nens.toml":
 #
-# [{section_name}]
-# leave_alone = true
+#   [{section_name}]
+#   leave_alone = true
 #
 """
+EXTRA_LINES_EXPLANATION = '''\
+# Need extra lines? Add the following to your ".nens.toml":
+#
+#   [{section_name}]
+#   extra_lines = """
+#   your own
+#   configuration lines
+#   """\
+'''  # Note the backslash above, to prevent an unneeded empty trailing line
 
 
 class TemplatedFile:
@@ -40,11 +49,8 @@ class TemplatedFile:
     @property
     def target(self) -> Path:
         if self.options.get("leave_alone"):
-            separate_target = self.project_dir / (self.target_name + ".suggestion")
-            logger.warning(
-                f"Leaving {self.target_name} alone, writing to {separate_target}"
-            )
-            return separate_target
+            logger.warning(f"Leaving {self.target_name} alone")
+            return self.project_dir / (self.target_name + ".suggestion")
         return self.project_dir / self.target_name
 
     @property
@@ -73,9 +79,17 @@ class TemplatedFile:
             section_name=self.section_name, our_version=self.options["our_version"]
         )
 
+    @property
+    def extra_lines_explanation(self) -> str:
+        return EXTRA_LINES_EXPLANATION.format(section_name=self.section_name)
+
     @cached_property
     def content(self) -> str:
-        return self.template.render(header=self.header, **self.options)
+        return self.template.render(
+            header=self.header,
+            extra_lines_explanation=self.extra_lines_explanation,
+            **self.options,
+        )
 
     def write(self):
         """Copy the source template to the target, doing the jinja2 stuff"""
@@ -88,6 +102,14 @@ class Editorconfig(TemplatedFile):
     template_name = "editorconfig.j2"
     target_name = ".editorconfig"
     section_name = "editorconfig"
+
+
+class Gitignore(TemplatedFile):
+    """Wrapper around a project's gitignore"""
+
+    template_name = "gitignore.j2"
+    target_name = ".gitignore"
+    section_name = "gitignore"
 
 
 class Precommitconfig(TemplatedFile):
@@ -121,6 +143,8 @@ def update_project(
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project_dir, our_config)
     editorconfig.write()
+    gitignore = Gitignore(project_dir, our_config)
+    gitignore.write()
     precommitconfig = Precommitconfig(project_dir, our_config)
     precommitconfig.write()
 

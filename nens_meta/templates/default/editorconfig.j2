@@ -25,9 +25,5 @@ indent_style = tab
 {% if extra_lines %}
 {{ extra_lines }}
 {% else %}
-# Need extra lines? Add this to your .nens.toml:
-#  [editorconfig]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
+{{ extra_lines_explanation }}
 {% endif %}

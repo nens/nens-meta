@@ -30,6 +30,10 @@ KNOWN_SECTIONS["pre-commit-config"] = {
     "extra_lines": "Extra content at the end of the file (watch the indentation)",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
+KNOWN_SECTIONS["gitignore"] = {
+    "extra_lines": "Extra content at the end of .gitignore",
+    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+}
 logger = logging.getLogger(__name__)
 
 
