@@ -176,8 +176,5 @@ def update_project(
     development_instructions.write()
 
 
-def main():
+def main():  # pragma: no cover
     typer.run(update_project)
-
-
-# Option: typer.lauch("https://reinout/documentation")...
