@@ -120,6 +120,14 @@ class Precommitconfig(TemplatedFile):
     section_name = "pre-commit-config"
 
 
+class DevelopmentInstructions(TemplatedFile):
+    """Wrapper around a project's dev instructions"""
+
+    template_name = "DEVELOPMENT.md.j2"
+    target_name = "DEVELOPMENT.md"
+    section_name = "development-instructions"
+
+
 def check_prerequisites(project_dir: Path):
     """Check prerequisites, exit if not met"""
     if not (project_dir / ".git").exists():
@@ -147,6 +155,8 @@ def update_project(
     gitignore.write()
     precommitconfig = Precommitconfig(project_dir, our_config)
     precommitconfig.write()
+    development_instructions = DevelopmentInstructions(project_dir, our_config)
+    development_instructions.write()
 
 
 def main():

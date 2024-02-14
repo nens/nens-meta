@@ -19,7 +19,7 @@ KNOWN_SECTIONS["meta"] = {
     "version": "Version used to generate the config",
 }
 KNOWN_SECTIONS["editorconfig"] = {
-    "extra_lines": "Extra content at the end of .editorconfig",
+    "extra_lines": "Extra content at the end of `.editorconfig`",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["tox"] = {
@@ -31,7 +31,11 @@ KNOWN_SECTIONS["pre-commit-config"] = {
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["gitignore"] = {
-    "extra_lines": "Extra content at the end of .gitignore",
+    "extra_lines": "Extra content at the end of `.gitignore`",
+    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+}
+KNOWN_SECTIONS["development-instructions"] = {
+    "extra_lines": "Extra content at the end of `DEVELOPMENT.md`",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 logger = logging.getLogger(__name__)
@@ -102,6 +106,7 @@ class OurConfig:
         options = {}
         options["is_python_project"] = utils.is_python_project(self._project)
         options["our_version"] = __version__
+        options["project_name"] = self._project.name
         # TODO: document this.
         return options
 
