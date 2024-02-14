@@ -17,8 +17,6 @@ def test_check_prerequisites2(tmp_path: Path):
     with pytest.raises(SystemExit):
         # Missing .nens.toml
         update_project.check_prerequisites(tmp_path)
-        # ... which should be created for us now.
-        assert (tmp_path / ".nens.tomll").exists()
 
 
 # TemplatedFile is tested through EditorConfig, btw
