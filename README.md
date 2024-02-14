@@ -93,23 +93,11 @@ TODO: ansible detection + pre-commit setup.
 
 ## Installing/developing this project
 
-The regular:
+For the basic instructions, see [DEVELOPMENT.md](./DEVELOPMENT.md).
 
-    $ python3 -m venv venv
-    $ . venv/bin/activate
-    $ pip install -r requirements.txt
+Run lint + the tests:
 
-This gives you:
-
-    $ update-project YOUR_PROJECT_DIR
-
-At the moment, run the tests like this (after activating the virtualenv):
-
-    $ pytest
-
-And the isort/black/etc stuff that's in "ruff" now:
-
-    $ pre-commit run --all
+    $ tox -q
 
 (You can also actually install the pre-commit to run it automatically, though that means you really have to behave yourself):
 
@@ -117,8 +105,6 @@ And the isort/black/etc stuff that's in "ruff" now:
 
 
 ## TODO
-
-- `DEVELOPING.md` with instructions? "venv" maken.
 
 - pyproject.toml beginnen.
 

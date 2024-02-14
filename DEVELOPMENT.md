@@ -7,11 +7,7 @@ This project mostly uses the generic "nens-meta" setup. The idea:
 - VScode should work out of the box.
 - Commandline usage too.
 
-{% if extra_lines %}
-(Note: this documentation was mostly generated automatically. Some project specific instructions are at the end.)
-{% else %}
 (Note: this documentation was generated automatically.)
-{% endif %}
 
 ## Python virtualenv
 
@@ -21,12 +17,10 @@ Virtualenvs keep your global python installation nice and clean. They also help 
 - Activate it when working on the project.
 - Install the requirements.
 
-    $ python3 -m venv venv --prompt {{ project_name }}
+    $ python3 -m venv venv --prompt nens-meta
     $ venv/bin/activate
     $ pip install -r requirements.txt
 
 On mac/linux the activate step is slightly different:
 
     $ source venv/bin/activate
-
-{{ extra_lines }}
