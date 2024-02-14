@@ -1,1 +1,4 @@
-# Empty generated file
+[meta]
+is_python_project = true
+meta_version = "0.1.dev0"
+project_name = "nens-meta"
