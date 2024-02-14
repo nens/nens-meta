@@ -66,7 +66,7 @@ class PyprojectToml:
         section: Table = current_container[section_name]  # type: ignore
         return section
 
-    def update(self):
+    def update(self):  # pragma: no cover
         """Update the pyproject.toml file
 
         `options` is the combined contents of the [meta] and [pyprojecttoml] config
@@ -102,15 +102,9 @@ class PyprojectToml:
         section = self.get_or_create_section("project.optional-dependencies")
         if "test" not in section:
             section["test"] = []
-        if "pytest" not in section["test"]:
-            section["test"].append("pytest")
-        section["test"].comment("pytest added by nens-meta")
-
-        section = self.get_or_create_section("project.optional-dependencies")
-        if "test" not in section:
-            section["test"] = []
-        if "pytest" not in section["test"]:
-            section["test"].append("pytest")
+        test_dependencies: list = section["test"]  # type ignore
+        if "pytest" not in test_dependencies:
+            test_dependencies.append("pytest")
         section["test"].comment("pytest added by nens-meta")
 
     @property

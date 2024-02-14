@@ -111,9 +111,9 @@ Run lint + the tests:
     - build-system DONE
     - project.dependencies (leeg aanmaken als het er niet is) DONE
     - tool.setuptools DONE
+    - (project:dynamic (version erin)) DONE
+    - (tool.setuptools.dynamic: version (check op `__init__`)) DONE
     - tool.pytest/coverage/ruff/pyright
-    - (project:dynamic (version erin))
-    - (tool.setuptools.dynamic: version (check op `__init__`))
 
 - Zap .flake8, isort.cfg, pytest.ini
 
@@ -126,3 +126,5 @@ Run lint + the tests:
 - docker-compose
 
 - Projectnummer
+
+- ik installeer [test] => regulier `pytest` aanroepen werkt ook gewoon.
