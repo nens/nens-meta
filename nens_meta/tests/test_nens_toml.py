@@ -34,11 +34,11 @@ def test_section_options1(tmp_path: Path):
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
     [meta]
-    version = "1972"
+    project_name = "1972"
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert config.section_options("meta")["version"] == "1972"
+    assert config.section_options("meta")["project_name"] == "1972"
 
 
 def test_section_options2(tmp_path: Path):
@@ -137,3 +137,33 @@ def test_key_type2():
 
 def test_key_type3():
     assert nens_toml._expected_type("reinout_FALSE") == bool
+
+
+def test_update_meta_options1(tmp_path: Path):
+    # Create a new "meta" section if it is missing.
+    nens_toml.nens_toml_file(tmp_path).write_text("")
+    config = nens_toml.OurConfig(tmp_path)
+    # the init automatically calls config.update_meta_options()
+    assert "meta" in config._contents
+
+
+def test_update_meta_options2(tmp_path: Path):
+    # version and so is filled in in an updated file.
+    nens_toml.nens_toml_file(tmp_path).write_text("")
+    config = nens_toml.OurConfig(tmp_path)
+    # the init automatically calls config.update_meta_options()
+    meta_section = config.section_options("meta")
+    assert "meta_version" in meta_section
+    assert "project_name" in meta_section
+
+
+def test_update_meta_options3(tmp_path: Path):
+    # The version should always be updated.
+    nens_toml.nens_toml_file(tmp_path).write_text(
+        """
+    [meta]
+    meta_version = "1972"
+    """
+    )
+    config = nens_toml.OurConfig(tmp_path)
+    assert config.section_options("meta")["meta_version"] != "1972"

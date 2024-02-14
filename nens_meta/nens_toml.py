@@ -5,6 +5,7 @@ from functools import cached_property
 from pathlib import Path
 
 import tomlkit
+from tomlkit.items import Table
 
 from nens_meta import __version__, utils
 
@@ -16,7 +17,9 @@ KNOWN_SECTIONS: dict[str, dict[str, str]] = {}
 # explanation. If the second key ends with "_TRUE"/"_FALSE", this is stripped and will
 # be used to treat the value as a boolean with the indicated default.
 KNOWN_SECTIONS["meta"] = {
-    "version": "Version used to generate the config",
+    "meta_version": "Version used to generate the config",
+    "project_name": "Project name (normally the name of the directory)",
+    "is_python_project_FALSE": "Whether we are a python project",
 }
 KNOWN_SECTIONS["editorconfig"] = {
     "extra_lines": "Extra content at the end of `.editorconfig`",
@@ -75,6 +78,15 @@ def _expected_type(key: str) -> type:
     return str
 
 
+def detected_meta_values(project: Path) -> dict[str, str | bool]:
+    """Return values we can detect about the project, normally set in [meta]"""
+    detected: dict[str, str | bool] = {}
+    detected["is_python_project"] = utils.is_python_project(project)
+    detected["meta_version"] = __version__
+    detected["project_name"] = project.resolve().name
+    return detected
+
+
 class MissingDocumentationError(Exception):
     pass
 
@@ -93,6 +105,7 @@ class OurConfig:
         self._project = project
         self._config_file = nens_toml_file(project)
         self._contents = self.read()
+        self.update_meta_options()
 
     def read(self) -> tomlkit.TOMLDocument:
         return tomlkit.parse(self._config_file.read_text())
@@ -105,10 +118,22 @@ class OurConfig:
         """Return detected options that will be added to every section"""
         options = {}
         options["is_python_project"] = utils.is_python_project(self._project)
-        options["our_version"] = __version__
+        options["meta_version"] = __version__
         options["project_name"] = self._project.resolve().name
         # TODO: document this.
         return options
+
+    def update_meta_options(self):
+        """Detect meta options"""
+        if "meta" not in self._contents:
+            self._contents.append("meta", tomlkit.table())
+        current: Table = self._contents["meta"]  # type: ignore
+        detected = detected_meta_values(self._project)
+        for key, value in detected.items():
+            if key not in current:
+                current[key] = value
+        # Make sure our version is correctly recorded
+        current["meta_version"] = detected["meta_version"]
 
     def section_options(self, section_name: str) -> dict:
         """Return all options configured in a given section
@@ -138,6 +163,5 @@ class OurConfig:
             logger.debug(
                 f"Extra configuration for [{section_name}] not found in .nens.toml"
             )
-        options.update(self.global_options)
         logger.debug(f"Contents of section {section_name}: {options}")
         return options
