@@ -118,9 +118,7 @@ Run lint + the tests:
     - ruff DONE
     - pyright DONE
 
-- Zap .flake8, setup.cfg, .isort.cfg, .coveragerc, pytest.ini (niet zappen, maar kopieren).
-
-- setup.cfg weg, maar moet daar nog wat van over? Wordt allemaal wel door mij gezet denk ik?
+- Zap .flake8, setup.cfg, .isort.cfg, .coveragerc, pytest.ini (niet zappen, maar kopieren). DONE
 
 - requirements.txt
 

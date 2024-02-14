@@ -101,6 +101,10 @@ class PyprojectToml:
         suggestions = {
             "requires-python": ">=3.11",
             "dependencies": [],
+            "description": "I really need to set this",
+            "authors": [],
+            "license": "not set yet",
+            "readme": "README.md",
         }
         for suggestion in suggestions:
             if suggestion not in section:

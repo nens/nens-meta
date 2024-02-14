@@ -143,6 +143,28 @@ def check_prerequisites(project_dir: Path):
         sys.exit(1)
 
 
+def do_some_python_checks(project_dir: Path):
+    """Run some checks to help identify issues and things you still need to do"""
+    requirementstxt = project_dir / "requirements.txt"
+    if not requirementstxt.exists():
+        logger.warning(f"There is no {requirementstxt}")
+    else:
+        dev_indicator1 = "-e "
+        dev_indicator2 = "[test]"
+        if not (
+            dev_indicator1 in requirementstxt.read_text()
+            and dev_indicator2 in requirementstxt.read_text()
+        ):
+            logger.warning(
+                f"The text '{dev_indicator1}' and '{dev_indicator2}' are "
+                f"not both found in {requirementstxt}"
+            )
+    for file_to_check in project_dir.glob("*.outdated"):
+        logger.warning(
+            f"Check the old {file_to_check}: move settings to pyproject.toml, perhaps?"
+        )
+
+
 def update_project(
     project_dir: Annotated[Path, typer.Argument(exists=True)],
     verbose: Annotated[bool, typer.Option(help="Verbose logging")] = False,
@@ -175,6 +197,9 @@ def update_project(
     precommitconfig.write()
     development_instructions = DevelopmentInstructions(project_dir, our_config)
     development_instructions.write()
+
+    if our_config.section_options("meta")["is_python_project"]:
+        do_some_python_checks(project_dir)
 
 
 def main():  # pragma: no cover
