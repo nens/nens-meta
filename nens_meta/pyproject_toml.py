@@ -148,3 +148,15 @@ class PyprojectToml:
         section.comment("Whole section managed by nens-meta")
         section["log_level"] = "DEBUG"
         section["testpaths"] = [self.package_name]  # TODO: optional extra packages
+
+    def ensure_coverage(self):
+        section = self.get_or_create_section("tool.coverage.run")
+        section.clear()
+        section.comment("Whole section managed by nens-meta")
+        section["source"] = [self.package_name]  # TODO: optional extra packages
+
+        section = self.get_or_create_section("tool.coverage.report")
+        section.clear()
+        section.comment("Whole section managed by nens-meta")
+        section["show_missing"] = True
+        section["skip_empty"] = True

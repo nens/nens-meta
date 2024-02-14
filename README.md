@@ -113,13 +113,18 @@ Run lint + the tests:
     - tool.setuptools DONE
     - (project:dynamic (version erin)) DONE
     - (tool.setuptools.dynamic: version (check op `__init__`)) DONE
-    - tool.pytest/coverage/ruff/pyright
+    - tool.pytest DONE
+    - coverage DONE
+    - ruff
+    - pyright
 
-- Zap .flake8, isort.cfg, pytest.ini
+- Zap .flake8, setup.cfg, .isort.cfg, .coveragerc, pytest.ini (niet zappen, maar kopieren).
 
 - setup.cfg weg, maar moet daar nog wat van over? Wordt allemaal wel door mij gezet denk ik?
 
 - requirements.txt
+
+- requirements.ini
 
 - tox.ini (not only for python projects)
 
