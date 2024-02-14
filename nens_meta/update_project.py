@@ -7,7 +7,7 @@ from typing import Annotated
 import jinja2
 import typer
 
-from nens_meta import nens_toml, utils
+from nens_meta import nens_toml, pyproject_toml, utils
 
 TEMPLATES_BASEDIR = Path(__file__).parent / "templates"
 
@@ -152,6 +152,11 @@ def update_project(
     check_prerequisites(project_dir)
     our_config = nens_toml.OurConfig(project_dir)
     our_config.write()
+
+    if our_config.section_options("meta")["is_python_project"]:
+        if not pyproject_toml.pyproject_toml_file(project_dir).exists():
+            pyproject_toml.create_if_missing(project_dir)
+
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project_dir, our_config)
     editorconfig.write()
