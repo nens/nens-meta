@@ -62,3 +62,10 @@ def test_adjust_project(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config.write()
     assert "pietje" in empty_python_config._config_file.read_text()
     assert "dependencies" in empty_python_config._config_file.read_text()
+
+
+def test_package_name(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._options = {
+        "package_name": "pietje_klaasje",
+    }
+    assert empty_python_config.package_name == "pietje_klaasje"
