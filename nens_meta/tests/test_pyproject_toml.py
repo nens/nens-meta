@@ -147,6 +147,14 @@ def test_ensure_pyright(empty_python_config: pyproject_toml.PyprojectToml):
     assert "pietje_klaasje" in empty_python_config._config_file.read_text()
 
 
+def test_remove_old_sections(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._config_file.write_text("[tool.isort]\nreinout = 1972")
+    empty_python_config.read()
+    empty_python_config.remove_old_sections()
+    empty_python_config.write()
+    assert "reinout" not in empty_python_config._config_file.read_text()
+
+
 def test_move_outdated_files(empty_python_config: pyproject_toml.PyprojectToml):
     example = empty_python_config._project / ".flake8"
     example.write_text("")

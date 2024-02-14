@@ -84,6 +84,7 @@ class PyprojectToml:
         self.ensure_ruff()
         self.adjust_zestreleaser()
         self.adjust_pyright()
+        self.remove_old_sections()
 
     def ensure_build_system(self):
         section = self.get_or_create_section("build-system")
@@ -216,3 +217,14 @@ class PyprojectToml:
                 logger.debug(f"Removed existing {target}")
             source.rename(target)
             logger.info(f"{source} is no longer needed, moved it to {target}")
+
+    def remove_old_sections(self):
+        """Remove sections of old tools.
+
+        For instance, isort had a `[tool.isort]` section. That's now obsoleted by ruff.
+        """
+        tool_super_section = self._contents.get("tool")
+        if tool_super_section:
+            if "isort" in tool_super_section:
+                tool_super_section.remove("isort")
+                logger.debug("Removed [tool.isort] section")
