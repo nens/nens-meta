@@ -120,9 +120,9 @@ Run lint + the tests:
 
 - Zap .flake8, setup.cfg, .isort.cfg, .coveragerc, pytest.ini (niet zappen, maar kopieren). DONE
 
-- requirements.txt
+- requirements.txt DONE, via warning
 
-- requirements.ini
+- requirements.ini DONE, indirect
 
 - manifest.ini
 
