@@ -36,8 +36,7 @@ jobs:
         # Tox all by itself also runs lint again, but ok.
         # Later on when there are multiple python versions I'll have to change it.
       - name: Code coverage
-        run: |
-          tox -q -e coverage
-          cat coverage.md >> $GITHUB_STEP_SUMMARY
+        # This is also already run by "tox"
+        run: tox -q -e coverage
       - name: Dependency check
         run: tox -e dependencies
