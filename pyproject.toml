@@ -34,8 +34,6 @@ version = {attr = "nens_meta.__version__"}
 nens-update-project = "nens_meta.update_project:main"
 
 [tool.pytest.ini_options]
-norecursedirs="venv .venv data doc etc *.egg-info misc var build lib include"
-python_files = "test_*.py"
 testpaths = "nens_meta"
 log_level = "DEBUG"
 
