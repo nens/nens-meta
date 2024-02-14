@@ -80,6 +80,9 @@ class PyprojectToml:
         self.adjust_project()
         self.ensure_setuptools()
         self.ensure_pytest()
+        self.ensure_coverage()
+        self.ensure_ruff()
+        self.adjust_pyright()
 
     def ensure_build_system(self):
         section = self.get_or_create_section("build-system")
@@ -160,3 +163,27 @@ class PyprojectToml:
         section.comment("Whole section managed by nens-meta")
         section["show_missing"] = True
         section["skip_empty"] = True
+
+    def ensure_ruff(self):
+        section = self.get_or_create_section("tool.ruff")
+        section.clear()
+        section.comment("Whole section managed by nens-meta")
+        section["target-version"] = "py38"
+        section["target-version"].comment("Set by nens-meta")
+        # TODO use minumum python version setting
+
+        section = self.get_or_create_section("tool.ruff.lint")
+        section.clear()
+        section.comment("Whole section managed by nens-meta")
+        # Default select: ["E4", "E7", "E9", "F"]
+        # select = ["E4", "E7", "E9", "F", "I", "UP", "C901"]
+        section["select"] = ["E4", "E7", "E9", "F"]
+
+    def adjust_pyright(self):
+        section = self.get_or_create_section("tool.pyright")
+        section["include"] = [self.package_name]  # TODO: optional extra packages
+        section["include"].comment("Set by nens-meta")
+        section["venvPath"] = "."
+        section["venvPath"].comment("Set by nens-meta")
+        section["venv"] = "."
+        section["venv"].comment("Set by nens-meta")

@@ -119,3 +119,23 @@ def test_ensure_coverage(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config.write()
     assert "source" in empty_python_config._config_file.read_text()
     assert "pietje_klaasje" in empty_python_config._config_file.read_text()
+
+
+def test_ensure_ruff(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._options = {
+        "package_name": "pietje_klaasje",
+    }
+    empty_python_config.ensure_ruff()
+    empty_python_config.write()
+    assert "[tool.ruff.lint]" in empty_python_config._config_file.read_text()
+    assert "target-version" in empty_python_config._config_file.read_text()
+
+
+def test_ensure_pyright(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._options = {
+        "package_name": "pietje_klaasje",
+    }
+    empty_python_config.adjust_pyright()
+    empty_python_config.write()
+    assert "[tool.pyright]" in empty_python_config._config_file.read_text()
+    assert "pietje_klaasje" in empty_python_config._config_file.read_text()
