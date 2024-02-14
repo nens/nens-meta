@@ -1,7 +1,22 @@
 import logging
+import re
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+
+def strip_whitespace(content: str) -> str:
+    """Return content stripped of EOL whitespace and extra EOF linefeeds
+
+    Generating files using jinja2 template tags sometimes result in such unneeded
+    whitespace. Stripping it off afterwards is easier than trying to get it right with
+    jinja2.
+    """
+    # Get rid of spaces at the end of lines.
+    content = re.sub(r"\ +\n", r"\n", content)
+    # Get rid of empty lines at the end.
+    content = content.strip() + "\n"
+    return content
 
 
 def write_if_changed(victim: Path, content: str):

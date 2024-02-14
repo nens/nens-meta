@@ -85,11 +85,12 @@ class TemplatedFile:
 
     @cached_property
     def content(self) -> str:
-        return self.template.render(
+        rendered = self.template.render(
             header=self.header,
             extra_lines_explanation=self.extra_lines_explanation,
             **self.options,
         )
+        return utils.strip_whitespace(rendered)
 
     def write(self):
         """Copy the source template to the target, doing the jinja2 stuff"""

@@ -5,6 +5,12 @@ from pytest_mock.plugin import MockerFixture
 from nens_meta import utils
 
 
+def test_strip_whitespace():
+    content = "Example\n    \ncontent  \nend\n\n\n"
+    expected = "Example\n\ncontent\nend\n"
+    assert utils.strip_whitespace(content) == expected
+
+
 def test_write_if_changed1(tmp_path: Path):
     # Just write something to a new file.
     f = tmp_path / "sample.txt"
