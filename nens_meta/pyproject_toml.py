@@ -112,7 +112,7 @@ class PyprojectToml:
         test_dependencies: list = section["test"]  # type ignore
         if "pytest" not in test_dependencies:
             test_dependencies.append("pytest")
-        section["test"].comment("pytest added by nens-meta")
+            section["test"].comment("pytest added by nens-meta")
 
     @property
     def package_name(self) -> str:
