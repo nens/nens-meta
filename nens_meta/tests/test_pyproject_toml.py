@@ -64,8 +64,48 @@ def test_adjust_project(empty_python_config: pyproject_toml.PyprojectToml):
     assert "dependencies" in empty_python_config._config_file.read_text()
 
 
-def test_package_name(empty_python_config: pyproject_toml.PyprojectToml):
+def test_package_name1(empty_python_config: pyproject_toml.PyprojectToml):
+    # Default case
     empty_python_config._options = {
         "package_name": "pietje_klaasje",
     }
     assert empty_python_config.package_name == "pietje_klaasje"
+
+
+def test_package_name2(empty_python_config: pyproject_toml.PyprojectToml):
+    # package_name not set, we get a default dummy one
+    assert empty_python_config.package_name == "not_set"
+
+
+def test_ensure_setuptools1(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._options = {
+        "project_name": "pietje-klaasje",
+        "package_name": "pietje_klaasje",
+    }
+    empty_python_config.ensure_setuptools()
+    empty_python_config.write()
+    assert "zip-safe" in empty_python_config._config_file.read_text()
+    assert "pietje_klaasje.__version__" in empty_python_config._config_file.read_text()
+
+
+def test_ensure_setuptools2(empty_python_config: pyproject_toml.PyprojectToml):
+    # Corner case: init file without version.
+    package_dir = empty_python_config._project / "pietje_klaasje"
+    package_dir.mkdir()
+    (package_dir / "__init__.py").write_text("# Empty")
+    empty_python_config._options = {
+        "project_name": "pietje-klaasje",
+        "package_name": "pietje_klaasje",
+    }
+    empty_python_config.ensure_setuptools()
+    # No assert needed.
+
+
+def test_ensure_setuptools1pytest(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._options = {
+        "package_name": "pietje_klaasje",
+    }
+    empty_python_config.ensure_pytest()
+    empty_python_config.write()
+    assert "log_level" in empty_python_config._config_file.read_text()
+    assert '["pietje_klaasje"]' in empty_python_config._config_file.read_text()
