@@ -8,3 +8,4 @@
 - Started using a `.nens.toml` file for configuring our behaviour.
 - Files can be excluded with a `leave_alone = true` setting: handy when it is heavily customised.
 - Generating `.gitignore`.
+- Generating `pyproject.toml`.

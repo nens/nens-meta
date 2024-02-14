@@ -115,8 +115,8 @@ Run lint + the tests:
     - (tool.setuptools.dynamic: version (check op `__init__`)) DONE
     - tool.pytest DONE
     - coverage DONE
-    - ruff
-    - pyright
+    - ruff DONE
+    - pyright DONE
 
 - Zap .flake8, setup.cfg, .isort.cfg, .coveragerc, pytest.ini (niet zappen, maar kopieren).
 
@@ -126,6 +126,8 @@ Run lint + the tests:
 
 - requirements.ini
 
+- manifest.ini
+
 - tox.ini (not only for python projects)
 
 - docker-compose
@@ -133,3 +135,7 @@ Run lint + the tests:
 - Projectnummer
 
 - ik installeer [test] => regulier `pytest` aanroepen werkt ook gewoon.
+
+- TODO items verwerken.
+
+- testen met vscode
