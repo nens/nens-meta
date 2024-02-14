@@ -103,7 +103,6 @@ class PyprojectToml:
             "dependencies": [],
             "description": "I really need to set this",
             "authors": [],
-            "license": "not set yet",
             "readme": "README.md",
         }
         for suggestion in suggestions:
