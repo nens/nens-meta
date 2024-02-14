@@ -29,17 +29,24 @@ class PyprojectToml:
     _project: Path
     _config_file: Path
     _contents: tomlkit.TOMLDocument
+    _options: dict
 
-    def __init__(self, project: Path):
+    def __init__(self, project: Path, options: dict):
         self._project = project
         self._config_file = pyproject_toml_file(project)
+        self._options = options
         self._contents = self.read()
 
     def read(self) -> tomlkit.TOMLDocument:
         return tomlkit.parse(self._config_file.read_text())
 
     def write(self):
-        utils.write_if_changed(self._config_file, tomlkit.dumps(self._contents))
+        target_name = FILENAME
+        if self._options.get("leave_alone"):
+            logger.warning(f"Leaving {target_name} alone")
+            target_name += ".suggestion"
+        target = self._project / target_name
+        utils.write_if_changed(target, tomlkit.dumps(self._contents))
 
     def get_or_create_section(self, name) -> Table:
         if name not in self._contents:
@@ -48,8 +55,34 @@ class PyprojectToml:
         section: Table = self._contents[name]  # type: ignore
         return section
 
+    def update(self):
+        """Update the pyproject.toml file
+
+        `options` is the combined contents of the [meta] and [pyprojecttoml] config
+        sections.
+        """
+
+        self.ensure_build_system()
+        self.adjust_project()
+
     def ensure_build_system(self):
         section = self.get_or_create_section("build-system")
         section.clear()
-        section.comment("Section managed by nens-meta")
+        section.comment("Whole section managed by nens-meta")
         section["requires"] = ["setuptools>=69"]
+
+    def adjust_project(self):
+        section = self.get_or_create_section("project")
+        section["name"] = self._options["project_name"]
+        section["name"].comment("Set by nens-meta")
+        section["dynamic"] = ["version"]
+        section["dynamic"].comment("Set by nens-meta")
+
+        suggestions = {
+            "requires-python": ">=3.11",
+            "dependencies": [],
+        }
+        for suggestion in suggestions:
+            if suggestion not in section:
+                section[suggestion] = suggestions[suggestion]
+                section[suggestion].comment("Suggested by nens-meta")

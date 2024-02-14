@@ -40,6 +40,10 @@ KNOWN_SECTIONS["development-instructions"] = {
     "extra_lines": "Extra content at the end of `DEVELOPMENT.md`",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
+KNOWN_SECTIONS["pyprojecttoml"] = {
+    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+}
+
 logger = logging.getLogger(__name__)
 
 

@@ -8,7 +8,7 @@ from nens_meta import pyproject_toml
 @pytest.fixture
 def empty_python_config(tmp_path: Path) -> pyproject_toml.PyprojectToml:
     pyproject_toml.create_if_missing(tmp_path)
-    return pyproject_toml.PyprojectToml(tmp_path)
+    return pyproject_toml.PyprojectToml(tmp_path, {})
 
 
 def test_pyproject_toml_file(tmp_path: Path):

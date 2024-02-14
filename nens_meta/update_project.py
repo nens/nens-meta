@@ -156,6 +156,14 @@ def update_project(
     if our_config.section_options("meta")["is_python_project"]:
         if not pyproject_toml.pyproject_toml_file(project_dir).exists():
             pyproject_toml.create_if_missing(project_dir)
+        options_for_project_config = {}
+        options_for_project_config.update(our_config.section_options("meta"))
+        options_for_project_config.update(our_config.section_options("pyprojecttoml"))
+        project_config = pyproject_toml.PyprojectToml(
+            project_dir, options_for_project_config
+        )
+        project_config.update()
+        project_config.write()
 
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project_dir, our_config)

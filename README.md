@@ -106,10 +106,10 @@ Run lint + the tests:
 
 ## TODO
 
-- pyproject.toml beginnen.
+- pyproject.toml beginnen. DONE
 
-    - build-system
-    - project.dependencies (leeg aanmaken als het er niet is)
+    - build-system DONE
+    - project.dependencies (leeg aanmaken als het er niet is) DONE
     - tool.setuptools
     - tool.pytest/coverage/ruff/pyright
     - (project:dynamic (version erin))
