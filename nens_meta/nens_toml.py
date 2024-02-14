@@ -106,7 +106,7 @@ class OurConfig:
         options = {}
         options["is_python_project"] = utils.is_python_project(self._project)
         options["our_version"] = __version__
-        options["project_name"] = self._project.name
+        options["project_name"] = self._project.resolve().name
         # TODO: document this.
         return options
 
