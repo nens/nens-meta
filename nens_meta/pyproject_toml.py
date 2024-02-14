@@ -73,9 +73,13 @@ class PyprojectToml:
         sections.
         """
 
+        # Naming convention: the "ensure_" methods mostly take complete ownership over a
+        # section, the "adjust_" methods mostly leave everything intact and only changes
+        # what's necessary.
         self.ensure_build_system()
         self.adjust_project()
         self.ensure_setuptools()
+        self.ensure_pytest()
 
     def ensure_build_system(self):
         section = self.get_or_create_section("build-system")
@@ -137,3 +141,10 @@ class PyprojectToml:
                 logger.error(f"__version__ not set in {init_file}, add it there")
         else:
             logger.error(f"{init_file} doesn't exist, add __version__ in there")
+
+    def ensure_pytest(self):
+        section = self.get_or_create_section("tool.pytest.ini_options")
+        section.clear()
+        section.comment("Whole section managed by nens-meta")
+        section["log_level"] = "DEBUG"
+        section["testpaths"] = [self.package_name]  # TODO: optional extra packages
