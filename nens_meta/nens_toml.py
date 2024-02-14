@@ -1,7 +1,6 @@
 """Purpose: read and manage the .nens.toml config file
 """
 import logging
-from functools import cached_property
 from pathlib import Path
 
 import tomlkit
@@ -112,16 +111,6 @@ class OurConfig:
 
     def write(self):
         utils.write_if_changed(self._config_file, tomlkit.dumps(self._contents))
-
-    @cached_property
-    def global_options(self) -> dict:
-        """Return detected options that will be added to every section"""
-        options = {}
-        options["is_python_project"] = utils.is_python_project(self._project)
-        options["meta_version"] = __version__
-        options["project_name"] = self._project.resolve().name
-        # TODO: document this.
-        return options
 
     def update_meta_options(self):
         """Detect meta options"""
