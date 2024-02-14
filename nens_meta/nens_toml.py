@@ -10,7 +10,9 @@ from nens_meta import __version__, utils
 
 META_FILENAME = ".nens.toml"
 LEAVE_ALONE = "leave_alone_FALSE"
-LEAVE_ALONE_EXPLANATION = "Do not change the file, only put a *.suggestion next to it"
+LEAVE_ALONE_EXPLANATION = (
+    "Do not change the file, only put a `*.suggestion` file next to it"
+)
 KNOWN_SECTIONS: dict[str, dict[str, str]] = {}
 # First key is the section name, the second key/value pair is the variable name and the
 # explanation. If the second key ends with "_TRUE"/"_FALSE", this is stripped and will
@@ -19,6 +21,7 @@ KNOWN_SECTIONS["meta"] = {
     "meta_version": "Version used to generate the config",
     "project_name": "Project name (normally the name of the directory)",
     "is_python_project_FALSE": "Whether we are a python project",
+    "package_name": "Name of the main python package",
 }
 KNOWN_SECTIONS["editorconfig"] = {
     "extra_lines": "Extra content at the end of `.editorconfig`",
@@ -86,7 +89,10 @@ def detected_meta_values(project: Path) -> dict[str, str | bool]:
     detected: dict[str, str | bool] = {}
     detected["is_python_project"] = utils.is_python_project(project)
     detected["meta_version"] = __version__
-    detected["project_name"] = project.resolve().name
+    name = project.resolve().name
+    detected["project_name"] = name
+    if detected["is_python_project"]:
+        detected["package_name"] = name.replace("-", "_")
     return detected
 
 
@@ -125,8 +131,12 @@ class OurConfig:
         for key, value in detected.items():
             if key not in current:
                 current[key] = value
+                if not isinstance(value, bool):
+                    # TODO: .comment doesn't work for boolean values, strangely enough.
+                    current[key].comment("Suggested by nens-meta")
         # Make sure our version is correctly recorded
         current["meta_version"] = detected["meta_version"]
+        current["meta_version"].comment("Set by nens-meta")
 
     def section_options(self, section_name: str) -> dict:
         """Return all options configured in a given section

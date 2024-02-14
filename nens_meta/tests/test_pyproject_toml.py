@@ -24,10 +24,16 @@ def test_read(empty_python_config: pyproject_toml.PyprojectToml):
     assert empty_python_config._contents == {}
 
 
-def test_get_or_create_section(empty_python_config: pyproject_toml.PyprojectToml):
+def test_get_or_create_section1(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config.get_or_create_section("reinout")
     empty_python_config.write()
     assert "[reinout]" in empty_python_config._config_file.read_text()
+
+
+def test_get_or_create_section(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config.get_or_create_section("reinout.van")
+    empty_python_config.write()
+    assert "[reinout.van]" in empty_python_config._config_file.read_text()
 
 
 def test_write_leave_alone(empty_python_config: pyproject_toml.PyprojectToml):

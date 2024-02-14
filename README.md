@@ -110,7 +110,7 @@ Run lint + the tests:
 
     - build-system DONE
     - project.dependencies (leeg aanmaken als het er niet is) DONE
-    - tool.setuptools
+    - tool.setuptools DONE
     - tool.pytest/coverage/ruff/pyright
     - (project:dynamic (version erin))
     - (tool.setuptools.dynamic: version (check op `__init__`))
