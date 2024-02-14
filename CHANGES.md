@@ -8,4 +8,5 @@
 - Started using a `.nens.toml` file for configuring our behaviour.
 - Files can be excluded with a `leave_alone = true` setting: handy when it is heavily customised.
 - Generating `.gitignore`.
-- Generating `pyproject.toml`.
+- Generating `pyproject.toml`. Settings for ruff, zest.releaser, pytest, coverage and vscode.
+- Renaming files that aren't needed anymore, such as `setup.py` :-)

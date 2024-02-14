@@ -139,3 +139,9 @@ Run lint + the tests:
 - TODO items verwerken.
 
 - testen met vscode
+
+- github actions
+
+- version.txt (threedi-docs)
+
+- `DJANGO_SETTINGS_MODULE = artifact_handler.developmentsettings` in tool:pytest?

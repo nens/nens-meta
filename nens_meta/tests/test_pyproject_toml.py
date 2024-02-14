@@ -131,6 +131,12 @@ def test_ensure_ruff(empty_python_config: pyproject_toml.PyprojectToml):
     assert "target-version" in empty_python_config._config_file.read_text()
 
 
+def test_adjust_zestreleaser(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config.adjust_zestreleaser()
+    empty_python_config.write()
+    assert "release = false" in empty_python_config._config_file.read_text()
+
+
 def test_ensure_pyright(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config._options = {
         "package_name": "pietje_klaasje",
@@ -139,3 +145,24 @@ def test_ensure_pyright(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config.write()
     assert "[tool.pyright]" in empty_python_config._config_file.read_text()
     assert "pietje_klaasje" in empty_python_config._config_file.read_text()
+
+
+def test_move_outdated_files(empty_python_config: pyproject_toml.PyprojectToml):
+    example = empty_python_config._project / ".flake8"
+    example.write_text("")
+    empty_python_config.move_outdated_files()
+    assert not example.exists()
+    new_example = empty_python_config._project / ".flake8.outdated"
+    assert new_example.exists()
+
+
+def test_move_outdated_files2(empty_python_config: pyproject_toml.PyprojectToml):
+    # First zap existing '.outdated' files.
+    example = empty_python_config._project / ".flake8"
+    example.write_text("current")
+    example2 = empty_python_config._project / ".flake8.outdated"
+    example2.write_text("old")
+    empty_python_config.move_outdated_files()
+    assert not example.exists()
+    assert example2.exists()
+    assert "current" in example2.read_text()

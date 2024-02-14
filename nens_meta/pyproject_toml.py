@@ -82,6 +82,7 @@ class PyprojectToml:
         self.ensure_pytest()
         self.ensure_coverage()
         self.ensure_ruff()
+        self.adjust_zestreleaser()
         self.adjust_pyright()
 
     def ensure_build_system(self):
@@ -187,3 +188,28 @@ class PyprojectToml:
         section["venvPath"].comment("Set by nens-meta")
         section["venv"] = "venv"
         section["venv"].comment("Set by nens-meta")
+
+    def adjust_zestreleaser(self):
+        section = self.get_or_create_section("tool.zest-releaser")
+        if "release" not in section:
+            section["release"] = False
+            section.comment("Suggested by nens-meta, adjust from setup.cfg if needed")
+
+    def move_outdated_files(self):
+        """There are various old config files that have to be taken care off
+
+        They shouldn't exist anymore as they can disturb our pyproject.toml
+        configuration. But sometimes you need to copy over data (like from the
+        setup.py), so they're best moved aside with a postfix.
+        """
+        for source_name in [".flake8", "setup.py", "setup.cfg", ".coveragerc"]:
+            target_name = source_name + ".outdated"
+            source = self._project / source_name
+            if not source.exists():
+                continue
+            target = self._project / target_name
+            if target.exists():
+                target.unlink()
+                logger.debug(f"Removed existing {target}")
+            source.rename(target)
+            logger.info(f"{source} is no longer needed, moved it to {target}")

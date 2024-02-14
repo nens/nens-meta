@@ -164,6 +164,7 @@ def update_project(
         )
         project_config.update()
         project_config.write()
+        project_config.move_outdated_files()
 
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project_dir, our_config)
