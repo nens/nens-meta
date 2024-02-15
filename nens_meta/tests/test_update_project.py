@@ -72,3 +72,11 @@ def test_editor_config4(tmp_path: Path):
     editor_config = update_project.Editorconfig(tmp_path, our_config)
     editor_config.write()
     assert "hurray" in (tmp_path / ".editorconfig").read_text()
+
+
+def test_tox_ini1(tmp_path: Path):
+    # No config, check file contents.
+    nens_toml.create_if_missing(tmp_path)
+    our_config = nens_toml.OurConfig(tmp_path)
+    tox_ini = update_project.ToxIni(tmp_path, our_config)
+    assert "# Configure extra_lines" in tox_ini.content

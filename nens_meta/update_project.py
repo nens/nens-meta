@@ -69,11 +69,24 @@ class TemplatedFile:
     def template(self) -> jinja2.Template:
         return self.environment.get_template(self.template_name)
 
+    def extra_options(self) -> dict:
+        """Overwrite in subclasses to return some extra calculated options"""
+        return {}
+
+    @cached_property
+    def our_options(self):
+        return self.our_config.section_options(self.section_name)
+
+    @cached_property
+    def meta_options(self):
+        return self.our_config.section_options("meta")
+
     @cached_property
     def options(self) -> dict:
         result = {}
-        result.update(self.our_config.section_options("meta"))
-        result.update(self.our_config.section_options(self.section_name))
+        result.update(self.meta_options)
+        result.update(self.our_options)
+        result.update(self.extra_options())
         return result
 
     @property
@@ -130,6 +143,31 @@ class DevelopmentInstructions(TemplatedFile):
     template_name = "DEVELOPMENT.md.j2"
     target_name = "DEVELOPMENT.md"
     section_name = "development-instructions"
+
+
+class ToxIni(TemplatedFile):
+    """Wrapper around a project's tox.ini"""
+
+    template_name = "tox.ini.j2"
+    target_name = "tox.ini"
+    section_name = "tox"
+
+    def envlist(self) -> str:
+        """Return formatted indented envlist, possibly with default content"""
+        environments = (
+            self.our_options["default_environments"] if self.our_options else []
+        )
+        if not environments:
+            environments.append("lint")
+        if self.meta_options["is_python_project"]:
+            environments.append("py310")
+            environments.append("py312")
+            environments.append("coverage")
+        lines = [f"    {environment}" for environment in environments]
+        return "\n".join(lines)
+
+    def extra_options(self) -> dict:
+        return {"envlist": self.envlist()}
 
 
 def check_prerequisites(project_dir: Path):
@@ -197,6 +235,8 @@ def update_project(
     precommitconfig.write()
     development_instructions = DevelopmentInstructions(project_dir, our_config)
     development_instructions.write()
+    tox_ini = ToxIni(project_dir, our_config)
+    tox_ini.write()
 
     if our_config.section_options("meta")["is_python_project"]:
         do_some_python_checks(project_dir)
