@@ -31,7 +31,11 @@ pyvenv.cfg
 dist/
 var/
 *.suggestion
+
+# Our generated files
 dependencies.png
+dependencies.md
+for_step_summary.md
 
 # Unit test / coverage reports
 .coverage
