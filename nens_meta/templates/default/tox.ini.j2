@@ -91,14 +91,13 @@ description = Generate a graph out of the dependencies of the package
 skip_install = false
 allowlist_externals =
     sh
-    echo
 deps =
     pipdeptree>=2.5.1
     graphviz  # optional dependency of pipdeptree
 commands =
-    echo '```mermaid' > dependencies.md
+    sh -c 'echo "\`\`\`mermaid" > dependencies.md'
     sh -c 'pipdeptree --packages massless --mermaid >> dependencies.md'
-    echo '```' >> dependencies.md
+    sh -c 'echo "\`\`\`" >> dependencies.md'
     sh -c 'cp dependencies.md for_step_summary.md'
 {% endif %}
 
