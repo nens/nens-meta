@@ -159,10 +159,10 @@ class ToxIni(TemplatedFile):
         )
         if not environments:
             environments.append("lint")
-        if self.meta_options["is_python_project"]:
-            environments.append("py310")
-            environments.append("py312")
-            environments.append("coverage")
+            if self.meta_options["is_python_project"]:
+                environments.append("py310")
+                environments.append("py312")
+                environments.append("coverage")
         lines = [f"    {environment}" for environment in environments]
         return "\n".join(lines)
 
