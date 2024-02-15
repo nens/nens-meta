@@ -7,3 +7,6 @@ package_name = "nens_meta" # Suggested by nens-meta
 [tox]
 default_environments = ["lint", "py311", "py312", "coverage"]
 minimum_coverage = "95"
+
+[workflow_test]
+python_versions = ["3.11", "3.12"]
