@@ -226,15 +226,9 @@ class MetaWorkflowYml(TemplatedFile):
 class TestWorkflowYml(TemplatedFile):
     """Wrapper around a test.yml file"""
 
-    template_name = "base_workflow.yml.j2"
+    template_name = "python_test_workflow.yml.j2"
     target_name = ".github/workflows/test.yml"
     section_name = "workflow_test"
-
-    def environments(self) -> list[str]:
-        environments = self.our_options["environments"] if self.our_options else []
-        if not environments:
-            environments.append("test")
-        return environments
 
     def python_versions_string(self) -> str:
         python_versions = (
@@ -250,7 +244,6 @@ class TestWorkflowYml(TemplatedFile):
 
     def extra_options(self) -> dict:
         return {
-            "environments": self.environments(),
             "python_versions_string": self.python_versions_string(),
             "workflow_name": "Test",
             "section_name": self.section_name,
