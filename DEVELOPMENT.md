@@ -36,6 +36,12 @@ That'll discover your `test_*.py` or `*_test.py` files inside `nens_meta`.
 
 VScode's big "run the tests" button should also automatically run it.
 
+Just running "tox" gives you a one-stop-shop for lint, test, coverage:
+
+    $ tox -q
+
+This is basically what is run on github.
+
 
 ## Formatting + checks
 
@@ -45,3 +51,7 @@ If you have `ruff` installed globally you can do this:
     $ ruff check --fix
 
 If you're using vscode with the "ruff" plugin, everything is nicely formatted and checked once you save a file. Quick and easy.
+
+All the checks/linters are available through "tox":
+
+    $ tox -qe lint
