@@ -29,6 +29,7 @@ KNOWN_SECTIONS["editorconfig"] = {
 }
 KNOWN_SECTIONS["tox"] = {
     "minimum_coverage": "Minimum code coverage percentage",
+    "default_environments_LIST": "List of envs to run when you call 'tox'",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["pre-commit-config"] = {
@@ -64,15 +65,20 @@ def _key_name(key: str) -> str:
     for indicates_boolean in ["_TRUE", "_FALSE"]:
         if indicates_boolean in key:
             return key.replace(indicates_boolean, "")
+    indicates_list = "_LIST"
+    if indicates_list in key:
+        return key.replace(indicates_list, "")
     return key
 
 
-def _default_for_key(key: str) -> str | bool:
+def _default_for_key(key: str) -> str | bool | list:
     """Return default (''), but handle the _TRUE/_FALSE postfix tricks"""
     if "_TRUE" in key:
         return True
     if "_FALSE" in key:
         return False
+    if "_LIST" in key:
+        return []
     return ""
 
 
@@ -81,12 +87,15 @@ def _expected_type(key: str) -> type:
     for indicates_boolean in ["_TRUE", "_FALSE"]:
         if indicates_boolean in key:
             return bool
+    indicates_list = "_LIST"
+    if indicates_list in key:
+        return list
     return str
 
 
-def detected_meta_values(project: Path) -> dict[str, str | bool]:
+def detected_meta_values(project: Path) -> dict[str, str | bool | list]:
     """Return values we can detect about the project, normally set in [meta]"""
-    detected: dict[str, str | bool] = {}
+    detected: dict[str, str | bool | list] = {}
     detected["is_python_project"] = utils.is_python_project(project)
     detected["meta_version"] = __version__
     name = project.resolve().name
@@ -151,7 +160,7 @@ class OurConfig:
                 f"Section {section_name} not documented in nens-meta"
             )
         section = self._contents.get(section_name)
-        options: dict[str, str | bool] = {}
+        options: dict[str, str | bool | list] = {}
         if section:
             for key in KNOWN_SECTIONS[section_name]:
                 actual_key_name = _key_name(key)
