@@ -108,8 +108,18 @@ class TemplatedFile:
         )
         return utils.strip_whitespace(rendered)
 
+    def create_dirs_if_needed(self):
+        *directories, _ = self.target_name.split("/")
+        if directories:
+            target_dir = self.project_dir / "/".join(directories)
+            if target_dir.exists():
+                return
+            target_dir.mkdir(parents=True)
+            logger.info(f"Created directory {target_dir}")
+
     def write(self):
         """Copy the source template to the target, doing the jinja2 stuff"""
+        self.create_dirs_if_needed()
         utils.write_if_changed(self.target, self.content)
 
 
@@ -168,6 +178,83 @@ class ToxIni(TemplatedFile):
 
     def extra_options(self) -> dict:
         return {"envlist": self.envlist()}
+
+
+class DependabotYml(TemplatedFile):
+    """Wrapper around a dependabot.yml file"""
+
+    template_name = "dependabot.yml.j2"
+    target_name = ".github/dependabot.yml"
+    section_name = "dependabot"
+
+
+class MetaWorkflowYml(TemplatedFile):
+    """Wrapper around a meta.yml file"""
+
+    template_name = "base_workflow.yml.j2"
+    target_name = ".github/workflows/meta.yml"
+    section_name = "workflow_meta"
+
+    def environments(self) -> list[str]:
+        environments = self.our_options["environments"] if self.our_options else []
+        if not environments:
+            environments.append("lint")
+            if self.meta_options["is_python_project"]:
+                environments.append("coverage")
+                environments.append("dependencies")
+                environments.append("dependencies-graph")
+        return environments
+
+    def python_versions_string(self) -> str:
+        python_versions = (
+            self.our_options["python_versions"] if self.our_options else []
+        )
+        if not python_versions:
+            python_versions.append("3.11")
+        python_versions = [f'"{version}"' for version in python_versions]
+        return f"[{','.join(python_versions)}]"
+
+    def extra_options(self) -> dict:
+        return {
+            "environments": self.environments(),
+            "python_versions_string": self.python_versions_string(),
+            "workflow_name": "N&S meta",
+            "section_name": self.section_name,
+        }
+
+
+class TestWorkflowYml(TemplatedFile):
+    """Wrapper around a test.yml file"""
+
+    template_name = "base_workflow.yml.j2"
+    target_name = ".github/workflows/test.yml"
+    section_name = "workflow_test"
+
+    def environments(self) -> list[str]:
+        environments = self.our_options["environments"] if self.our_options else []
+        if not environments:
+            environments.append("test")
+        return environments
+
+    def python_versions_string(self) -> str:
+        python_versions = (
+            self.our_options["python_versions"] if self.our_options else []
+        )
+        if not python_versions:
+            python_versions.append("3.11")
+            if self.meta_options["is_python_project"]:
+                python_versions.append("3.10")
+                python_versions.append("3.12")
+        python_versions = [f'"{version}"' for version in python_versions]
+        return f"[{','.join(python_versions)}]"
+
+    def extra_options(self) -> dict:
+        return {
+            "environments": self.environments(),
+            "python_versions_string": self.python_versions_string(),
+            "workflow_name": "Test",
+            "section_name": self.section_name,
+        }
 
 
 def check_prerequisites(project_dir: Path):
@@ -237,6 +324,12 @@ def update_project(
     development_instructions.write()
     tox_ini = ToxIni(project_dir, our_config)
     tox_ini.write()
+    dependabot_yml = DependabotYml(project_dir, our_config)
+    dependabot_yml.write()
+    meta_workflow_yml = MetaWorkflowYml(project_dir, our_config)
+    meta_workflow_yml.write()
+    test_workflow_yml = TestWorkflowYml(project_dir, our_config)
+    test_workflow_yml.write()
 
     if our_config.section_options("meta")["is_python_project"]:
         do_some_python_checks(project_dir)

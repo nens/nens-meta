@@ -47,6 +47,19 @@ KNOWN_SECTIONS["development-instructions"] = {
 KNOWN_SECTIONS["pyprojecttoml"] = {
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
+KNOWN_SECTIONS["dependabot"] = {
+    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+}
+KNOWN_SECTIONS["workflow_meta"] = {
+    "environments_LIST": "Tox environments that should be called",
+    "python_versions_LIST": "Python version(s) to run as. Normally one, like ['3.11'].",
+    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+}
+KNOWN_SECTIONS["workflow_test"] = {
+    "environments_LIST": "Tox environments that should be called",
+    "python_versions_LIST": "Python version(s) to run as. List of strings like '3.11'.",
+    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+}
 
 logger = logging.getLogger(__name__)
 

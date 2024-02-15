@@ -80,3 +80,27 @@ def test_tox_ini1(tmp_path: Path):
     our_config = nens_toml.OurConfig(tmp_path)
     tox_ini = update_project.ToxIni(tmp_path, our_config)
     assert "# Configure extra_lines" in tox_ini.content
+
+
+def test_dependabot(tmp_path: Path):
+    nens_toml.create_if_missing(tmp_path)
+    our_config = nens_toml.OurConfig(tmp_path)
+    dependabot_yml = update_project.DependabotYml(tmp_path, our_config)
+    assert "extra_lines" in dependabot_yml.content
+    dependabot_yml.write()
+
+
+def test_testworkflowyml(tmp_path: Path):
+    nens_toml.create_if_missing(tmp_path)
+    our_config = nens_toml.OurConfig(tmp_path)
+    test_workflow_yml = update_project.TestWorkflowYml(tmp_path, our_config)
+    assert "extra_lines" in test_workflow_yml.content
+    test_workflow_yml.write()
+
+
+def test_metaworkflowyml(tmp_path: Path):
+    nens_toml.create_if_missing(tmp_path)
+    our_config = nens_toml.OurConfig(tmp_path)
+    meta_workflow_yml = update_project.MetaWorkflowYml(tmp_path, our_config)
+    assert "extra_lines" in meta_workflow_yml.content
+    meta_workflow_yml.write()

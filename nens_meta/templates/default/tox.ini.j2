@@ -46,6 +46,8 @@ description = Get a test coverage report
 use_develop = true
 skip_install = false
 constrain_package_deps = true
+allowlist_externals =
+    sh
 deps =
     coverage
 extras =
@@ -54,7 +56,9 @@ commands =
     coverage run -m pytest --no-header --tb line
     coverage xml
     coverage html
+    sh -c 'coverage report --format markdown > for_step_summary.md'
     coverage report --format text --fail-under {{ minimum_coverage | default(20) }}
+
 # Adjust minimum coverage in .nens.toml, [tox] > minimum_coverage
 {% endif %}
 
@@ -91,7 +95,8 @@ deps =
     pipdeptree>=2.5.1
     graphviz  # optional dependency of pipdeptree
 commands =
-    sh -c 'pipdeptree --packages {{ project_name }} --graph-output png > dependencies.png'
+    sh -c 'pipdeptree --packages {{ project_name }} --mermaid > dependencies.md'
+    sh -c 'cp depencencies.md for_step_summary.md'
 {% endif %}
 
 {% if extra_lines %}
