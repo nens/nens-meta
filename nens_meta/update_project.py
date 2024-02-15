@@ -230,23 +230,33 @@ class TestWorkflowYml(TemplatedFile):
     target_name = ".github/workflows/test.yml"
     section_name = "workflow_test"
 
-    def python_versions_string(self) -> str:
-        python_versions = (
-            self.our_options["python_versions"] if self.our_options else []
-        )
-        if not python_versions:
-            python_versions.append("3.11")
+    @cached_property
+    def python_versions(self) -> list:
+        versions = self.our_options["python_versions"] if self.our_options else []
+        if not versions:
+            versions.append("3.11")
             if self.meta_options["is_python_project"]:
-                python_versions.append("3.10")
-                python_versions.append("3.12")
-        python_versions = [f'"{version}"' for version in python_versions]
-        return f"[{','.join(python_versions)}]"
+                versions.append("3.10")
+                versions.append("3.12")
+        return versions
+
+    def python_versions_string(self) -> str:
+        versions = [f'"{version}"' for version in self.python_versions]
+        return f"[{','.join(versions)}]"
+
+    def python_tox_pairs(self) -> list[dict[str, str]]:
+        """Return list of python=3.11, tox=py31 dicts"""
+        return [
+            {"python": python_version, "tox": f"py{python_version.replace('.', '')}"}
+            for python_version in self.python_versions
+        ]
 
     def extra_options(self) -> dict:
         return {
             "python_versions_string": self.python_versions_string(),
             "workflow_name": "Test",
             "section_name": self.section_name,
+            "python_tox_pairs": self.python_tox_pairs(),
         }
 
 
