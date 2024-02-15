@@ -96,7 +96,7 @@ deps =
     graphviz  # optional dependency of pipdeptree
 commands =
     sh -c 'echo "\`\`\`mermaid" > dependencies.md'
-    sh -c 'pipdeptree --packages massless --mermaid >> dependencies.md'
+    sh -c 'pipdeptree --packages {{ package_name }} --mermaid >> dependencies.md'
     sh -c 'echo "\`\`\`" >> dependencies.md'
     sh -c 'cp dependencies.md for_step_summary.md'
 {% endif %}
