@@ -126,7 +126,7 @@ Run lint + the tests:
 
 - manifest.ini
 
-- tox.ini (not only for python projects)
+- tox.ini (not only for python projects) DONE
 
 - docker-compose
 
@@ -138,7 +138,7 @@ Run lint + the tests:
 
 - testen met vscode
 
-- github actions
+- github actions DONE
 
 - version.txt (threedi-docs)
 
