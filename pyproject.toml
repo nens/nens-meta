@@ -49,7 +49,7 @@ python-file-with-version = "nens_meta/__init__.py"
 
 [tool.ruff] # Required: target-version
 # See https://docs.astral.sh/ruff/configuration/ for defaults.
-target-version = "py311" # Set by nens-meta from minimum_python_version
+target-version = "py311"
 
 [tool.ruff.lint] # Required: select
 select = ["E4", "E7", "E9", "F", "I", "UP", "C901"]
