@@ -66,10 +66,6 @@ class PyprojectToml:
         section: Table = current_container[section_name]  # type: ignore
         return section
 
-    @property
-    def _minimum_python_version(self) -> str:
-        return self._options.get("minimum_python_version") or "3.8"
-
     def update(self):  # pragma: no cover
         """Update the pyproject.toml file
 
@@ -175,16 +171,18 @@ class PyprojectToml:
 
     def adjust_ruff(self):
         section = self.get_or_create_section("tool.ruff")
-        section["target-version"] = "py" + self._minimum_python_version.replace(".", "")
-        section["target-version"].comment(
-            "Set by nens-meta from minimum_python_version"
-        )
+        section.comment("Required: target-version")
+        if "target-version" not in section:
+            section["target-version"] = "py38"
+            section["target-version"].comment("Suggested by nens-meta")
 
         section = self.get_or_create_section("tool.ruff.lint")
-        # Default select: ["E4", "E7", "E9", "F"]
-        # select = ["E4", "E7", "E9", "F", "I", "UP", "C901"]
-        section["select"] = ["E4", "E7", "E9", "F"]
-        section["select"].comment("Set by nens-meta")
+        section.comment("Required: select")
+        if "select" not in section:
+            section["select"] = ["E4", "E7", "E9", "F", "I"]
+            section["select"].comment(
+                "Suggested by nens-meta, please add 'UP' and 'C901'"
+            )
 
     def adjust_pyright(self):
         section = self.get_or_create_section("tool.pyright")
