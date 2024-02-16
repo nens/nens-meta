@@ -24,7 +24,6 @@ KNOWN_SECTIONS["meta"] = {
     "package_name": "Name of the main python package",
 }
 KNOWN_SECTIONS["editorconfig"] = {
-    "extra_lines": "Extra content at the end of `.editorconfig`",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["tox"] = {
@@ -33,15 +32,12 @@ KNOWN_SECTIONS["tox"] = {
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["pre-commit-config"] = {
-    "extra_lines": "Extra content at the end of the file (watch the indentation)",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["gitignore"] = {
-    "extra_lines": "Extra content at the end of `.gitignore`",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["development-instructions"] = {
-    "extra_lines": "Extra content at the end of `DEVELOPMENT.md`",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["pyprojecttoml"] = {

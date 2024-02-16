@@ -22,14 +22,3 @@ repos:
       # Run the formatter.
       - id: ruff-format
 {% endif %}
-{% if extra_lines %}
-{{ extra_lines }}
-{% else %}
-# Configure extra_lines if you want more content. Watch the indentation.
-# Example:
-# [pre-commit-yaml]
-# extra_lines = """
-#   - repo: https://somewhere
-#     rev: v0.1.2
-#     hooks:  etc
-{% endif %}

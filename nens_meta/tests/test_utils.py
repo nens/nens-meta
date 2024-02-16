@@ -36,6 +36,24 @@ def test_write_if_changed3(tmp_path: Path, mocker: MockerFixture):
     writer.assert_not_called()
 
 
+def test_handle_extra_lines1(tmp_path: Path):
+    # Content should have the extra-lines-marker added.
+    f = tmp_path / "sample.txt"
+    f.write_text("")
+    content = "bla\n"
+    result = utils.handle_extra_lines(f, content)
+    assert "###" in result
+
+
+def test_handle_extra_lines2(tmp_path: Path):
+    # Existing file should have its extra lines preserved.
+    f = tmp_path / "sample.txt"
+    f.write_text(f"bla\n{utils.EXTRA_LINES_MARKER}reinout\n")
+    content = "new\n"
+    result = utils.handle_extra_lines(f, content)
+    assert result == f"new\n{utils.EXTRA_LINES_MARKER}reinout\n"
+
+
 def test_is_python_project1():
     # We ourselves are a python project.
     ourselves = Path(__file__).parent.parent.parent

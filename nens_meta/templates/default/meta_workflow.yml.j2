@@ -54,15 +54,3 @@ jobs:
 {% endraw %}
 
 {% endfor %}
-
-{% if extra_lines %}
-{{ extra_lines }}
-{% else %}
-# Configure extra_lines if you want more content. Watch the indentation.
-# Example:
-# [workflow_test or workflow_meta]
-# extra_lines = """
-#   my_env:
-#     name: "my env"
-#     ...
-{% endif %}

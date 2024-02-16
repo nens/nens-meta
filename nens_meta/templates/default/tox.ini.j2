@@ -100,16 +100,3 @@ commands =
     sh -c 'echo "\`\`\`" >> dependencies.md'
     sh -c 'cp dependencies.md for_step_summary.md'
 {% endif %}
-
-{% if extra_lines %}
-{{ extra_lines }}
-{% else %}
-# Configure extra_lines in `.nens.toml` if you want more content.
-# Example:
-# [tox]
-# extra_lines = """
-# [testenv:something]
-# description = xyz
-# ...
-# """
-{% endif %}

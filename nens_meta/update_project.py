@@ -24,15 +24,6 @@ HEADER = """\
 #   leave_alone = true
 #
 """
-EXTRA_LINES_EXPLANATION = '''\
-# Need extra lines? Add the following to your ".nens.toml":
-#
-#   [{section_name}]
-#   extra_lines = """
-#   your own
-#   configuration lines
-#   """\
-'''  # Note the backslash above, to prevent an unneeded empty trailing line
 
 
 class TemplatedFile:
@@ -95,15 +86,10 @@ class TemplatedFile:
             section_name=self.section_name, meta_version=self.options["meta_version"]
         )
 
-    @property
-    def extra_lines_explanation(self) -> str:
-        return EXTRA_LINES_EXPLANATION.format(section_name=self.section_name)
-
     @cached_property
     def content(self) -> str:
         rendered = self.template.render(
             header=self.header,
-            extra_lines_explanation=self.extra_lines_explanation,
             **self.options,
         )
         return utils.strip_whitespace(rendered)

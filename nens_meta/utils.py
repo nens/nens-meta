@@ -4,6 +4,9 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+EXTRA_LINES_MARKER = "### Extra lines below are preserved ###\n"
+EXTRA_LINES_MARKER_MARKDOWN = "<-- Extra lines below are preserved -->"
+
 
 def strip_whitespace(content: str) -> str:
     """Return content stripped of EOL whitespace and extra EOF linefeeds
@@ -19,10 +22,28 @@ def strip_whitespace(content: str) -> str:
     return content
 
 
+def handle_extra_lines(victim: Path, content: str) -> str:
+    """Return content including extra lines marker and possible extra lines from target"""
+    if victim.suffix == ".md":
+        extra_lines_marker = EXTRA_LINES_MARKER_MARKDOWN
+    else:
+        extra_lines_marker = EXTRA_LINES_MARKER
+    if extra_lines_marker not in content:
+        content += extra_lines_marker
+    original_content = victim.read_text()
+    parts = original_content.split(extra_lines_marker)
+    if len(parts) > 1:
+        content += parts[1]
+    return content
+
+
 def write_if_changed(victim: Path, content: str):
     """Write content to file if different, not if it is the same
 
     And create the file if it doesn't exist.
+
+    And... look for an end-of-generated-file marker and preserve the contents after it.
+
     """
     if victim.exists():
         action = "Updated"
