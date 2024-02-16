@@ -51,3 +51,4 @@ coverage.*
 
 # Docker
 docker-compose.override.yml
+### Extra lines below are preserved ###

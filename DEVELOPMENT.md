@@ -55,3 +55,4 @@ If you're using vscode with the "ruff" plugin, everything is nicely formatted an
 All the checks/linters are available through "tox":
 
     $ tox -qe lint
+<-- Extra lines below are preserved -->
