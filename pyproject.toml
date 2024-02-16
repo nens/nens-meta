@@ -49,10 +49,10 @@ python-file-with-version = "nens_meta/__init__.py"
 
 [tool.ruff] # Whole section managed by nens-meta
 # See https://docs.astral.sh/ruff/configuration/ for defaults.
-target-version = "py38" # Set by nens-meta
+target-version = "py311" # Set by nens-meta from minimum_python_version
 
 [tool.ruff.lint] # Whole section managed by nens-meta
-select = ["E4", "E7", "E9", "F"]
+select = ["E4", "E7", "E9", "F"] # Set by nens-meta
 [tool.pyright]
 # Pyright/pylance/vscode configuration.
 # Note: if you want a different setup, you can overwrite this with a

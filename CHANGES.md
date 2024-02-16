@@ -14,3 +14,4 @@
 - Generating basic `tox.ini`, mostly for python projects atm.
 - Changed suggested virtualenv dir from `venv/` to `.venv/`.
 - Using a single github workflow file.
+- Minimum python version can now be configured.
