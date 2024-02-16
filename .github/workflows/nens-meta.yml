@@ -28,11 +28,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: [""]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: "3.11"
+          - python-version: ""
             tox-env: "lint"
     steps:
 
@@ -62,11 +62,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: [""]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: "3.11"
+          - python-version: ""
             tox-env: "coverage"
     steps:
 
@@ -96,11 +96,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: [""]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: "3.11"
+          - python-version: ""
             tox-env: "dependencies"
     steps:
 
@@ -130,11 +130,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: [""]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: "3.11"
+          - python-version: ""
             tox-env: "dependencies-graph"
     steps:
 
@@ -164,12 +164,14 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.11", "3.12"]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
           - python-version: "3.11"
             tox-env: "py311"
+          - python-version: "3.12"
+            tox-env: "py312"
     steps:
 
       - uses: actions/checkout@v4
