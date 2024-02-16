@@ -66,6 +66,10 @@ class PyprojectToml:
         section: Table = current_container[section_name]  # type: ignore
         return section
 
+    @property
+    def _minimum_python_version(self) -> str:
+        return self._options.get("minimum_python_version") or "3.8"
+
     def update(self):  # pragma: no cover
         """Update the pyproject.toml file
 
@@ -81,7 +85,7 @@ class PyprojectToml:
         self.ensure_setuptools()
         self.ensure_pytest()
         self.ensure_coverage()
-        self.ensure_ruff()
+        self.adjust_ruff()
         self.adjust_zestreleaser()
         self.adjust_pyright()
         self.remove_old_sections()
@@ -169,20 +173,18 @@ class PyprojectToml:
         section["show_missing"] = True
         section["skip_empty"] = True
 
-    def ensure_ruff(self):
+    def adjust_ruff(self):
         section = self.get_or_create_section("tool.ruff")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
-        section["target-version"] = "py38"
-        section["target-version"].comment("Set by nens-meta")
-        # TODO use minumum python version setting
+        section["target-version"] = "py" + self._minimum_python_version.replace(".", "")
+        section["target-version"].comment(
+            "Set by nens-meta from minimum_python_version"
+        )
 
         section = self.get_or_create_section("tool.ruff.lint")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
         # Default select: ["E4", "E7", "E9", "F"]
         # select = ["E4", "E7", "E9", "F", "I", "UP", "C901"]
         section["select"] = ["E4", "E7", "E9", "F"]
+        section["select"].comment("Set by nens-meta")
 
     def adjust_pyright(self):
         section = self.get_or_create_section("tool.pyright")

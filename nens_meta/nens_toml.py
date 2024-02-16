@@ -46,6 +46,7 @@ KNOWN_SECTIONS["development-instructions"] = {
 }
 KNOWN_SECTIONS["pyprojecttoml"] = {
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
+    "minimum_python_version": "Lowest python version that we support, like '3.11'",
 }
 KNOWN_SECTIONS["dependabot"] = {
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
