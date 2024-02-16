@@ -207,8 +207,10 @@ class MetaWorkflowYml(TemplatedFile):
 
         result = []
 
-        main_python_version = self.our_options.get("main_python_version", "3.11")
-        python_versions = self.our_options.get("python_versions", [main_python_version])
+        main_python_version = self.our_options.get("main_python_version") or "3.11"
+        python_versions = self.our_options.get("python_versions") or [
+            main_python_version
+        ]
         for environment in environments:
             if environment == "TEST":
                 name = "test"

@@ -28,11 +28,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: [""]
+        python-version: ["3.11"]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: ""
+          - python-version: "3.11"
             tox-env: "lint"
     steps:
 
@@ -62,11 +62,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: [""]
+        python-version: ["3.11"]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: ""
+          - python-version: "3.11"
             tox-env: "coverage"
     steps:
 
@@ -96,11 +96,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: [""]
+        python-version: ["3.11"]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: ""
+          - python-version: "3.11"
             tox-env: "dependencies"
     steps:
 
@@ -130,11 +130,11 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: [""]
+        python-version: ["3.11"]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-          - python-version: ""
+          - python-version: "3.11"
             tox-env: "dependencies-graph"
     steps:
 
