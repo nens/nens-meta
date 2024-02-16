@@ -10,6 +10,3 @@ minimum_coverage = "95"
 
 [meta_workflow]
 python_versions = ["3.11", "3.12"]
-
-[pyprojecttoml]
-minimum_python_version = "3.11"
