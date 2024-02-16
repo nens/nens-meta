@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # You can customise the list of environments in .nens.toml, [{{ section_name }}] > environments.
+  # You can customise the list of environments in .nens.toml, [meta_workflow] > environments.
 {% for job in jobs %}
   {{ job.name }}:
     name: {{ job.name }}
