@@ -14,13 +14,13 @@ This project mostly uses the generic "nens-meta" setup. The idea:
 
 Virtualenvs keep your global python installation nice and clean. They also help code completion.
 
-- Create the virtualenv in the `venv` dir. This is a convention that's also picked up by vscode
+- Create the virtualenv in the `.venv` dir. This is a convention that's also picked up by vscode
 - Activate it when working on the project.
 - Install the requirements.
 
-    $ python3 -m venv venv --prompt nens-meta
-    $ venv/bin/activate         # <== On windows
-    $ source venv/bin/activate  # <== On linux/mac
+    $ python3 -m venv .venv --prompt nens-meta
+    $ .venv/bin/activate         # <== On windows
+    $ source .venv/bin/activate  # <== On linux/mac
     $ pip install -r requirements.txt
 
 When you changed requirements, rerun the "pip install". Working on a project again after a time?: don't forget to activate again.
