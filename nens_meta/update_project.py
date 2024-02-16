@@ -189,13 +189,13 @@ class DependabotYml(TemplatedFile):
 
 
 class MetaWorkflowYml(TemplatedFile):
-    """Wrapper around a meta.yml file"""
+    """Wrapper around a nens-meta.yml file"""
 
-    template_name = "base_workflow.yml.j2"
-    target_name = ".github/workflows/meta.yml"
-    section_name = "workflow_meta"
+    template_name = "meta_workflow.yml.j2"
+    target_name = ".github/workflows/nens-meta.yml"
+    section_name = "meta_workflow"
 
-    def environments(self) -> list[str]:
+    def jobs(self) -> list[dict]:
         environments = self.our_options["environments"] if self.our_options else []
         if not environments:
             environments.append("lint")
@@ -203,60 +203,43 @@ class MetaWorkflowYml(TemplatedFile):
                 environments.append("coverage")
                 environments.append("dependencies")
                 environments.append("dependencies-graph")
-        return environments
+                environments.append("TEST")
 
-    def python_versions_string(self) -> str:
-        python_versions = (
-            self.our_options["python_versions"] if self.our_options else []
-        )
-        if not python_versions:
-            python_versions.append("3.11")
-        python_versions = [f'"{version}"' for version in python_versions]
-        return f"[{','.join(python_versions)}]"
+        result = []
 
-    def extra_options(self) -> dict:
-        return {
-            "environments": self.environments(),
-            "python_versions_string": self.python_versions_string(),
-            "workflow_name": "N&S meta",
-            "section_name": self.section_name,
-        }
+        main_python_version = self.our_options.get("main_python_version", "3.11")
+        python_versions = self.our_options.get("python_versions", [main_python_version])
+        for environment in environments:
+            if environment == "TEST":
+                name = "test"
+                python_tox_pairs = [
+                    {
+                        "python": python_version,
+                        "tox": f"py{python_version.replace('.', '')}",
+                    }
+                    for python_version in python_versions
+                ]
+            else:
+                name = environment
+                python_tox_pairs = [{"python": main_python_version, "tox": environment}]
 
-
-class TestWorkflowYml(TemplatedFile):
-    """Wrapper around a test.yml file"""
-
-    template_name = "python_test_workflow.yml.j2"
-    target_name = ".github/workflows/test.yml"
-    section_name = "workflow_test"
-
-    @cached_property
-    def python_versions(self) -> list:
-        versions = self.our_options["python_versions"] if self.our_options else []
-        if not versions:
-            versions.append("3.11")
-            if self.meta_options["is_python_project"]:
-                versions.append("3.10")
-                versions.append("3.12")
-        return versions
-
-    def python_versions_string(self) -> str:
-        versions = [f'"{version}"' for version in self.python_versions]
-        return f"[{','.join(versions)}]"
-
-    def python_tox_pairs(self) -> list[dict[str, str]]:
-        """Return list of python=3.11, tox=py31 dicts"""
-        return [
-            {"python": python_version, "tox": f"py{python_version.replace('.', '')}"}
-            for python_version in self.python_versions
-        ]
+            quoted_python_versions = [
+                ('"' + pair["python"] + '"') for pair in python_tox_pairs
+            ]
+            python_version_string = "[" + ", ".join(quoted_python_versions) + "]"
+            result.append(
+                {
+                    "name": name,
+                    "python_tox_pairs": python_tox_pairs,
+                    "python_versions_string": python_version_string,
+                }
+            )
+        return result
 
     def extra_options(self) -> dict:
         return {
-            "python_versions_string": self.python_versions_string(),
-            "workflow_name": "Test",
-            "section_name": self.section_name,
-            "python_tox_pairs": self.python_tox_pairs(),
+            "jobs": self.jobs(),
+            "workflow_name": "nens-meta",
         }
 
 
@@ -331,8 +314,6 @@ def update_project(
     dependabot_yml.write()
     meta_workflow_yml = MetaWorkflowYml(project_dir, our_config)
     meta_workflow_yml.write()
-    test_workflow_yml = TestWorkflowYml(project_dir, our_config)
-    test_workflow_yml.write()
 
     if our_config.section_options("meta")["is_python_project"]:
         do_some_python_checks(project_dir)
