@@ -15,3 +15,4 @@
 - Changed suggested virtualenv dir from `venv/` to `.venv/`.
 - Using a single github workflow file.
 - Minimum python version can now be configured.
+- Most generated files have an "extra lines marker": lines after it are preserved when re-generating the content.
