@@ -22,7 +22,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # You can customise the list of environments in .nens.toml, [] > environments.
+  # You can customise the list of environments in .nens.toml, [meta_workflow] > environments.
   lint:
     name: lint
     runs-on: "ubuntu-latest"
@@ -194,12 +194,3 @@ jobs:
             touch for_step_summary.md
             tox -e ${{ matrix.tox-env }}
             cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
-
-
-# Configure extra_lines if you want more content. Watch the indentation.
-# Example:
-# [workflow_test or workflow_meta]
-# extra_lines = """
-#   my_env:
-#     name: "my env"
-#     ...

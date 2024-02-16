@@ -51,11 +51,3 @@ coverage.*
 
 # Docker
 docker-compose.override.yml
-
-# Need extra lines? Add the following to your ".nens.toml":
-#
-#   [gitignore]
-#   extra_lines = """
-#   your own
-#   configuration lines
-#   """

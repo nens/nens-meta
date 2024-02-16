@@ -29,11 +29,3 @@ max_line_length = off
 
 [Makefile]
 indent_style = tab
-
-# Need extra lines? Add the following to your ".nens.toml":
-#
-#   [editorconfig]
-#   extra_lines = """
-#   your own
-#   configuration lines
-#   """

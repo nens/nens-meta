@@ -17,11 +17,3 @@ updates:
       interval: "weekly"
     assignees:
       - "reinout"
-
-# Configure extra_lines if you want more content. Watch the indentation.
-# Example:
-# [dependabot]
-# extra_lines = """
-#   - package-ecosystem: "github-actions"
-#     directory: "/"
-#     ...

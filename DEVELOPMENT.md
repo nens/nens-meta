@@ -7,7 +7,7 @@ This project mostly uses the generic "nens-meta" setup. The idea:
 - VScode should work out of the box.
 - Commandline usage too.
 
-(Note: this documentation was generated automatically.)
+(Note: this documentation was mostly generated automatically. Some project-specific instructions might be found at the end.)
 
 
 ## Initial python virtualenv
