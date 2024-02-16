@@ -190,7 +190,7 @@ class PyprojectToml:
         section["include"].comment("Set by nens-meta")
         section["venvPath"] = "."
         section["venvPath"].comment("Set by nens-meta")
-        section["venv"] = "venv"
+        section["venv"] = ".venv"
         section["venv"].comment("Set by nens-meta")
 
     def adjust_zestreleaser(self):
