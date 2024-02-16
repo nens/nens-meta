@@ -15,14 +15,20 @@ on:
 
 jobs:
   # You can customise the list of environments in .nens.toml, [{{ section_name }}] > environments.
-{% for environment in environments %}
-  {{ environment }}:
-    name: {{ environment }}
+{% for job in jobs %}
+  {{ job.name }}:
+    name: {{ job.name }}
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: {{ python_versions_string }}
-        # You can customise the python vresions in .nens.toml, [{{ section_name }}] > python_versions.
+        python-version: {{ job.python_versions_string }}
+        # You can customise the python versions in .nens.toml:
+        # [workflow_meta] > main_python_version and/or python_versions.
+        include:
+{%      for pair in job.python_tox_pairs %}
+          - python-version: "{{ pair.python }}"
+            tox-env: "{{ pair.tox }}"
+{%      endfor %}
     steps:
 {% raw %}
       - uses: actions/checkout@v4
@@ -40,12 +46,12 @@ jobs:
             ${{ runner.os }}-pip-
       - name: Install dependencies
         run: python -m pip install tox
-{% endraw %}
-      - name: Run {{ environment }}
+      - name: Actually run ${{ matrix.tox-env }}
         run: |
             touch for_step_summary.md
-            tox -e {{ environment }}
+            tox -e ${{ matrix.tox-env }}
             cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
+{% endraw %}
 
 {% endfor %}
 

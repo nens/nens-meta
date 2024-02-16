@@ -50,14 +50,10 @@ KNOWN_SECTIONS["pyprojecttoml"] = {
 KNOWN_SECTIONS["dependabot"] = {
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
-KNOWN_SECTIONS["workflow_meta"] = {
-    "environments_LIST": "Tox environments that should be called",
-    "python_versions_LIST": "Python version(s) to run as. Normally one, like ['3.11'].",
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
-}
-KNOWN_SECTIONS["workflow_test"] = {
-    "environments_LIST": "Tox environments that should be called",
-    "python_versions_LIST": "Python version(s) to run as. List of strings like '3.11'.",
+KNOWN_SECTIONS["meta_workflow"] = {
+    "environments_LIST": "Tox environments that should be called, 'TEST' means 'py*'",
+    "main_python_version": "Python version to use for linting and so, like '3.11'",
+    "python_versions_LIST": "Python version(s) to run tests as, defaults to [main_python_version]",
     LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 

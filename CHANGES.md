@@ -13,3 +13,4 @@
 - Renaming files that aren't needed anymore, such as `setup.py` :-)
 - Generating basic `tox.ini`, mostly for python projects atm.
 - Changed suggested virtualenv dir from `venv/` to `.venv/`.
+- Using a single github workflow file.

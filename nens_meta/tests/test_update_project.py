@@ -90,14 +90,6 @@ def test_dependabot(tmp_path: Path):
     dependabot_yml.write()
 
 
-def test_testworkflowyml(tmp_path: Path):
-    nens_toml.create_if_missing(tmp_path)
-    our_config = nens_toml.OurConfig(tmp_path)
-    test_workflow_yml = update_project.TestWorkflowYml(tmp_path, our_config)
-    assert "extra_lines" in test_workflow_yml.content
-    test_workflow_yml.write()
-
-
 def test_metaworkflowyml(tmp_path: Path):
     nens_toml.create_if_missing(tmp_path)
     our_config = nens_toml.OurConfig(tmp_path)
