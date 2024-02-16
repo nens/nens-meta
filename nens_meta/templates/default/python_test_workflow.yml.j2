@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         python-version: {{ python_versions_string }}
-        # You can customise the python vresions in .nens.toml, [{{ section_name }}] > python_versions.
+        # You can customise the python versions in .nens.toml, [{{ section_name }}] > python_versions.
         include:
 {%      for pair in python_tox_pairs %}
           - python-version: "{{ pair.python }}"
