@@ -46,6 +46,14 @@ def test_handle_extra_lines1(tmp_path: Path):
 
 
 def test_handle_extra_lines2(tmp_path: Path):
+    # Like the test above, but the target file shouldn't have to exist yet.
+    f = tmp_path / "sample.txt"
+    content = "bla\n"
+    result = utils.handle_extra_lines(f, content)
+    assert "###" in result
+
+
+def test_handle_extra_lines3(tmp_path: Path):
     # Existing file should have its extra lines preserved.
     f = tmp_path / "sample.txt"
     f.write_text(f"bla\n{utils.EXTRA_LINES_MARKER}reinout\n")

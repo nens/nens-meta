@@ -30,10 +30,11 @@ def handle_extra_lines(victim: Path, content: str) -> str:
         extra_lines_marker = EXTRA_LINES_MARKER
     if extra_lines_marker not in content:
         content += extra_lines_marker
-    original_content = victim.read_text()
-    parts = original_content.split(extra_lines_marker)
-    if len(parts) > 1:
-        content += parts[1]
+    if victim.exists():
+        original_content = victim.read_text()
+        parts = original_content.split(extra_lines_marker)
+        if len(parts) > 1:
+            content += parts[1]
     return content
 
 

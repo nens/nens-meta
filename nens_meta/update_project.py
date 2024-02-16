@@ -106,7 +106,8 @@ class TemplatedFile:
     def write(self):
         """Copy the source template to the target, doing the jinja2 stuff"""
         self.create_dirs_if_needed()
-        utils.write_if_changed(self.target, self.content)
+        content = utils.handle_extra_lines(self.target, self.content)
+        utils.write_if_changed(self.target, content)
 
 
 class Editorconfig(TemplatedFile):
