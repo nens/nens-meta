@@ -5,7 +5,7 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 EXTRA_LINES_MARKER = "### Extra lines below are preserved ###\n"
-EXTRA_LINES_MARKER_MARKDOWN = "<-- Extra lines below are preserved -->"
+EXTRA_LINES_MARKER_MARKDOWN = "<-- Extra lines below are preserved -->\n"
 
 
 def strip_whitespace(content: str) -> str:

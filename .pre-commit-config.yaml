@@ -28,3 +28,4 @@ repos:
         args: ["--fix"]
       # Run the formatter.
       - id: ruff-format
+### Extra lines below are preserved ###
