@@ -2,6 +2,7 @@
 
 Note: only `tox` needs to be installed globally, the rest of the tools are included in the virtualenv or they are provided through calls to tox.
 
+(tox)=
 ## Tox (for every project)
 
 Tox is originally a test runner, but it is often used to run (and install) all sorts of project-related tools. The main advantage: it is an automation tool that runs on both linux, mac and windows. Just `pip install tox` and everything else is handled.
@@ -13,6 +14,7 @@ Anyway, just calling `tox` will normally run the basic actions that github also 
 **TODO**: add tox to the `requirements.txt` and just run it inside the virtualenv? Then no extra install is needed. The requirements.txt should be pretty small anyway as most of the dependencies ought to be in `pyproject.toml`. Perhaps attract a bit of attention to `tox -e dependencies`?
 
 
+(ruff)=
 ## Ruff (for python projects)
 
 [Ruff](https://docs.astral.sh/ruff/) is black+flake8+isort+pyupgrade all in one. `ruff format` is mostly "black" and `ruff check` is all the rest. It only needs a bit of config in [pyproject.toml](config-files.md#pyprojecttoml).
