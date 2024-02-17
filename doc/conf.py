@@ -28,3 +28,4 @@ html_static_path = ["_static"]
 
 # Custom settings.
 extensions = ["myst_parser"]  # Markdown support
+myst_heading_anchors = 2

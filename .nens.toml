@@ -5,7 +5,7 @@ project_name = "nens-meta"
 package_name = "nens_meta" # Suggested by nens-meta
 
 [tox]
-default_environments = ["lint", "py311", "py312", "coverage"]
+default_environments = ["lint", "py311", "py312", "coverage", "doc"]
 minimum_coverage = "95"
 
 [meta_workflow]
