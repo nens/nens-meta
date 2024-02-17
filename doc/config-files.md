@@ -1,5 +1,6 @@
 # The various config files
 
+(nenstoml)=
 ## `.nens.toml`
 
 ## `.editorconfig`

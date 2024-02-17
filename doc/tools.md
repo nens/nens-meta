@@ -58,9 +58,11 @@ Simple as that. Everything (like vscode) that recognises a virtualenv should be 
 Tox (without any options) also runs the tests that pytest runs, only with less verbosity and for (optionally) multiple python versions. The tests are the same, though.
 
 
-## Coverage
+## Coverage (for python projects)
 
-Configured in `pyproject.toml`, run via `tox -e coverage`. Shows the coverage as a textual summary and generates `htmlcov/index.html` for a nice visual representation. *If* configured to do so, coverage will warn you if the coverage is lower than the configured minimum level.
+Configured in `pyproject.toml`, run via `tox -e coverage`. Shows the coverage as a textual summary and generates `htmlcov/index.html` for a nice visual representation.
+
+*If* configured to do so, coverage will warn you if the coverage is lower than the configured minimum level. In [.nens.toml](config-files.md#nenstoml), the `minimum_coverage` setting in `[tox]` can be set for this.
 
 
 ## Pre-commit
