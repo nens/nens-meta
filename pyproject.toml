@@ -22,10 +22,6 @@ test = [
     "pytest",
     "pytest-mock",
 ]
-doc = [
-    "sphinx>=2.1",
-    "myst-parser",
-]
 
 [tool.setuptools] # Whole section managed by nens-meta
 packages = ["nens_meta"]
