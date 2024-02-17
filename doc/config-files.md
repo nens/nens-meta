@@ -24,3 +24,5 @@ Many editors [have build-in support](https://editorconfig.org/#pre-installed), f
 ## `.github/dependabot.yml`
 
 ## `.github/workflows/meta_workflow.yml`
+
+## `requirementx.txt`

@@ -32,6 +32,7 @@ It is also integrated into tox:
 What ruff actually does depends a lot on the configuration  [in pyproject.toml](config-files.md#pyprojecttoml). Especially the configured checks.
 
 
+(pytest)=
 ## Pytest (for python projects)
 
 [Pytest](https://docs.pytest.org) should installed via the "test extra dependencies" in [pyproject.toml](config-files.md#pyprojecttoml), so something like:
