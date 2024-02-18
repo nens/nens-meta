@@ -59,13 +59,13 @@ class TemplatedFile:
         return {}
 
     @cached_property
-    def our_options(self):
+    def our_options(self) -> dict:
         if not self.our_config.has_section_for(self.section_name):
             return {}
         return self.our_config.section_options(self.section_name)
 
     @cached_property
-    def meta_options(self):
+    def meta_options(self) -> dict:
         return self.our_config.section_options("meta")
 
     @cached_property
@@ -189,10 +189,9 @@ class MetaWorkflowYml(TemplatedFile):
 
         result = []
 
-        main_python_version = self.our_options.get("main_python_version") or "3.11"
-        python_versions = self.our_options.get("python_versions") or [
-            main_python_version
-        ]
+        main_python_version = self.our_options["main_python_version"]
+        python_versions = self.our_options["python_versions"]
+
         for environment in environments:
             if environment == "TEST":
                 name = "test"

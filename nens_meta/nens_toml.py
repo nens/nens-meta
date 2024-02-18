@@ -44,6 +44,7 @@ KNOWN_SECTIONS["tox"] = [
         key="default_environments",
         description="List of envs to run when you call 'tox'",
         value_type=list,
+        default=[],
     ),
 ]
 KNOWN_SECTIONS["pyprojecttoml"] = [
@@ -57,15 +58,18 @@ KNOWN_SECTIONS["meta_workflow"] = [
         key="environments",
         description="Tox environments that should be called, 'TEST' means 'py*'",
         value_type=list,
+        default=[],
     ),
     Option(
         key="main_python_version",
-        description="Python version to use for linting and so, like '3.11'",
+        description="Python version to use for linting and so",
+        default="3.11",
     ),
     Option(
         key="python_versions",
-        description="Python version(s) to run tests as, defaults to [main_python_version]",
+        description="Python version(s) to run tests as",
         value_type=list,
+        default=["3.11"],
     ),
 ]
 
@@ -163,19 +167,15 @@ class OurConfig:
                 f"Section {section_name} not documented in nens-meta"
             )
         section = self._contents.get(section_name)
+        if section is None:
+            section = {}
         options: dict[str, str | bool | list] = {}
-        if section:
-            for option in KNOWN_SECTIONS[section_name]:
-                value = section.get(option.key, copy.deepcopy(option.default))
-                if not isinstance(value, option.value_type):
-                    raise ValueError(
-                        f"{option.key} should be of type {option.value_type}, not {type(value)}"
-                    )
-                options[option.key] = value
-
-        else:
-            logger.debug(
-                f"Extra configuration for [{section_name}] not found in .nens.toml"
-            )
+        for option in KNOWN_SECTIONS[section_name]:
+            value = section.get(option.key, copy.deepcopy(option.default))
+            if not isinstance(value, option.value_type):
+                raise ValueError(
+                    f"{option.key} should be of type {option.value_type}, not {type(value)}"
+                )
+            options[option.key] = value
         logger.debug(f"Contents of section {section_name}: {options}")
         return options
