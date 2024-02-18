@@ -233,6 +233,13 @@ def do_some_python_checks(project_dir: Path):
         logger.warning(
             f"Check the old {file_to_check}: move settings to pyproject.toml, perhaps?"
         )
+    website = "https://nens-meta.readthedocs.io"
+    readme = Path("README.md")
+    if readme.exists():
+        if website not in readme.read_text():
+            logger.warning(
+                f"{website} is not mentioned in the readme as an instruction"
+            )
 
 
 def update_project(
