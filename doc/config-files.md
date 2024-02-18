@@ -35,6 +35,8 @@ Just a basic set of ignores.
 
 The now-standard configuration file for python projects. Previously, most of the content would have been in `setup.py` and/or `setup.cfg`, but those aren't needed anymore.
 
+See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/ for the syntax.
+
 There are many settings in this file, so nens-meta leaves it **mostly** alone so that you can have your own custom content in there. Many tools have their configuration in here:
 
 - coverage
