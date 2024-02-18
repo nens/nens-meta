@@ -24,6 +24,11 @@ test = [
     "pytest-sugar",
 ]
 
+[project.urls]
+Documentation = "https://nens-meta.readthedocs.io/"
+Repository = "https://github.com/nens/nens-meta"
+Changelog = "https://github.com/nens/nens-meta/blob/main/CHANGES.md"
+
 [tool.setuptools]
 packages = ["nens_meta"] # Set by nens-meta
 zip-safe = false
