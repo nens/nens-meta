@@ -4,7 +4,8 @@
 ## 0.2 (unreleased)
 
 
-- Nothing changed yet.
+- The generated header doesn't include the version number anymore: that resulted in unnecessary changes.
+- The generated header in config files now points at the config file documentation page at https://nens-meta.readthedocs.io/en/latest/config-files.html .
 
 
 ## 0.1 (2024-02-18)
