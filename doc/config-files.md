@@ -12,6 +12,7 @@ Nens-meta tries to be only as invasive as necessary and to get out of your way w
 
 ## `.nens.toml`
 
+The file for our own configuration. The defaults are below:
 
 ```{literalinclude} nens_toml_example.toml
 ```
@@ -24,17 +25,31 @@ Nothing earth-shaking, just some basic sanity for all the files. See https://edi
 
 Many editors [have build-in support](https://editorconfig.org/#pre-installed), for some you need a plugin, [like for vscode](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
 
+
 ## `.gitignore`
+
+Just a basic set of ignores.
+
 
 ## `pyproject.toml`
 
-Pytest is installed via the "test extra dependencies" in [pyproject.toml](config-files.md#pyprojecttoml), so something like:
+The now-standard configuration file for python projects. Previously, most of the content would have been in `setup.py` and/or `setup.cfg`, but those aren't needed anymore.
 
-    [project.optional-dependencies]
-    test = [
-        "pytest",
-        "pytest-mock",
-    ]
+There are many settings in this file, so nens-meta leaves it **mostly** alone so that you can have your own custom content in there. Many tools have their configuration in here:
+
+- coverage
+- pyright/pylance
+- pytest
+- ruff
+- setuptools
+- z3c.dependencychecker
+- zest.releaser
+
+In an empty project, nens-meta generates the following default settings:
+
+```{literalinclude} pyproject_toml_example.toml
+```
+
 
 ## `tox.ini`
 
