@@ -1,6 +1,12 @@
 # Changelog of nens-meta
 
 
+## 0.2 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 0.1 (2024-02-18)
 
 - Initial project structure created with cookiecutter and [cookiecutter-python-template](https://github.com/nens/cookiecutter-python-template).
