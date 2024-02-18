@@ -30,6 +30,8 @@ def write_documentation():
     target = Path(__file__).parent.parent / "doc" / "pyproject_toml_example.toml"
     with TemporaryDirectory() as project_dir:
         project_dir = Path(project_dir)
+        package_dir = project_dir / "example_project"
+        package_dir.mkdir()
         create_if_missing(project_dir)
         project_config = PyprojectToml(project_dir, options)
         project_config.update()
