@@ -91,7 +91,7 @@ class PyprojectToml:
         # what's necessary.
         self.adjust_build_system()
         self.adjust_project()
-        self.ensure_setuptools()
+        self.adjust_setuptools()
         self.ensure_pytest()
         self.ensure_coverage()
         self.adjust_ruff()
@@ -139,7 +139,7 @@ class PyprojectToml:
             logger.error(f"Python package {name} doesn't exist in the current project")
         return name
 
-    def ensure_setuptools(self):
+    def adjust_setuptools(self):
         section = self.get_or_create_section("tool.setuptools")
         # TODO: optional extra packages
         section["packages"] = [self.package_name]

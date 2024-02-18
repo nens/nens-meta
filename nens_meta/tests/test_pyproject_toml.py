@@ -36,8 +36,8 @@ def test_get_or_create_section(empty_python_config: pyproject_toml.PyprojectToml
     assert "[reinout.van]" in empty_python_config._config_file.read_text()
 
 
-def test_ensure_build_system(empty_python_config: pyproject_toml.PyprojectToml):
-    empty_python_config.ensure_build_system()
+def test_adjust_build_system(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config.adjust_build_system()
     empty_python_config.write()
     assert "setuptools>=" in empty_python_config._config_file.read_text()
 
@@ -65,15 +65,17 @@ def test_package_name2(empty_python_config: pyproject_toml.PyprojectToml):
     assert empty_python_config.package_name == "not_set"
 
 
-def test_ensure_setuptools1(empty_python_config: pyproject_toml.PyprojectToml):
+def test_adjust_setuptools1(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config._options = {
         "project_name": "pietje-klaasje",
         "package_name": "pietje_klaasje",
     }
-    empty_python_config.ensure_setuptools()
+    empty_python_config.adjust_setuptools()
     empty_python_config.write()
     assert "zip-safe" in empty_python_config._config_file.read_text()
-    assert "pietje_klaasje.__version__" in empty_python_config._config_file.read_text()
+    assert (
+        'packages = ["pietje_klaasje"]' in empty_python_config._config_file.read_text()
+    )
 
 
 def test_ensure_setuptools2(empty_python_config: pyproject_toml.PyprojectToml):
@@ -85,7 +87,7 @@ def test_ensure_setuptools2(empty_python_config: pyproject_toml.PyprojectToml):
         "project_name": "pietje-klaasje",
         "package_name": "pietje_klaasje",
     }
-    empty_python_config.ensure_setuptools()
+    empty_python_config.adjust_setuptools()
     # No assert needed.
 
 
