@@ -1,0 +1,6 @@
+# Requirements for building the documentation, as suggested by
+# https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
+linkify-it-py
+myst-parser
+sphinx-immaterial
+sphinx>=2.1

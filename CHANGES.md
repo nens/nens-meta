@@ -16,3 +16,4 @@
 - Minimum python version can now be configured.
 - Most generated files have an "extra lines marker": lines after it are preserved when re-generating the content.
 - If a file has `NENS_META_LEAVE_ALONE` somewhere in its context, it is left alone by the file generation mechanism.
+- Added readthedocs configuration.
