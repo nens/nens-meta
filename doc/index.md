@@ -19,6 +19,7 @@ Note that [our N&S cookiecutter template](https://github.com/nens/cookiecutter-p
 There are *three* ways of looking at what's configured by nens-meta.
 
 ```{toctree}
+self
 how-to-use.md
 tools.md
 config-files.md

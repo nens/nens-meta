@@ -13,7 +13,10 @@ author = "Reinout van Rees"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["myst_parser"]  # Markdown support
+extensions = [
+    "myst_parser",  # Markdown support
+    "sphinx_immaterial",  # Nicer layout
+]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -29,3 +32,4 @@ html_static_path = ["_static"]
 # Markdown settings
 myst_heading_anchors = 2
 myst_enable_extensions = ["colon_fence"]
+html_theme = "sphinx_immaterial"

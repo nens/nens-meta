@@ -6,6 +6,11 @@ Note: only `tox` needs to be installed globally, the rest of the tools are inclu
 
 Tox is originally a test runner, but it is often used to run (and install) all sorts of project-related tools. The main advantage: it is an automation tool that runs on both linux, mac and windows. Just `pip install tox` and everything else is handled.
 
+:::{important}
+Tox is the only program **you really need to install by hand** globally. So don't forget the `pip install tox`. All the rest is handled and installed by tox.
+:::
+
+
 [The `tox.ini`](config-files.md#toxini) defines what can be run. "What can be run" is called an "environment", so the `-e` in calls like `tox -e coverage` means "select the coverage environment and run it". Anyway, just calling `tox` will normally run the basic actions that github also runs in its checks. So of tox runs OK, github mostly won't complain.
 
 ```console
