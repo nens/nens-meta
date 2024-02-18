@@ -36,9 +36,6 @@ class TemplatedFile:
 
     @property
     def target(self) -> Path:
-        if self.options.get("leave_alone"):
-            logger.warning(f"Leaving {self.target_name} alone")
-            return self.project_dir / (self.target_name + ".suggestion")
         return self.project_dir / self.target_name
 
     @property
