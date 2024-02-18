@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.1 (unreleased)
+## 0.1 (2024-02-18)
 
 - Initial project structure created with cookiecutter and [cookiecutter-python-template](https://github.com/nens/cookiecutter-python-template).
 - Generating an `.editorconfig` file in the target project.
