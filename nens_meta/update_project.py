@@ -63,6 +63,8 @@ class TemplatedFile:
 
     @cached_property
     def our_options(self):
+        if not self.our_config.has_section_for(self.section_name):
+            return {}
         return self.our_config.section_options(self.section_name)
 
     @cached_property

@@ -19,18 +19,13 @@ KNOWN_SECTIONS["meta"] = {
     "is_python_project_FALSE": "Whether we are a python project",
     "package_name": "Name of the main python package",
 }
-KNOWN_SECTIONS["editorconfig"] = {}
 KNOWN_SECTIONS["tox"] = {
     "minimum_coverage": "Minimum code coverage percentage",
     "default_environments_LIST": "List of envs to run when you call 'tox'",
 }
-KNOWN_SECTIONS["pre-commit-config"] = {}
-KNOWN_SECTIONS["gitignore"] = {}
-KNOWN_SECTIONS["development-instructions"] = {}
 KNOWN_SECTIONS["pyprojecttoml"] = {
     "minimum_python_version": "Lowest python version that we support, like '3.11'",
 }
-KNOWN_SECTIONS["dependabot"] = {}
 KNOWN_SECTIONS["meta_workflow"] = {
     "environments_LIST": "Tox environments that should be called, 'TEST' means 'py*'",
     "main_python_version": "Python version to use for linting and so, like '3.11'",
@@ -136,13 +131,11 @@ class OurConfig:
         current["meta_version"] = detected["meta_version"]
         current["meta_version"].comment("Set by nens-meta")
 
+    def has_section_for(self, section_name: str) -> bool:
+        return section_name in KNOWN_SECTIONS
+
     def section_options(self, section_name: str) -> dict:
-        """Return all options configured in a given section
-
-        Later on: perhaps do some filtering on known ones? And add defaults for missing
-        ones?
-
-        """
+        """Return all options configured in a given section, if available."""
         if section_name not in KNOWN_SECTIONS:
             # Force ourselves to document our stuff!
             raise MissingDocumentationError(
