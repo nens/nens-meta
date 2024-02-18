@@ -1,5 +1,7 @@
 # N&S "meta" repository
 
+Documentation: https://nens-meta.readthedocs.io/ .
+
 Modeled after https://github.com/plone/meta , it is a tool to keep lots of repositories up to date regarding minutia such as "editorconfig", "ruff", "pre-commit" and "github actions". Stuff that's often generated once with a cookiecutter and never afterwards modified, even though there's much goodness to be found in new settings.
 
 The settings and config files go hand in hand with some recommended local settings in your development environment, like recommended vscode extensions.
@@ -11,7 +13,7 @@ Note that [our cookiecutter template](https://github.com/nens/cookiecutter-pytho
 
 ## Installing/developing this project
 
-For the basic instructions, see our own documentation. So:
+For the basic instructions, see [our own documentation](https://nens-meta.readthedocs.io/en/latest/usage.html). So:
 
     $ pip install tox
     $ tox -q
@@ -26,7 +28,5 @@ For the basic instructions, see our own documentation. So:
 - Projectnummer
 
 - testen met vscode
-
-- version.txt (threedi-docs)
 
 - `DJANGO_SETTINGS_MODULE = artifact_handler.developmentsettings` in tool:pytest?
