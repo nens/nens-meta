@@ -1,4 +1,4 @@
-# How to use it
+# How to work on projects with this setup
 
 Most of the projects will be python projects, so follow the virtualenv instructions further below.
 
