@@ -240,7 +240,7 @@ def update_project(
     verbose: Annotated[bool, typer.Option(help="Verbose logging")] = False,
 ):  # pragma: no cover
     log_level = logging.DEBUG if verbose else logging.INFO
-    logging.basicConfig(level=log_level)
+    logging.basicConfig(level=log_level, format="%(levelname)-7s: %(message)s")
     check_prerequisites(project_dir)
     our_config = nens_toml.OurConfig(project_dir)
     our_config.write()
