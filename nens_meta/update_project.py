@@ -129,14 +129,6 @@ class Precommitconfig(TemplatedFile):
     section_name = "pre-commit-config"
 
 
-class DevelopmentInstructions(TemplatedFile):
-    """Wrapper around a project's dev instructions"""
-
-    template_name = "DEVELOPMENT.md.j2"
-    target_name = "DEVELOPMENT.md"
-    section_name = "development-instructions"
-
-
 class ToxIni(TemplatedFile):
     """Wrapper around a project's tox.ini"""
 
@@ -273,8 +265,6 @@ def update_project(
     gitignore.write()
     precommitconfig = Precommitconfig(project_dir, our_config)
     precommitconfig.write()
-    development_instructions = DevelopmentInstructions(project_dir, our_config)
-    development_instructions.write()
     tox_ini = ToxIni(project_dir, our_config)
     tox_ini.write()
     dependabot_yml = DependabotYml(project_dir, our_config)
