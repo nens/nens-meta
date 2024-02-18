@@ -13,6 +13,8 @@ Nens-meta tries to be only as invasive as necessary and to get out of your way w
 ## `.nens.toml`
 
 
+```{literalinclude} nens_toml_example.toml
+```
 
 ## `.editorconfig`
 

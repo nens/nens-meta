@@ -1,0 +1,31 @@
+[meta]
+# Version used to generate the config
+meta_version = ''
+# Project name (normally the name of the directory)
+project_name = ''
+# Whether we are a python project
+is_python_project = false
+# Name of the main python package
+package_name = ''
+
+[tox]
+# Minimum code coverage percentage
+minimum_coverage = ''
+# List of envs to run when you call 'tox'
+default_environments = []
+
+[pyprojecttoml]
+# Lowest python version that we support, like '3.11'
+minimum_python_version = ''
+
+[meta_workflow]
+# Tox environments that should be called, 'TEST' means 'py*'
+environments = ['format', 'lint']
+# In case of a python project:
+# environments = ['lint', 'coverage', 'dependencies', 'dependencies-graph', 'TEST']
+# Python version to use for linting and so
+main_python_version = '3.11'
+# Python version(s) to run tests as
+python_versions = ['3.11']
+# In case of a python project:
+# python_versions = ['3.10', '3.11', '3.12']

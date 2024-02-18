@@ -35,6 +35,7 @@ KNOWN_SECTIONS["meta"] = [
     Option(
         key="is_python_project",
         description="Whether we are a python project",
+        default=False,
         value_type=bool,
     ),
     Option(key="package_name", description="Name of the main python package"),
@@ -83,6 +84,24 @@ KNOWN_SECTIONS["meta_workflow"] = [
 ]
 
 logger = logging.getLogger(__name__)
+
+
+def write_documentation():
+    target = Path(__file__).parent.parent / "doc" / "nens_toml_example.toml"
+    lines = []
+    for section in KNOWN_SECTIONS:
+        lines.append(f"[{section}]")
+        for option in KNOWN_SECTIONS[section]:
+            lines.append(f"# {option.description}")
+            lines.append(f"{option.key} = {repr(option.default)}")
+            if option.default_if_python:
+                lines.append("# In case of a python project:")
+                lines.append(f"# {option.key} = {option.default_if_python}")
+        lines.append("")
+
+    content = "\n".join(lines)
+    content = content.replace(" False", " false")  # Toml syntax hack
+    target.write_text(content)
 
 
 def nens_toml_file(project: Path) -> Path:
@@ -195,3 +214,8 @@ class OurConfig:
             options[option.key] = value
         logger.debug(f"Contents of section {section_name}: {options}")
         return options
+
+
+if __name__ == "__main__":
+    # Only called to write the documentation file.
+    write_documentation()
