@@ -1,6 +1,5 @@
 # The various config files
 
-(nenstoml)=
 ## `.nens.toml`
 
 ## `.editorconfig`
@@ -13,13 +12,19 @@ Many editors [have build-in support](https://editorconfig.org/#pre-installed), f
 
 ## `.gitignore`
 
-(pyprojecttoml)=
 ## `pyproject.toml`
 
-(toxini)=
+Pytest is installed via the "test extra dependencies" in [pyproject.toml](config-files.md#pyprojecttoml), so something like:
+
+    [project.optional-dependencies]
+    test = [
+        "pytest",
+        "pytest-mock",
+    ]
+
 ## `tox.ini`
 
-## `.pre-commit-config.yaml.j2`
+## `.pre-commit-config.yaml`
 
 ## `.github/dependabot.yml`
 

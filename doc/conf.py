@@ -28,3 +28,4 @@ html_static_path = ["_static"]
 
 # Markdown settings
 myst_heading_anchors = 2
+myst_enable_extensions = ["colon_fence"]

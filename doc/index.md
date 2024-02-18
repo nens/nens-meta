@@ -20,6 +20,6 @@ There are *three* ways of looking at what's configured by nens-meta.
 
 ```{toctree}
 how-to-use.md
-config-files.md
 tools.md
+config-files.md
 ```
