@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.2 (unreleased)
+## 0.2 (2024-02-19)
 
 
 - The generated header doesn't include the version number anymore: that resulted in unnecessary changes.
