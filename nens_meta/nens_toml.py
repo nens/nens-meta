@@ -1,36 +1,67 @@
 """Purpose: read and manage the .nens.toml config file
 """
 import logging
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import tomlkit
 from tomlkit.items import Table
 
 from nens_meta import __version__, utils
 
+
+@dataclass
+class Option:
+    key: str
+    description: str
+    value_type: type = str
+    default: Any = ""
+
+
 META_FILENAME = ".nens.toml"
-KNOWN_SECTIONS: dict[str, dict[str, str]] = {}
+KNOWN_SECTIONS: dict[str, list[Option]] = {}
 # First key is the section name, the second key/value pair is the variable name and the
 # explanation. If the second key ends with "_TRUE"/"_FALSE", this is stripped and will
 # be used to treat the value as a boolean with the indicated default.
-KNOWN_SECTIONS["meta"] = {
-    "meta_version": "Version used to generate the config",
-    "project_name": "Project name (normally the name of the directory)",
-    "is_python_project_FALSE": "Whether we are a python project",
-    "package_name": "Name of the main python package",
-}
-KNOWN_SECTIONS["tox"] = {
-    "minimum_coverage": "Minimum code coverage percentage",
-    "default_environments_LIST": "List of envs to run when you call 'tox'",
-}
-KNOWN_SECTIONS["pyprojecttoml"] = {
-    "minimum_python_version": "Lowest python version that we support, like '3.11'",
-}
-KNOWN_SECTIONS["meta_workflow"] = {
-    "environments_LIST": "Tox environments that should be called, 'TEST' means 'py*'",
-    "main_python_version": "Python version to use for linting and so, like '3.11'",
-    "python_versions_LIST": "Python version(s) to run tests as, defaults to [main_python_version]",
-}
+KNOWN_SECTIONS["meta"] = [
+    Option(key="meta_version", description="Version used to generate the config"),
+    Option(
+        key="project_name",
+        description="Project name (normally the name of the directory)",
+    ),
+    Option(
+        key="is_python_project_FALSE", description="Whether we are a python project"
+    ),
+    Option(key="package_name", description="Name of the main python package"),
+]
+KNOWN_SECTIONS["tox"] = [
+    Option(key="minimum_coverage", description="Minimum code coverage percentage"),
+    Option(
+        key="default_environments_LIST",
+        description="List of envs to run when you call 'tox'",
+    ),
+]
+KNOWN_SECTIONS["pyprojecttoml"] = [
+    Option(
+        key="minimum_python_version",
+        description="Lowest python version that we support, like '3.11'",
+    ),
+]
+KNOWN_SECTIONS["meta_workflow"] = [
+    Option(
+        key="environments_LIST",
+        description="Tox environments that should be called, 'TEST' means 'py*'",
+    ),
+    Option(
+        key="main_python_version",
+        description="Python version to use for linting and so, like '3.11'",
+    ),
+    Option(
+        key="python_versions_LIST",
+        description="Python version(s) to run tests as, defaults to [main_python_version]",
+    ),
+]
 
 logger = logging.getLogger(__name__)
 
@@ -150,12 +181,12 @@ class OurConfig:
         section = self._contents.get(section_name)
         options: dict[str, str | bool | list] = {}
         if section:
-            for key in KNOWN_SECTIONS[section_name]:
-                actual_key_name = _key_name(key)
-                value = section.get(actual_key_name, _default_for_key(key))
-                if not isinstance(value, _expected_type(key)):
+            for option in KNOWN_SECTIONS[section_name]:
+                actual_key_name = _key_name(option.key)
+                value = section.get(actual_key_name, _default_for_key(option.key))
+                if not isinstance(value, _expected_type(option.key)):
                     raise ValueError(
-                        f"{actual_key_name} should be of type {_expected_type(key)}, not {type(value)}"
+                        f"{actual_key_name} should be of type {_expected_type(option.key)}, not {type(value)}"
                     )
                 options[actual_key_name] = value
 
