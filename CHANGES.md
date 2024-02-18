@@ -6,6 +6,7 @@
 
 - The generated header doesn't include the version number anymore: that resulted in unnecessary changes.
 - The generated header in config files now points at the config file documentation page at https://nens-meta.readthedocs.io/en/latest/config-files.html .
+- Fixed `coverage --fail-under` behaviour if no percentage was specified.
 
 
 ## 0.1 (2024-02-18)
