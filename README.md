@@ -11,10 +11,9 @@ Note that [our cookiecutter template](https://github.com/nens/cookiecutter-pytho
 
 ## Installing/developing this project
 
-For the basic instructions, see [DEVELOPMENT.md](./DEVELOPMENT.md).
+For the basic instructions, see our own documentation. So:
 
-Run lint + the tests:
-
+    $ pip install tox
     $ tox -q
 
 
