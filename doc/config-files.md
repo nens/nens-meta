@@ -7,7 +7,7 @@ Nens-meta tries to be only as invasive as necessary and to get out of your way w
 
 - If the literal text `NENS_META_LEAVE_ALONE`, in all caps, is found anywhere in a file, it is left alone. A similarly-named file with a `.suggestion` extension is written instead.
 
-- Most files have an `### Extra lines below are preserved ###` line at the end. All content below it is preserved, ideal for custom content. `nens.toml` and `pyproject.toml` are excluded, they don't need it.
+- Most files have an `### Extra lines below are preserved ###` line at the end. All content below it is preserved, ideal for custom content. `.nens.toml` and `pyproject.toml` are excluded, they don't need it.
 
 
 ## `.nens.toml`
