@@ -1,5 +1,6 @@
 """Purpose: read and manage the .nens.toml config file
 """
+import copy
 import logging
 from dataclasses import dataclass
 from pathlib import Path
@@ -31,15 +32,18 @@ KNOWN_SECTIONS["meta"] = [
         description="Project name (normally the name of the directory)",
     ),
     Option(
-        key="is_python_project_FALSE", description="Whether we are a python project"
+        key="is_python_project",
+        description="Whether we are a python project",
+        value_type=bool,
     ),
     Option(key="package_name", description="Name of the main python package"),
 ]
 KNOWN_SECTIONS["tox"] = [
     Option(key="minimum_coverage", description="Minimum code coverage percentage"),
     Option(
-        key="default_environments_LIST",
+        key="default_environments",
         description="List of envs to run when you call 'tox'",
+        value_type=list,
     ),
 ]
 KNOWN_SECTIONS["pyprojecttoml"] = [
@@ -50,16 +54,18 @@ KNOWN_SECTIONS["pyprojecttoml"] = [
 ]
 KNOWN_SECTIONS["meta_workflow"] = [
     Option(
-        key="environments_LIST",
+        key="environments",
         description="Tox environments that should be called, 'TEST' means 'py*'",
+        value_type=list,
     ),
     Option(
         key="main_python_version",
         description="Python version to use for linting and so, like '3.11'",
     ),
     Option(
-        key="python_versions_LIST",
+        key="python_versions",
         description="Python version(s) to run tests as, defaults to [main_python_version]",
+        value_type=list,
     ),
 ]
 
@@ -79,17 +85,6 @@ def create_if_missing(project: Path):
     our_config.write()
 
 
-def _key_name(key: str) -> str:
-    """Return key, but handle the _TRUE/_FALSE postfix tricks"""
-    for indicates_boolean in ["_TRUE", "_FALSE"]:
-        if indicates_boolean in key:
-            return key.replace(indicates_boolean, "")
-    indicates_list = "_LIST"
-    if indicates_list in key:
-        return key.replace(indicates_list, "")
-    return key
-
-
 def _default_for_key(key: str) -> str | bool | list:
     """Return default (''), but handle the _TRUE/_FALSE postfix tricks"""
     if "_TRUE" in key:
@@ -99,17 +94,6 @@ def _default_for_key(key: str) -> str | bool | list:
     if "_LIST" in key:
         return []
     return ""
-
-
-def _expected_type(key: str) -> type:
-    """Return expected type of the key"""
-    for indicates_boolean in ["_TRUE", "_FALSE"]:
-        if indicates_boolean in key:
-            return bool
-    indicates_list = "_LIST"
-    if indicates_list in key:
-        return list
-    return str
 
 
 def detected_meta_values(project: Path) -> dict[str, str | bool | list]:
@@ -182,13 +166,12 @@ class OurConfig:
         options: dict[str, str | bool | list] = {}
         if section:
             for option in KNOWN_SECTIONS[section_name]:
-                actual_key_name = _key_name(option.key)
-                value = section.get(actual_key_name, _default_for_key(option.key))
-                if not isinstance(value, _expected_type(option.key)):
+                value = section.get(option.key, copy.deepcopy(option.default))
+                if not isinstance(value, option.value_type):
                     raise ValueError(
-                        f"{actual_key_name} should be of type {_expected_type(option.key)}, not {type(value)}"
+                        f"{option.key} should be of type {option.value_type}, not {type(value)}"
                     )
-                options[actual_key_name] = value
+                options[option.key] = value
 
         else:
             logger.debug(

@@ -103,42 +103,6 @@ def test_section_options_boolean3(tmp_path: Path):
         config.section_options("meta")["is_python_project"]
 
 
-def test_key_name1():
-    assert nens_toml._key_name("reinout") == "reinout"
-
-
-def test_key_name2():
-    assert nens_toml._key_name("reinout_TRUE") == "reinout"
-
-
-def test_key_name3():
-    assert nens_toml._key_name("reinout_FALSE") == "reinout"
-
-
-def test_key_default1():
-    assert nens_toml._default_for_key("reinout") == ""
-
-
-def test_key_default2():
-    assert nens_toml._default_for_key("reinout_TRUE") is True
-
-
-def test_key_default3():
-    assert nens_toml._default_for_key("reinout_FALSE") is False
-
-
-def test_key_type1():
-    assert nens_toml._expected_type("reinout") == str
-
-
-def test_key_type2():
-    assert nens_toml._expected_type("reinout_TRUE") == bool
-
-
-def test_key_type3():
-    assert nens_toml._expected_type("reinout_FALSE") == bool
-
-
 def test_update_meta_options1(tmp_path: Path):
     # Create a new "meta" section if it is missing.
     nens_toml.nens_toml_file(tmp_path).write_text("")
