@@ -21,6 +21,7 @@ dynamic = ["version"]
 test = [
     "pytest",
     "pytest-mock",
+    "pytest-sugar",
 ]
 
 [tool.setuptools] # Whole section managed by nens-meta
@@ -46,6 +47,9 @@ skip_empty = true
 [tool.zest-releaser]
 release = false
 python-file-with-version = "nens_meta/__init__.py"
+
+[tool.dependencychecker]
+ignore-packages = ["pytest-sugar"]
 
 [tool.ruff] # Required: target-version
 # See https://docs.astral.sh/ruff/configuration/ for defaults.
