@@ -32,20 +32,27 @@ def _extract_extra_lines(content: str) -> str:
         return ""
 
 
-def write_if_changed(target: Path, desired_content: str):
+def write_if_changed(target: Path, desired_content: str, handle_extra_lines=True):
     """Write content to file if different, not if it is the same
 
     And create the file if it doesn't exist.
 
-    And... look for an end-of-generated-file marker and preserve the contents after it.
+    And... look for an end-of-generated-file marker and preserve the contents after
+    it. If `handle_extra_lines` is True (the default).
 
     And... leave it alone if the marker is there.
 
     """
     existing_content = target.read_text() if target.exists() else ""
     leave_alone = LEAVE_ALONE_MARKER in existing_content
-    extra_lines = _extract_extra_lines(existing_content)
-    new_content = EXTRA_LINES_MARKER.join([desired_content, extra_lines])
+    if handle_extra_lines:
+        extra_lines = _extract_extra_lines(existing_content)
+        extra_lines_marker_with_empty_line_before = "\n" + EXTRA_LINES_MARKER
+        new_content = extra_lines_marker_with_empty_line_before.join(
+            [desired_content, extra_lines]
+        )
+    else:
+        new_content = desired_content
 
     if new_content == existing_content:
         logger.debug(f"{target} remained the same")

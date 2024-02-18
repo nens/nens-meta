@@ -113,7 +113,9 @@ class OurConfig:
         return tomlkit.parse(self._config_file.read_text())
 
     def write(self):
-        utils.write_if_changed(self._config_file, tomlkit.dumps(self._contents))
+        utils.write_if_changed(
+            self._config_file, tomlkit.dumps(self._contents), handle_extra_lines=False
+        )
 
     def update_meta_options(self):
         """Detect meta options"""

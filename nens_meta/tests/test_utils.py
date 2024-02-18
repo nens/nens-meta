@@ -43,7 +43,7 @@ def test_write_if_changed2(tmp_path: Path):
 def test_write_if_changed3(tmp_path: Path, mocker: MockerFixture):
     # Don't change an existing file if it is not needed.
     f = tmp_path / "sample.txt"
-    f.write_text("test\n" + utils.EXTRA_LINES_MARKER)
+    f.write_text("test\n\n" + utils.EXTRA_LINES_MARKER)
     writer = mocker.spy(Path, "write_text")
     utils.write_if_changed(f, "test\n")
     writer.assert_not_called()

@@ -43,7 +43,9 @@ class PyprojectToml:
 
     def write(self):
         target = self._project / FILENAME
-        utils.write_if_changed(target, tomlkit.dumps(self._contents))
+        utils.write_if_changed(
+            target, tomlkit.dumps(self._contents), handle_extra_lines=False
+        )
 
     def get_or_create_section(self, name: str) -> Table:
         *super_tables, section_name = name.split(".")
