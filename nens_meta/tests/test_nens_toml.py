@@ -145,3 +145,7 @@ def test_update_meta_options4(tmp_path: Path):
     )
     config = nens_toml.OurConfig(tmp_path)
     assert config.section_options("meta")["meta_version"] != "1972"
+
+
+def test_write_documentation():
+    nens_toml.write_documentation()

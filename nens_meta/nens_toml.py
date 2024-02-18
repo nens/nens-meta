@@ -40,19 +40,21 @@ KNOWN_SECTIONS["meta"] = [
     ),
     Option(key="package_name", description="Name of the main python package"),
 ]
+KNOWN_SECTIONS["pyprojecttoml"] = []
 KNOWN_SECTIONS["tox"] = [
     Option(key="minimum_coverage", description="Minimum code coverage percentage"),
     Option(
         key="default_environments",
         description="List of envs to run when you call 'tox'",
         value_type=list,
-        default=[],
-    ),
-]
-KNOWN_SECTIONS["pyprojecttoml"] = [
-    Option(
-        key="minimum_python_version",
-        description="Lowest python version that we support, like '3.11'",
+        default=["lint"],
+        default_if_python=[
+            "lint",
+            "py310",
+            "py311",
+            "py312",
+            "coverage",
+        ],
     ),
 ]
 KNOWN_SECTIONS["meta_workflow"] = [

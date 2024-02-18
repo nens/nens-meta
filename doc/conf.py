@@ -31,5 +31,5 @@ html_static_path = ["_static"]
 
 # Markdown settings
 myst_heading_anchors = 2
-myst_enable_extensions = ["colon_fence"]
+myst_enable_extensions = ["colon_fence", "linkify"]
 html_theme = "sphinx_immaterial"
