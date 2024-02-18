@@ -13,7 +13,7 @@ author = "Reinout van Rees"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ["myst_parser"]  # Markdown support
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -26,6 +26,5 @@ html_theme = "alabaster"
 html_static_path = ["_static"]
 
 
-# Custom settings.
-extensions = ["myst_parser"]  # Markdown support
+# Markdown settings
 myst_heading_anchors = 2
