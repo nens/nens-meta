@@ -1,5 +1,5 @@
-[build-system] # Whole section managed by nens-meta
-requires = ["setuptools>=69"]
+[build-system]
+requires = ["setuptools>=69"] # Suggested by nens-meta
 
 [project]
 name = "nens-meta" # Set by nens-meta
@@ -24,23 +24,24 @@ test = [
     "pytest-sugar",
 ]
 
-[tool.setuptools] # Whole section managed by nens-meta
-packages = ["nens_meta"]
+[tool.setuptools]
+packages = ["nens_meta"] # Set by nens-meta
 zip-safe = false
 
-[tool.setuptools.dynamic] # Whole section managed by nens-meta
+[tool.setuptools.dynamic]
 version = {attr = "nens_meta.__version__"}
+
 [project.scripts]
 nens-update-project = "nens_meta.update_project:main"
 
-[tool.pytest.ini_options] # Whole section managed by nens-meta
+[tool.pytest.ini_options]
 log_level = "DEBUG"
-testpaths = ["nens_meta"]
+testpaths = ["nens_meta"] # Set by nens-meta
 
-[tool.coverage.run] # Whole section managed by nens-meta
-source = ["nens_meta"]
+[tool.coverage.run]
+source = ["nens_meta"] # Set by nens-meta
 
-[tool.coverage.report] # Whole section managed by nens-meta
+[tool.coverage.report] # show_missing and skip_empty set by nens-meta
 show_missing = true
 skip_empty = true
 
