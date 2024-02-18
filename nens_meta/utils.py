@@ -5,7 +5,8 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 EXTRA_LINES_MARKER = "### Extra lines below are preserved ###\n"
-EXTRA_LINES_MARKER_MARKDOWN = "<-- Extra lines below are preserved -->\n"
+LEAVE_ALONE_MARKER = "NENS_META_LEAVE_ALONE"
+SUGGESTION_SUFFIX = ".suggestion"
 
 
 def strip_whitespace(content: str) -> str:
@@ -22,41 +23,40 @@ def strip_whitespace(content: str) -> str:
     return content
 
 
-def handle_extra_lines(victim: Path, content: str) -> str:
-    """Return content including extra lines marker and possible extra lines from target"""
-    if victim.suffix == ".md":
-        extra_lines_marker = EXTRA_LINES_MARKER_MARKDOWN
+def _extract_extra_lines(content: str) -> str:
+    """Return content after the extra lines marker"""
+    parts = content.split(EXTRA_LINES_MARKER)
+    if len(parts) > 1:
+        return parts[1]
     else:
-        extra_lines_marker = EXTRA_LINES_MARKER
-    if extra_lines_marker not in content:
-        content += extra_lines_marker
-    if victim.exists():
-        original_content = victim.read_text()
-        parts = original_content.split(extra_lines_marker)
-        if len(parts) > 1:
-            content += parts[1]
-    return content
+        return ""
 
 
-def write_if_changed(victim: Path, content: str):
+def write_if_changed(target: Path, desired_content: str):
     """Write content to file if different, not if it is the same
 
     And create the file if it doesn't exist.
 
     And... look for an end-of-generated-file marker and preserve the contents after it.
 
-    """
-    if victim.exists():
-        action = "Updated"
-        existing_content = victim.read_text()
-        if content == existing_content:
-            logger.debug(f"{victim} remained the same")
-            return
-    else:
-        action = "Created"
+    And... leave it alone if the marker is there.
 
-    victim.write_text(content)
-    logger.info(f"{action} {victim}")
+    """
+    existing_content = target.read_text() if target.exists() else ""
+    leave_alone = LEAVE_ALONE_MARKER in existing_content
+    extra_lines = _extract_extra_lines(existing_content)
+    new_content = EXTRA_LINES_MARKER.join([desired_content, extra_lines])
+
+    if new_content == existing_content:
+        logger.debug(f"{target} remained the same")
+        return
+
+    if leave_alone:
+        logger.debug(f"Leave-alone marger found in {target}")
+        target = target.parent / (target.name + SUGGESTION_SUFFIX)
+
+    target.write_text(new_content)
+    logger.info(f"Wrote {target}")
 
 
 def is_python_project(project: Path) -> bool:

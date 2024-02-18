@@ -9,10 +9,6 @@ from tomlkit.items import Table
 from nens_meta import __version__, utils
 
 META_FILENAME = ".nens.toml"
-LEAVE_ALONE = "leave_alone_FALSE"
-LEAVE_ALONE_EXPLANATION = (
-    "Do not change the file, only put a `*.suggestion` file next to it"
-)
 KNOWN_SECTIONS: dict[str, dict[str, str]] = {}
 # First key is the section name, the second key/value pair is the variable name and the
 # explanation. If the second key ends with "_TRUE"/"_FALSE", this is stripped and will
@@ -23,35 +19,17 @@ KNOWN_SECTIONS["meta"] = {
     "is_python_project_FALSE": "Whether we are a python project",
     "package_name": "Name of the main python package",
 }
-KNOWN_SECTIONS["editorconfig"] = {
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
-}
 KNOWN_SECTIONS["tox"] = {
     "minimum_coverage": "Minimum code coverage percentage",
     "default_environments_LIST": "List of envs to run when you call 'tox'",
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
-}
-KNOWN_SECTIONS["pre-commit-config"] = {
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
-}
-KNOWN_SECTIONS["gitignore"] = {
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
-}
-KNOWN_SECTIONS["development-instructions"] = {
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["pyprojecttoml"] = {
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
     "minimum_python_version": "Lowest python version that we support, like '3.11'",
-}
-KNOWN_SECTIONS["dependabot"] = {
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 KNOWN_SECTIONS["meta_workflow"] = {
     "environments_LIST": "Tox environments that should be called, 'TEST' means 'py*'",
     "main_python_version": "Python version to use for linting and so, like '3.11'",
     "python_versions_LIST": "Python version(s) to run tests as, defaults to [main_python_version]",
-    LEAVE_ALONE: LEAVE_ALONE_EXPLANATION,
 }
 
 logger = logging.getLogger(__name__)
@@ -153,13 +131,11 @@ class OurConfig:
         current["meta_version"] = detected["meta_version"]
         current["meta_version"].comment("Set by nens-meta")
 
+    def has_section_for(self, section_name: str) -> bool:
+        return section_name in KNOWN_SECTIONS
+
     def section_options(self, section_name: str) -> dict:
-        """Return all options configured in a given section
-
-        Later on: perhaps do some filtering on known ones? And add defaults for missing
-        ones?
-
-        """
+        """Return all options configured in a given section, if available."""
         if section_name not in KNOWN_SECTIONS:
             # Force ourselves to document our stuff!
             raise MissingDocumentationError(

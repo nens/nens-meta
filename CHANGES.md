@@ -6,7 +6,6 @@
 - Initial project structure created with cookiecutter and [cookiecutter-python-template](https://github.com/nens/cookiecutter-python-template).
 - Generating an `.editorconfig` file in the target project.
 - Started using a `.nens.toml` file for configuring our behaviour.
-- Files can be excluded with a `leave_alone = true` setting: handy when it is heavily customised.
 - Generating `.gitignore`.
 - Generating `.pre-commit-config.yaml`.
 - Generating `pyproject.toml`. Settings for ruff, zest.releaser, pytest, coverage and vscode.
@@ -16,3 +15,4 @@
 - Using a single github workflow file.
 - Minimum python version can now be configured.
 - Most generated files have an "extra lines marker": lines after it are preserved when re-generating the content.
+- If a file has `NENS_META_LEAVE_ALONE` somewhere in its context, it is left alone by the file generation mechanism.

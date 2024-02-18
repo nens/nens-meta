@@ -42,11 +42,7 @@ class PyprojectToml:
         return tomlkit.parse(self._config_file.read_text())
 
     def write(self):
-        target_name = FILENAME
-        if self._options.get("leave_alone"):
-            logger.warning(f"Leaving {target_name} alone")
-            target_name += ".suggestion"
-        target = self._project / target_name
+        target = self._project / FILENAME
         utils.write_if_changed(target, tomlkit.dumps(self._contents))
 
     def get_or_create_section(self, name: str) -> Table:

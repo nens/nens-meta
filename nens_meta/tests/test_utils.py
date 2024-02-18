@@ -11,12 +11,24 @@ def test_strip_whitespace():
     assert utils.strip_whitespace(content) == expected
 
 
+def test_extract_extra_lines1():
+    # Empty content should be ok
+    assert utils._extract_extra_lines("") == ""
+
+
+def test_extract_extra_lines2():
+    content = f"bla\n{utils.EXTRA_LINES_MARKER}reinout\n"
+    assert utils._extract_extra_lines(content) == "reinout\n"
+
+
 def test_write_if_changed1(tmp_path: Path):
-    # Just write something to a new file.
+    # Just write something to a new file. The extra lines marker will also be in there.
     f = tmp_path / "sample.txt"
     utils.write_if_changed(f, "test")
     assert f.exists()
-    assert f.read_text() == "test"
+    content = f.read_text()
+    assert content.startswith("test")
+    assert utils.EXTRA_LINES_MARKER in content
 
 
 def test_write_if_changed2(tmp_path: Path):
@@ -24,42 +36,27 @@ def test_write_if_changed2(tmp_path: Path):
     f = tmp_path / "sample.txt"
     f.write_text("bla bla")
     utils.write_if_changed(f, "test")
-    assert f.read_text() == "test"
+    content = f.read_text()
+    assert content.startswith("test")
 
 
 def test_write_if_changed3(tmp_path: Path, mocker: MockerFixture):
     # Don't change an existing file if it is not needed.
     f = tmp_path / "sample.txt"
-    f.write_text("test")
+    f.write_text("test\n" + utils.EXTRA_LINES_MARKER)
     writer = mocker.spy(Path, "write_text")
-    utils.write_if_changed(f, "test")
+    utils.write_if_changed(f, "test\n")
     writer.assert_not_called()
 
 
-def test_handle_extra_lines1(tmp_path: Path):
-    # Content should have the extra-lines-marker added.
+def test_write_if_changed4(tmp_path: Path):
+    # Don't write something if the file should be left alone
     f = tmp_path / "sample.txt"
-    f.write_text("")
-    content = "bla\n"
-    result = utils.handle_extra_lines(f, content)
-    assert "###" in result
-
-
-def test_handle_extra_lines2(tmp_path: Path):
-    # Like the test above, but the target file shouldn't have to exist yet.
-    f = tmp_path / "sample.txt"
-    content = "bla\n"
-    result = utils.handle_extra_lines(f, content)
-    assert "###" in result
-
-
-def test_handle_extra_lines3(tmp_path: Path):
-    # Existing file should have its extra lines preserved.
-    f = tmp_path / "sample.txt"
-    f.write_text(f"bla\n{utils.EXTRA_LINES_MARKER}reinout\n")
-    content = "new\n"
-    result = utils.handle_extra_lines(f, content)
-    assert result == f"new\n{utils.EXTRA_LINES_MARKER}reinout\n"
+    f.write_text("bla bla\n# NENS_META_LEAVE_ALONE\n")
+    utils.write_if_changed(f, "test")
+    content = f.read_text()
+    assert content.startswith("bla bla")
+    assert (tmp_path / "sample.txt.suggestion").exists()
 
 
 def test_is_python_project1():
