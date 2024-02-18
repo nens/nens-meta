@@ -89,7 +89,7 @@ class PyprojectToml:
         # Naming convention: the "ensure_" methods mostly take complete ownership over a
         # section, the "adjust_" methods mostly leave everything intact and only changes
         # what's necessary.
-        self.ensure_build_system()
+        self.adjust_build_system()
         self.adjust_project()
         self.ensure_setuptools()
         self.ensure_pytest()
@@ -99,18 +99,15 @@ class PyprojectToml:
         self.adjust_pyright()
         self.remove_old_sections()
 
-    def ensure_build_system(self):
+    def adjust_build_system(self):
         section = self.get_or_create_section("build-system")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
         section["requires"] = ["setuptools>=69"]
+        section["requires"].comment("Suggested by nens-meta")
 
     def adjust_project(self):
         section = self.get_or_create_section("project")
         section["name"] = self._options["project_name"]
         section["name"].comment("Set by nens-meta")
-        section["dynamic"] = ["version"]
-        section["dynamic"].comment("Set by nens-meta")
 
         suggestions = {
             "requires-python": ">=3.11",
@@ -144,53 +141,37 @@ class PyprojectToml:
 
     def ensure_setuptools(self):
         section = self.get_or_create_section("tool.setuptools")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
         # TODO: optional extra packages
         section["packages"] = [self.package_name]
-        section["zip-safe"] = False
-
-        section = self.get_or_create_section("tool.setuptools.dynamic")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
-        version_data = tomlkit.inline_table()
-        version_data.update({"attr": f"{self.package_name}.__version__"})
-        section["version"] = version_data
-        init_file = self._project / self.package_name / "__init__.py"
-        if init_file.exists():
-            if "__version__" not in init_file.read_text():
-                logger.error(f"__version__ not set in {init_file}, add it there")
-        else:
-            logger.error(f"{init_file} doesn't exist, add __version__ in there")
+        section["packages"].comment("Set by nens-meta")
+        if "zip-safe" not in section:
+            section["zip-safe"] = False
 
     def ensure_pytest(self):
         section = self.get_or_create_section("tool.pytest.ini_options")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
-        section["log_level"] = "DEBUG"
         section["testpaths"] = [self.package_name]  # TODO: optional extra packages
+        section["testpaths"].comment("Set by nens-meta")
+        if "log_level" not in section:
+            section["log_level"] = "DEBUG"
+            section["log_level"].comment("Suggested by nens-meta")
 
     def ensure_coverage(self):
         section = self.get_or_create_section("tool.coverage.run")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
         section["source"] = [self.package_name]  # TODO: optional extra packages
+        section["source"].comment("Set by nens-meta")
 
         section = self.get_or_create_section("tool.coverage.report")
-        section.clear()
-        section.comment("Whole section managed by nens-meta")
+        section.comment("show_missing and skip_empty set by nens-meta")
         section["show_missing"] = True
         section["skip_empty"] = True
 
     def adjust_ruff(self):
         section = self.get_or_create_section("tool.ruff")
-        section.comment("Required: target-version")
         if "target-version" not in section:
             section["target-version"] = "py38"
             section["target-version"].comment("Suggested by nens-meta")
 
         section = self.get_or_create_section("tool.ruff.lint")
-        section.comment("Required: select")
         if "select" not in section:
             section["select"] = ["E4", "E7", "E9", "F", "I"]
             section["select"].comment(
