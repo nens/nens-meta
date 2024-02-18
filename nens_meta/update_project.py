@@ -146,15 +146,7 @@ class ToxIni(TemplatedFile):
 
     def envlist(self) -> str:
         """Return formatted indented envlist, possibly with default content"""
-        environments = (
-            self.our_options["default_environments"] if self.our_options else []
-        )
-        if not environments:
-            environments.append("lint")
-            if self.meta_options["is_python_project"]:
-                environments.append("py310")
-                environments.append("py312")
-                environments.append("coverage")
+        environments = self.our_options["default_environments"]
         lines = [f"    {environment}" for environment in environments]
         return "\n".join(lines)
 
