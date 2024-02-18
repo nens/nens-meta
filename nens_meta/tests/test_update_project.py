@@ -37,26 +37,6 @@ def test_editor_config2(tmp_path: Path):
     assert "geojson" in (tmp_path / ".editorconfig").read_text()
 
 
-def test_editor_config3(tmp_path: Path):
-    # Don't change the file if told so.
-    (tmp_path / ".nens.toml").write_text(
-        """
-    [editorconfig]
-    leave_alone = true
-    """
-    )
-    (tmp_path / ".editorconfig").write_text(
-        """
-    hurray, totally invalid line
-    which would normally be overwritten
-    """
-    )
-    our_config = nens_toml.OurConfig(tmp_path)
-    editor_config = update_project.Editorconfig(tmp_path, our_config)
-    editor_config.write()
-    assert "hurray" in (tmp_path / ".editorconfig").read_text()
-
-
 def test_tox_ini1(tmp_path: Path):
     # No config, check file contents.
     nens_toml.create_if_missing(tmp_path)

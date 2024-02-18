@@ -70,37 +70,37 @@ def test_section_options_boolean1(tmp_path: Path):
     # Handle boolean values (those have _TRUE or _FALSE prepended)
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
-    [editorconfig]
-    leave_alone = true
+    [meta]
+    is_python_project = true
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert config.section_options("editorconfig")["leave_alone"] is True
+    assert config.section_options("meta")["is_python_project"] is True
 
 
 def test_section_options_boolean2(tmp_path: Path):
     # Handle default for boolean values
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
-    [editorconfig]
-    # leave_alone has a default of false
+    [meta]
+    # is_python_project has a default of false
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert "year" not in config.section_options("editorconfig").keys()
+    assert config.section_options("meta")["is_python_project"] is False
 
 
 def test_section_options_boolean3(tmp_path: Path):
     # Complain if a boolean value has a non-boolean value.
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
-    [editorconfig]
-    leave_alone = "1972"
+    [meta]
+    is_python_project = "1972"
     """
     )
     config = nens_toml.OurConfig(tmp_path)
     with pytest.raises(ValueError):
-        config.section_options("editorconfig")["leave_alone"]
+        config.section_options("meta")["is_python_project"]
 
 
 def test_key_name1():
