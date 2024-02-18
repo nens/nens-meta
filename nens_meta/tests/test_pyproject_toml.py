@@ -162,3 +162,7 @@ def test_move_outdated_files2(empty_python_config: pyproject_toml.PyprojectToml)
     assert not example.exists()
     assert example2.exists()
     assert "current" in example2.read_text()
+
+
+def test_write_documentation():
+    pyproject_toml.write_documentation()
