@@ -18,6 +18,7 @@ class Option:
     description: str
     value_type: type = str
     default: Any = ""
+    default_if_python: Any = ""
 
 
 META_FILENAME = ".nens.toml"
@@ -58,7 +59,14 @@ KNOWN_SECTIONS["meta_workflow"] = [
         key="environments",
         description="Tox environments that should be called, 'TEST' means 'py*'",
         value_type=list,
-        default=[],
+        default=["format", "lint"],
+        default_if_python=[
+            "lint",
+            "coverage",
+            "dependencies",
+            "dependencies-graph",
+            "TEST",
+        ],
     ),
     Option(
         key="main_python_version",
@@ -70,6 +78,7 @@ KNOWN_SECTIONS["meta_workflow"] = [
         description="Python version(s) to run tests as",
         value_type=list,
         default=["3.11"],
+        default_if_python=["3.10", "3.11", "3.12"],
     ),
 ]
 
@@ -171,7 +180,14 @@ class OurConfig:
             section = {}
         options: dict[str, str | bool | list] = {}
         for option in KNOWN_SECTIONS[section_name]:
-            value = section.get(option.key, copy.deepcopy(option.default))
+            if (
+                self._contents.get("meta")
+                and self._contents.get("meta")["is_python_project"]
+            ):
+                default = option.default_if_python or option.default
+            else:
+                default = option.default
+            value = section.get(option.key, copy.deepcopy(default))
             if not isinstance(value, option.value_type):
                 raise ValueError(
                     f"{option.key} should be of type {option.value_type}, not {type(value)}"

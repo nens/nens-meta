@@ -178,15 +178,7 @@ class MetaWorkflowYml(TemplatedFile):
     section_name = "meta_workflow"
 
     def jobs(self) -> list[dict]:
-        environments = self.our_options["environments"] if self.our_options else []
-        if not environments:
-            environments.append("lint")
-            if self.meta_options["is_python_project"]:
-                environments.append("coverage")
-                environments.append("dependencies")
-                environments.append("dependencies-graph")
-                environments.append("TEST")
-
+        environments = self.our_options["environments"]
         result = []
 
         main_python_version = self.our_options["main_python_version"]
