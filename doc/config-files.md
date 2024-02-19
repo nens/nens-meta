@@ -39,7 +39,7 @@ See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/ for th
 
 There are many settings in this file, so nens-meta leaves it **mostly** alone so that you can have your own custom content in there. Many tools have their configuration in here:
 
-- coverage
+- coverage, see https://coverage.readthedocs.io/en/latest/config.html .
 - pyright/pylance
 - pytest, see https://docs.pytest.org/en/stable/reference/customize.html .
 - ruff, see https://docs.astral.sh/ruff/configuration/ for defaults.
