@@ -20,151 +20,22 @@ on:
 
 jobs:
   # You can customise the list of environments in .nens.toml, [meta_workflow] > environments.
-  lint:
-    name: lint
+  tox:
+    name: tox
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
           - python-version: "3.11"
             tox-env: "lint"
-    steps:
-
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: python -m pip install tox
-      - name: Actually run ${{ matrix.tox-env }}
-        run: |
-            touch for_step_summary.md
-            tox -e ${{ matrix.tox-env }}
-            cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
-
-  coverage:
-    name: coverage
-    runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-        # You can customise the python versions in .nens.toml:
-        # [workflow_meta] > main_python_version and/or python_versions.
-        include:
           - python-version: "3.11"
             tox-env: "coverage"
-    steps:
-
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: python -m pip install tox
-      - name: Actually run ${{ matrix.tox-env }}
-        run: |
-            touch for_step_summary.md
-            tox -e ${{ matrix.tox-env }}
-            cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
-
-  dependencies:
-    name: dependencies
-    runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-        # You can customise the python versions in .nens.toml:
-        # [workflow_meta] > main_python_version and/or python_versions.
-        include:
           - python-version: "3.11"
             tox-env: "dependencies"
-    steps:
-
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: python -m pip install tox
-      - name: Actually run ${{ matrix.tox-env }}
-        run: |
-            touch for_step_summary.md
-            tox -e ${{ matrix.tox-env }}
-            cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
-
-  dependencies-graph:
-    name: dependencies-graph
-    runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-        # You can customise the python versions in .nens.toml:
-        # [workflow_meta] > main_python_version and/or python_versions.
-        include:
           - python-version: "3.11"
             tox-env: "dependencies-graph"
-    steps:
-
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: python -m pip install tox
-      - name: Actually run ${{ matrix.tox-env }}
-        run: |
-            touch for_step_summary.md
-            tox -e ${{ matrix.tox-env }}
-            cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
-
-  test:
-    name: test
-    runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version: ["3.11", "3.12"]
-        # You can customise the python versions in .nens.toml:
-        # [workflow_meta] > main_python_version and/or python_versions.
-        include:
           - python-version: "3.11"
             tox-env: "py311"
           - python-version: "3.12"

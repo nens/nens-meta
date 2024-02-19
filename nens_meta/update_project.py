@@ -161,7 +161,7 @@ class MetaWorkflowYml(TemplatedFile):
     target_name = ".github/workflows/nens-meta.yml"
     section_name = "meta_workflow"
 
-    def jobs(self) -> list[dict]:
+    def python_tox_pairs(self) -> list[dict]:
         environments = self.our_options["environments"]
         result = []
 
@@ -170,8 +170,7 @@ class MetaWorkflowYml(TemplatedFile):
 
         for environment in environments:
             if environment == "TEST":
-                name = "test"
-                python_tox_pairs = [
+                pairs = [
                     {
                         "python": python_version,
                         "tox": f"py{python_version.replace('.', '')}",
@@ -179,25 +178,14 @@ class MetaWorkflowYml(TemplatedFile):
                     for python_version in python_versions
                 ]
             else:
-                name = environment
-                python_tox_pairs = [{"python": main_python_version, "tox": environment}]
-
-            quoted_python_versions = [
-                ('"' + pair["python"] + '"') for pair in python_tox_pairs
-            ]
-            python_version_string = "[" + ", ".join(quoted_python_versions) + "]"
-            result.append(
-                {
-                    "name": name,
-                    "python_tox_pairs": python_tox_pairs,
-                    "python_versions_string": python_version_string,
-                }
-            )
+                pairs = [{"python": main_python_version, "tox": environment}]
+            result += pairs
+        logger.debug(f"Adding the following pairs to the test matrix: {result}")
         return result
 
     def extra_options(self) -> dict:
         return {
-            "jobs": self.jobs(),
+            "python_tox_pairs": self.python_tox_pairs(),
             "workflow_name": "nens-meta",
         }
 

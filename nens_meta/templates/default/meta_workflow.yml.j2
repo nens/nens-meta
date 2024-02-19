@@ -15,17 +15,15 @@ on:
 
 jobs:
   # You can customise the list of environments in .nens.toml, [meta_workflow] > environments.
-{% for job in jobs %}
-  {{ job.name }}:
-    name: {{ job.name }}
+  tox:
+    name: tox
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: {{ job.python_versions_string }}
         # You can customise the python versions in .nens.toml:
         # [workflow_meta] > main_python_version and/or python_versions.
         include:
-{%      for pair in job.python_tox_pairs %}
+{%      for pair in python_tox_pairs %}
           - python-version: "{{ pair.python }}"
             tox-env: "{{ pair.tox }}"
 {%      endfor %}
@@ -52,5 +50,3 @@ jobs:
             tox -e ${{ matrix.tox-env }}
             cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
 {% endraw %}
-
-{% endfor %}
