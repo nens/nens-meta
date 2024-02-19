@@ -59,7 +59,7 @@ commands =
     coverage run -m pytest --no-header --tb line
     coverage xml
     coverage html
-    sh -c 'coverage report --format markdown > for_step_summary.md'
+    - sh -c 'coverage report --format markdown > for_step_summary.md'
     coverage report {% if minimum_coverage %}--fail-under {{ minimum_coverage }}{% endif %} --format text
 
 # Adjust minimum coverage in .nens.toml, [tox] > minimum_coverage
@@ -89,7 +89,7 @@ commands =
     dependencychecker
 
 [testenv:dependencies-graph]
-# Probably only runs on linux/mac?
+# Only runs on linux/mac for now. The '-' before 'sh' marks it as an allowed failure.
 description = Generate a graph out of the dependencies of the package
 skip_install = false
 allowlist_externals =
@@ -98,8 +98,8 @@ deps =
     pipdeptree>=2.5.1
     graphviz  # optional dependency of pipdeptree
 commands =
-    sh -c 'echo "\`\`\`mermaid" > dependencies.md'
-    sh -c 'pipdeptree --packages {{ project_name }} --mermaid >> dependencies.md'
-    sh -c 'echo "\`\`\`" >> dependencies.md'
-    sh -c 'cp dependencies.md for_step_summary.md'
+    - sh -c 'echo "\`\`\`mermaid" > dependencies.md'
+    - sh -c 'pipdeptree --packages {{ project_name }} --mermaid >> dependencies.md'
+    - sh -c 'echo "\`\`\`" >> dependencies.md'
+    - sh -c 'cp dependencies.md for_step_summary.md'
 {% endif %}
