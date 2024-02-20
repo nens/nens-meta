@@ -1,6 +1,12 @@
 # Changelog of nens-meta
 
 
+## 0.5 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 0.4 (2024-02-20)
 
 
