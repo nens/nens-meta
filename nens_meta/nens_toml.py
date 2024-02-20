@@ -62,7 +62,7 @@ KNOWN_SECTIONS["meta_workflow"] = [
         key="environments",
         description="Tox environments that should be called, 'TEST' means 'py*'",
         value_type=list,
-        default=["format", "lint"],
+        default=["lint"],
         default_if_python=[
             "lint",
             "coverage",
