@@ -73,3 +73,11 @@ def is_python_project(project: Path) -> bool:
             logger.debug(f"{indicator} found, assuming it is a python project")
             return True
     return False
+
+
+def uses_ansible(project: Path) -> bool:
+    """Return whether we detect an ansible dir"""
+    if (project / "ansible").exists():
+        logger.debug("ansible/ dir found, assuming we use ansible")
+        return True
+    return False

@@ -38,6 +38,12 @@ KNOWN_SECTIONS["meta"] = [
         default=False,
         value_type=bool,
     ),
+    Option(
+        key="uses_ansible",
+        description="Whether we have an ansible dir",
+        default=False,
+        value_type=bool,
+    ),
     Option(key="package_name", description="Name of the main python package"),
 ]
 KNOWN_SECTIONS["pyprojecttoml"] = []
@@ -132,6 +138,7 @@ def detected_meta_values(project: Path) -> dict[str, str | bool | list]:
     """Return values we can detect about the project, normally set in [meta]"""
     detected: dict[str, str | bool | list] = {}
     detected["is_python_project"] = utils.is_python_project(project)
+    detected["uses_ansible"] = utils.uses_ansible(project)
     detected["meta_version"] = __version__
     name = project.resolve().name
     detected["project_name"] = name
