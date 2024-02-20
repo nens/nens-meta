@@ -5,7 +5,7 @@
 
 
 - Removed "tox -e format", we only use "tox -e lint" in practice.
-
+- Detecting `ansible/` directory and adding ansible-lint to the pre-commit config if found.
 
 ## 0.3 (2024-02-20)
 

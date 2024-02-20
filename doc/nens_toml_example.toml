@@ -5,6 +5,8 @@ meta_version = ''
 project_name = ''
 # Whether we are a python project
 is_python_project = false
+# Whether we have an ansible dir
+uses_ansible = false
 # Name of the main python package
 package_name = ''
 
@@ -20,7 +22,7 @@ default_environments = ['lint']
 
 [meta_workflow]
 # Tox environments that should be called, 'TEST' means 'py*'
-environments = ['format', 'lint']
+environments = ['lint']
 # In case of a python project:
 # environments = ['lint', 'coverage', 'TEST']
 # Python version to use for linting and so

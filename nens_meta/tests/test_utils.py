@@ -68,3 +68,14 @@ def test_is_python_project1():
 def test_is_python_project2(tmp_path: Path):
     # An empty dir is not a python project
     assert not utils.is_python_project(tmp_path)
+
+
+def test_uses_ansible1():
+    # We ourselves have no ansible/ dir.
+    ourselves = Path(__file__).parent.parent.parent
+    assert not utils.uses_ansible(ourselves)
+
+
+def test_uses_ansible2(tmp_path: Path):
+    (tmp_path / "ansible").mkdir()
+    assert utils.uses_ansible(tmp_path)
