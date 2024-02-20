@@ -1,6 +1,12 @@
 # Changelog of nens-meta
 
 
+## 0.4 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 0.3 (2024-02-20)
 
 - In `tox.ini`, marking `sh` commands with a dash. This allows failure of those commands on windows. Later on a python wrapper can be written.
