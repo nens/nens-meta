@@ -79,6 +79,13 @@ $ tox -e lint  # "Lint" calls pre-commit
 Pre-commit runs everything from ruff to spaces-at-the-end-of-lines checkers to yaml/toml syntax checkers. The configuration happens in [.pre-commit-config.yaml](./config-files.md#pre-commit-configyaml).
 
 
+# Ansible-lint
+
+When an `ansible/` dir is found, [ansible-lint](https://ansible.readthedocs.io/projects/lint) is added to the pre-commit config.
+
+See [](config-files.md#requirementsyml) for necessary configuration.
+
+
 ## Github actions
 
 In the `main/master` branch and in pull requests, a `nens-meta` github action is automatically run. What gets tested/checked there is is the same as what should be done if you just run `tox` locally.

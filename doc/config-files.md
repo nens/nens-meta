@@ -84,6 +84,21 @@ This runs most of what's in `tox.ini`. There is a separate "job" for every item:
 Some steps generate summary output that's visible in github. Like the coverage.
 
 
-## `requirementx.txt`
+## `requirements.txt`
 
 We really need a line like `-e .[test]` in there.
+
+
+## `requirements.yml`
+
+If you use ansible, you probably use modules like `community.general`. If [](tools.md#ansible-lint) starts complaining , add such modules to `requirements.yml. An example:
+
+```yaml
+# Extra ansible packages (used to get ansible-lint to find everything in
+# github actions).
+---
+collections:
+  - name: community.general
+    version: ">=8.3.0"
+  - name: ansible.posix
+```
