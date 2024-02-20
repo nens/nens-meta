@@ -66,8 +66,6 @@ KNOWN_SECTIONS["meta_workflow"] = [
         default_if_python=[
             "lint",
             "coverage",
-            "dependencies",
-            "dependencies-graph",
             "TEST",
         ],
     ),
@@ -176,15 +174,15 @@ class OurConfig:
             self._contents.append("meta", tomlkit.table())
         current: Table = self._contents["meta"]  # type: ignore
         detected = detected_meta_values(self._project)
+        must_be_set = ["meta_version"]
         for key, value in detected.items():
             if key not in current:
                 current[key] = value
-                if not isinstance(value, bool):
-                    # TODO: .comment doesn't work for boolean values, strangely enough.
-                    current[key].comment("Suggested by nens-meta")
-        # Make sure our version is correctly recorded
-        current["meta_version"] = detected["meta_version"]
-        current["meta_version"].comment("Set by nens-meta")
+                logger.info(f".nens.toml: suggesting [meta]->{key}")
+            if key in must_be_set:
+                if current["meta_version"] != detected["meta_version"]:
+                    current["meta_version"] = detected["meta_version"]
+                    logger.info(".nens.toml: changing [meta]->meta_version")
 
     def has_section_for(self, section_name: str) -> bool:
         return section_name in KNOWN_SECTIONS

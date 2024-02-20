@@ -3,10 +3,11 @@
 
 ## 0.3 (unreleased)
 
-
 - In `tox.ini`, marking `sh` commands with a dash. This allows failure of those commands on windows. Later on a python wrapper can be written.
 - Using github action's "matrix include" to explicitly set python/tox_env combinations. This results in a much shorter workflow file as all the tox setup steps are the same.
-
+- Simplification: removed some advanced environments from `tox.ini` to keep the default generated file more clear.
+- Simplification: removed header from most of the generated files. We don't need to be that "intrusive".
+- Simplification: `.nens.toml` and `pyproject.toml` are handled in a much less invasive way. Removed most of the comments. Doing suggestions instead of changes. Etcetera.
 
 ## 0.2 (2024-02-19)
 
