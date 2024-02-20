@@ -1,6 +1,4 @@
 {{ header }}
-
-# Note: the setup is mostly copied from https://github.com/plone/meta/tree/main/config/default
 name: {{ workflow_name }}
 on:
   push:
@@ -14,14 +12,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  # You can customise the list of environments in .nens.toml, [meta_workflow] > environments.
+  {# You can customise the list of environments in .nens.toml, [meta_workflow] > environments. #}
   tox:
     name: tox
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        # You can customise the python versions in .nens.toml:
-        # [workflow_meta] > main_python_version and/or python_versions.
+        {# You can customise the python versions in .nens.toml: #}
+        {# [workflow_meta] > main_python_version and/or python_versions. #}
         include:
 {%      for pair in python_tox_pairs %}
           - python-version: "{{ pair.python }}"
