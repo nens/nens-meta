@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.3 (unreleased)
+## 0.3 (2024-02-20)
 
 - In `tox.ini`, marking `sh` commands with a dash. This allows failure of those commands on windows. Later on a python wrapper can be written.
 - Using github action's "matrix include" to explicitly set python/tox_env combinations. This results in a much shorter workflow file as all the tox setup steps are the same.
