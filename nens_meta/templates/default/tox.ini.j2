@@ -26,12 +26,6 @@ skip_install = true
 deps = pre-commit
 commands = pre-commit run --all
 
-[testenv:format]
-description = Automatically reformat code
-skip_install = true
-deps = ruff
-commands = ruff format
-
 {% if is_python_project %}
 [testenv:test]
 description = Run the tests with the default python

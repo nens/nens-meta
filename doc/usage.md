@@ -22,9 +22,8 @@ This runs the syntax checkers, the tests and whatever is most needed. In [.nens.
 There are some commands/environments that are standard that you can run separately:
 
 ```console
-$ tox -e format  # Just formatting of your code
-$ tox -e lint    # Linting, more serious checks
-$ tox -e test    # Run the tests
+$ tox -e lint    # Linting (checks, formatting)
+$ tox -e test    # Run the tests, if available
 ```
 
 Anyway, just run "tox" unless it is especially handy to select an individual environment. Of course you can also just run `pytest -x` or `ruff check` or `terraform fmt` by hand, the setup aims to support that.

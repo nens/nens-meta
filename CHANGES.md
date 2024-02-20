@@ -4,7 +4,7 @@
 ## 0.4 (unreleased)
 
 
-- Nothing changed yet.
+- Removed "tox -e format", we only use "tox -e lint" in practice.
 
 
 ## 0.3 (2024-02-20)
