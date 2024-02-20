@@ -66,8 +66,6 @@ KNOWN_SECTIONS["meta_workflow"] = [
         default_if_python=[
             "lint",
             "coverage",
-            "dependencies",
-            "dependencies-graph",
             "TEST",
         ],
     ),
