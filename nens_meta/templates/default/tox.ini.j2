@@ -8,7 +8,7 @@ min_version = 4.4.0
 # The idea is that just running "tox" is equivalent to the checks that happen on github.
 envlist =
 {{ envlist }}
-# Adjust envlist in .nens.toml, [tox] > default_environments (which is a list).
+{# Adjust envlist in .nens.toml, [tox] > default_environments (which is a list). #}
 
 {% if is_python_project %}
 [testenv]
@@ -16,90 +16,39 @@ description = Run the tests
 use_develop = true
 skip_install = false
 constrain_package_deps = true
-extras =
-    test
-commands =
-    pytest --no-header --tb line
-
-[testenv:test]
-description = Run the tests with the default python
+extras = test
+commands = pytest --no-header --tb line
 {% endif %}
 
 [testenv:lint]
 description = Run formatters/linters for basic code sanity and neatness
 skip_install = true
-deps =
-    pre-commit
-commands =
-    pre-commit run --all
+deps = pre-commit
+commands = pre-commit run --all
 
-# The commands/environments below are for easily calling them from github actions with a
-# fixed name. And for a bit of automation.
 [testenv:format]
 description = Automatically reformat code
 skip_install = true
-deps =
-    ruff
-commands =
-    ruff format
+deps = ruff
+commands = ruff format
 
 {% if is_python_project %}
+[testenv:test]
+description = Run the tests with the default python
+
 [testenv:coverage]
 description = Get a test coverage report
 use_develop = true
 skip_install = false
 constrain_package_deps = true
-allowlist_externals =
-    sh
-deps =
-    coverage
-extras =
-    test
+allowlist_externals = sh
+deps = coverage
+extras = test
 commands =
     coverage run -m pytest --no-header --tb line
     coverage xml
     coverage html
     - sh -c 'coverage report --format markdown > for_step_summary.md'
     coverage report {% if minimum_coverage %}--fail-under {{ minimum_coverage }}{% endif %} --format text
-
-# Adjust minimum coverage in .nens.toml, [tox] > minimum_coverage
-{% endif %}
-
-{% if is_python_project %}
-# Reinout suspects the next ones can come in handy, even though they're not enabled by
-# default.
-[testenv:release-check]
-description = Ensure that the distribution is ready to release
-skip_install = true
-deps =
-    twine
-    build
-commands =
-    python -m build --sdist
-    twine check dist/*
-
-[testenv:dependencies]
-description = Check if the package defines all its dependencies
-skip_install = true
-deps =
-    build
-    z3c.dependencychecker>=2.14.3
-commands =
-    python -m build --sdist
-    dependencychecker
-
-[testenv:dependencies-graph]
-# Only runs on linux/mac for now. The '-' before 'sh' marks it as an allowed failure.
-description = Generate a graph out of the dependencies of the package
-skip_install = false
-allowlist_externals =
-    sh
-deps =
-    pipdeptree>=2.5.1
-    graphviz  # optional dependency of pipdeptree
-commands =
-    - sh -c 'echo "\`\`\`mermaid" > dependencies.md'
-    - sh -c 'pipdeptree --packages {{ project_name }} --mermaid >> dependencies.md'
-    - sh -c 'echo "\`\`\`" >> dependencies.md'
-    - sh -c 'cp dependencies.md for_step_summary.md'
+    {# Adjust minimum coverage in .nens.toml, [tox] > minimum_coverage #}
 {% endif %}
