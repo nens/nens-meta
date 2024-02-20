@@ -3,6 +3,7 @@
 import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any
 
 import tomlkit
 from tomlkit.items import Table
@@ -86,40 +87,44 @@ class PyprojectToml:
         sections.
         """
 
-        # Naming convention: the "ensure_" methods mostly take complete ownership over a
-        # section, the "adjust_" methods mostly leave everything intact and only changes
-        # what's necessary.
         self.adjust_build_system()
         self.adjust_project()
         self.adjust_setuptools()
-        self.ensure_pytest()
-        self.ensure_coverage()
+        self.adjust_pytest()
+        self.adjust_coverage()
         self.adjust_ruff()
         self.adjust_zestreleaser()
         self.adjust_pyright()
         self.remove_old_sections()
 
+    def _suggest(self, section_name: str, key: str, value: Any, strongly=False):
+        section = self.get_or_create_section(section_name)
+        if key not in section:
+            section[key] = value
+            logger.info(f"pyproject.toml: suggesting [{section_name}]->{key}")
+        if strongly:
+            if section[key] != value:
+                logger.info(f"    Note: our suggested value: {value}")
+
+    def _force(self, section_name: str, key: str, value: Any):
+        section = self.get_or_create_section(section_name)
+        if section.get(key) != value:
+            section[key] = value
+            logger.info(f"pyproject.toml: setting [{section_name}]->{key}")
+
     def adjust_build_system(self):
-        section = self.get_or_create_section("build-system")
-        section["requires"] = ["setuptools>=69"]
-        section["requires"].comment("Suggested by nens-meta")
+        section_name = "build-system"
+        self._suggest(section_name, "requires", ["setuptools>=69"])
 
     def adjust_project(self):
-        section = self.get_or_create_section("project")
-        section["name"] = self._options["project_name"]
-        section["name"].comment("Set by nens-meta")
+        section_name = "project"
+        self._force(section_name, "name", self._options["project_name"])
 
-        suggestions = {
-            "requires-python": ">=3.11",
-            "dependencies": [],
-            "description": "I really need to set this",
-            "authors": [],
-            "readme": "README.md",
-        }
-        for suggestion in suggestions:
-            if suggestion not in section:
-                section[suggestion] = suggestions[suggestion]
-                section[suggestion].comment("Suggested by nens-meta")
+        self._suggest(section_name, "requires-python", ">=3.11")
+        self._suggest(section_name, "dependencies", [])
+        self._suggest(section_name, "description", "I really need to set this")
+        self._suggest(section_name, "authors", [])
+        self._suggest(section_name, "readme", "README.md")
 
         section = self.get_or_create_section("project.optional-dependencies")
         if "test" not in section:
@@ -140,58 +145,46 @@ class PyprojectToml:
         return name
 
     def adjust_setuptools(self):
-        section = self.get_or_create_section("tool.setuptools")
+        section_name = "tool.setuptools"
         # TODO: optional extra packages
-        section["packages"] = [self.package_name]
-        section["packages"].comment("Set by nens-meta")
-        if "zip-safe" not in section:
-            section["zip-safe"] = False
+        self._suggest(section_name, "packages", [self.package_name], strongly=True)
+        self._suggest(section_name, "zip-safe", False)
 
-    def ensure_pytest(self):
-        section = self.get_or_create_section("tool.pytest.ini_options")
-        section["testpaths"] = [self.package_name]  # TODO: optional extra packages
-        section["testpaths"].comment("Set by nens-meta")
-        if "log_level" not in section:
-            section["log_level"] = "DEBUG"
-            section["log_level"].comment("Suggested by nens-meta")
+    def adjust_pytest(self):
+        section_name = "tool.pytest.ini_options"
+        self._force(
+            section_name, "testpaths", [self.package_name]
+        )  # TODO: optional extra packages
+        self._suggest(section_name, "log_level", "DEBUG")
 
-    def ensure_coverage(self):
-        section = self.get_or_create_section("tool.coverage.run")
-        section["source"] = [self.package_name]  # TODO: optional extra packages
-        section["source"].comment("Set by nens-meta")
+    def adjust_coverage(self):
+        section_name = "tool.coverage.run"
+        self._force(
+            section_name, "source", [self.package_name]
+        )  # TODO: optional extra packages
 
-        section = self.get_or_create_section("tool.coverage.report")
-        section.comment("show_missing and skip_empty set by nens-meta")
-        section["show_missing"] = True
-        section["skip_empty"] = True
+        section_name = "tool.coverage.report"
+        self._force(section_name, "show_missing", True)
+        self._force(section_name, "skip_empty", True)
 
     def adjust_ruff(self):
-        section = self.get_or_create_section("tool.ruff")
-        if "target-version" not in section:
-            section["target-version"] = "py38"
-            section["target-version"].comment("Suggested by nens-meta")
+        section_name = "tool.ruff"
+        self._suggest(section_name, "target-version", "py38")
 
-        section = self.get_or_create_section("tool.ruff.lint")
-        if "select" not in section:
-            section["select"] = ["E4", "E7", "E9", "F", "I"]
-            section["select"].comment(
-                "Suggested by nens-meta, please add 'UP' and 'C901'"
-            )
+        section_name = "tool.ruff.lint"
+        self._suggest(section_name, "select", ["E4", "E7", "E9", "F", "I", "UP"])
 
     def adjust_pyright(self):
-        section = self.get_or_create_section("tool.pyright")
-        section["include"] = [self.package_name]  # TODO: optional extra packages
-        section["include"].comment("Set by nens-meta")
-        section["venvPath"] = "."
-        section["venvPath"].comment("Set by nens-meta")
-        section["venv"] = ".venv"
-        section["venv"].comment("Set by nens-meta")
+        section_name = "tool.pyright"
+        self._force(
+            section_name, "include", [self.package_name]
+        )  # TODO: optional extra packages
+        self._suggest(section_name, "venvPath", ".", strongly=True)
+        self._suggest(section_name, "venv", ".venv", strongly=True)
 
     def adjust_zestreleaser(self):
-        section = self.get_or_create_section("tool.zest-releaser")
-        if "release" not in section:
-            section["release"] = False
-            section.comment("Suggested by nens-meta, adjust from setup.cfg if needed")
+        section_name = "tool.zest-releaser"
+        self._suggest(section_name, "release", False)
 
     def move_outdated_files(self):
         """There are various old config files that have to be taken care off
@@ -221,7 +214,7 @@ class PyprojectToml:
         if tool_super_section:
             if "isort" in tool_super_section:
                 tool_super_section.remove("isort")
-                logger.debug("Removed [tool.isort] section")
+                logger.info("Removed [tool.isort] section")
 
 
 if __name__ == "__main__":

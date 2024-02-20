@@ -95,7 +95,7 @@ def test_ensure_setuptools1pytest(empty_python_config: pyproject_toml.PyprojectT
     empty_python_config._options = {
         "package_name": "pietje_klaasje",
     }
-    empty_python_config.ensure_pytest()
+    empty_python_config.adjust_pytest()
     empty_python_config.write()
     assert "log_level" in empty_python_config._config_file.read_text()
     assert '["pietje_klaasje"]' in empty_python_config._config_file.read_text()
@@ -105,7 +105,7 @@ def test_ensure_coverage(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config._options = {
         "package_name": "pietje_klaasje",
     }
-    empty_python_config.ensure_coverage()
+    empty_python_config.adjust_coverage()
     empty_python_config.write()
     assert "source" in empty_python_config._config_file.read_text()
     assert "pietje_klaasje" in empty_python_config._config_file.read_text()
