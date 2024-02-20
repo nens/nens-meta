@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=69"] # Suggested by nens-meta
 
 [project]
 name = "nens-meta" # Set by nens-meta
