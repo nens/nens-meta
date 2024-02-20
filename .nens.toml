@@ -2,7 +2,7 @@
 is_python_project = true
 meta_version = "0.3.dev0" # Set by nens-meta
 project_name = "nens-meta"
-package_name = "nens_meta" # Suggested by nens-meta
+package_name = "nens_meta"
 
 [tox]
 default_environments = ["lint", "py311", "py312", "doc", "coverage"]
