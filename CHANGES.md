@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.4 (unreleased)
+## 0.4 (2024-02-20)
 
 
 - Removed "tox -e format", we only use "tox -e lint" in practice.
