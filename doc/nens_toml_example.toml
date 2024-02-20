@@ -22,7 +22,7 @@ default_environments = ['lint']
 # Tox environments that should be called, 'TEST' means 'py*'
 environments = ['format', 'lint']
 # In case of a python project:
-# environments = ['lint', 'coverage', 'dependencies', 'dependencies-graph', 'TEST']
+# environments = ['lint', 'coverage', 'TEST']
 # Python version to use for linting and so
 main_python_version = '3.11'
 # Python version(s) to run tests as
