@@ -79,7 +79,7 @@ $ tox -e lint  # "Lint" calls pre-commit
 Pre-commit runs everything from ruff to spaces-at-the-end-of-lines checkers to yaml/toml syntax checkers. The configuration happens in [.pre-commit-config.yaml](./config-files.md#pre-commit-configyaml).
 
 
-# Ansible-lint
+## Ansible-lint
 
 When an `ansible/` dir is found, [ansible-lint](https://ansible.readthedocs.io/projects/lint) is added to the pre-commit config.
 
