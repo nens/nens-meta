@@ -145,10 +145,9 @@ class PyprojectToml:
         return name
 
     def adjust_setuptools(self):
-        section_name = "tool.setuptools"
+        section_name = "tool.setuptools.packages.find"
         # TODO: optional extra packages
-        self._suggest(section_name, "packages", [self.package_name], strongly=True)
-        self._suggest(section_name, "zip-safe", False)
+        self._suggest(section_name, "where", [self.package_name], strongly=True)
 
     def adjust_pytest(self):
         section_name = "tool.pytest.ini_options"
