@@ -4,7 +4,7 @@
 ## 0.5 (unreleased)
 
 
-- Nothing changed yet.
+- Run workflows also on tags (so that you can have an extra release step).
 
 
 ## 0.4 (2024-02-20)
