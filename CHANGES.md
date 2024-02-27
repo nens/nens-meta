@@ -4,7 +4,7 @@
 ## 0.5 (unreleased)
 
 
-- Run workflows also on tags (so that you can have an extra release step).
+- Added `build_package` tox environemnt for building and checking a python package.
 
 
 ## 0.4 (2024-02-20)
