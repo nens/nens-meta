@@ -14,9 +14,8 @@ readme = "README.md"
 [project.optional-dependencies]
 test = ["pytest"] # pytest added by nens-meta
 
-[tool.setuptools]
-packages = ["example_project"]
-zip-safe = false
+[tool.setuptools.packages.find]
+where = ["example_project"]
 
 [tool.pytest.ini_options]
 testpaths = ["example_project"]

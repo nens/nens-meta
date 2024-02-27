@@ -29,13 +29,11 @@ Documentation = "https://nens-meta.readthedocs.io/"
 Repository = "https://github.com/nens/nens-meta"
 Changelog = "https://github.com/nens/nens-meta/blob/main/CHANGES.md"
 
-[tool.setuptools]
-packages = ["nens_meta"]
-zip-safe = false
-
 [tool.setuptools.dynamic]
 version = {attr = "nens_meta.__version__"}
 
+[tool.setuptools.packages.find]
+where = ["nens_meta"]
 [project.scripts]
 nens-update-project = "nens_meta.update_project:main"
 
