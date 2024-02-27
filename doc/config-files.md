@@ -43,7 +43,7 @@ There are many settings in this file, so nens-meta leaves it **mostly** alone so
 - pyright/pylance
 - pytest, see https://docs.pytest.org/en/stable/reference/customize.html .
 - ruff, see https://docs.astral.sh/ruff/configuration/ for defaults.
-- setuptools
+- setuptools, see https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html .
 - z3c.dependencychecker, see https://pypi.org/project/z3c.dependencychecker/#ignore-packages .
 - zest.releaser, see https://zestreleaser.readthedocs.io/en/latest/options.html .
 
