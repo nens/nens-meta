@@ -45,4 +45,15 @@ commands =
     - sh -c 'coverage report --format markdown > for_step_summary.md'
     coverage report {% if minimum_coverage %}--fail-under {{ minimum_coverage }}{% endif %} --format text
     {# Adjust minimum coverage in .nens.toml, [tox] > minimum_coverage #}
+
+[testenv:build_package]
+description = Build and check python package
+skip_install = true
+deps =
+    twine
+    build
+    wheel
+commands =
+    python -m build
+    twine check dist/*
 {% endif %}
