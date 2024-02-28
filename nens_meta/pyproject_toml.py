@@ -1,7 +1,6 @@
 """Purpose: read and manage the pyproject.toml config file
 """
 import logging
-import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
@@ -146,16 +145,9 @@ class PyprojectToml:
         return name
 
     def adjust_setuptools(self):
-        section_name = "tool.setuptools.packages.find"
+        section_name = "tool.setuptools"
         # TODO: optional extra packages
-        try:
-            self._suggest(section_name, "where", [self.package_name], strongly=True)
-        except TypeError:
-            logger.exception(
-                "There is probably an old '[tool.setuptools] > packages', "
-                f"please remove it as it conflicts with {section_name}."
-            )
-            sys.exit(1)
+        self._suggest(section_name, "packages", [self.package_name], strongly=True)
 
     def adjust_pytest(self):
         section_name = "tool.pytest.ini_options"
