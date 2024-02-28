@@ -104,7 +104,9 @@ class PyprojectToml:
             logger.info(f"pyproject.toml: suggesting [{section_name}]->{key}")
         if strongly:
             if section[key] != value:
-                logger.info(f"    Note: our suggested value: {value}")
+                logger.info(
+                    f"    Note: our suggested pyproject.toml value for [{section_name}]->{key}: {value}"
+                )
 
     def _force(self, section_name: str, key: str, value: Any):
         section = self.get_or_create_section(section_name)
