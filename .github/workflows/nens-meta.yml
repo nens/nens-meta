@@ -58,5 +58,8 @@ jobs:
             touch for_step_summary.md
             tox -e ${{ matrix.tox-env }}
             cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
+      - uses: pre-commit-ci/lite-action@v1.0.2
+        if: always()
+        # TODO: only runs on public repositories
 
 ### Extra lines below are preserved ###
