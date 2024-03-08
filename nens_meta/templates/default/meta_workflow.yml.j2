@@ -50,4 +50,5 @@ jobs:
             cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
       - uses: pre-commit-ci/lite-action@v1.0.2
         if: always()
+        # TODO: only runs on public repositories
 {% endraw %}
