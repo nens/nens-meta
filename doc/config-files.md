@@ -61,13 +61,6 @@ There are three types of settings:
   - `package_name` is used in several places where a list of the project's package dirs with the source code in it is needed.
 
 
-## `tox.ini`
-
-`tox.ini` defines what can be run via tox. See the [settings in `.nens.toml`](config-files.md#nenstoml) for what can be customised. Extra tasks can easily be added at the end of the file. `nens-meta` itself generates the documentation you're now reading by calling `tox -e doc` because there's an extra `[testenv:doc]` at the end of https://github.com/nens/nens-meta/blob/main/tox.ini .
-
-If `minimum_coverage` is set, the coverage check will fail if the coverage dips below that percentage. Specify it like `97` if you want 97%.
-
-
 ## `.pre-commit-config.yaml`
 
 By default, a few standard pre-commit checkers like `trailing-whitespace` and `check-yaml` are run. For python projects, [](tools.md#ruff) is added.
@@ -79,9 +72,9 @@ We want dependabot to keep our github actions up to date regarding the versions 
 
 ## `.github/workflows/meta_workflow.yml`
 
-This runs most of what's in `tox.ini`. There is a separate "job" for every item: it is generated that way. I'm trusting the work of "plone-meta" to have gotten the caching right :-)
+A basic workflow that runs pre-commit. If it is a python project, also pytest is run.
 
-Some steps generate summary output that's visible in github. Like the coverage.
+If you've set `[meta] > mimum_coverage` in [`.nens.toml`](config-files.md#nenstoml), the coverage is also generated and reported.
 
 
 ## `requirements.txt`

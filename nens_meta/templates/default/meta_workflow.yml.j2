@@ -1,5 +1,5 @@
 {{ header }}
-name: {{ workflow_name }}
+name: nens-meta
 on:
   push:
     branches:
@@ -13,39 +13,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  {# You can customise the list of environments in .nens.toml, [meta_workflow] > environments. #}
-  tox:
-    name: tox
+  nens-meta:
+    name: nens-meta
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        {# You can customise the python versions in .nens.toml: #}
-        {# [workflow_meta] > main_python_version and/or python_versions. #}
-        include:
-{%      for pair in python_tox_pairs %}
-          - python-version: "{{ pair.python }}"
-            tox-env: "{{ pair.tox }}"
-{%      endfor %}
     steps:
-{% raw %}
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
+          python-version: {{ main_python_version }}
+          {# You can customise the python version in .nens.toml: #}
+          {# [workflow_meta] > main_python_version. #}
+      - uses: pre-commit/action@v3.0.1
+{% if is_python_project %}
       - name: Install dependencies
-        run: python -m pip install tox
-      - name: Actually run ${{ matrix.tox-env }}
+        run: python -m pip install -r requirements.txt
+      - name: Test
+        run: pytest
+{% endif %}
+{% if minimum_coverage %}
+      - name: Coverage
         run: |
-            touch for_step_summary.md
-            tox -e ${{ matrix.tox-env }}
-            cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
-{% endraw %}
+          coverage run -m pytest
+          coverage xml
+          coverage report --format markdown >> $GITHUB_STEP_SUMMARY
+          coverage report --fail-under {{minimum_coverage}} --format text
+{% endif %}

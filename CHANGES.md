@@ -3,8 +3,8 @@
 
 ## 0.5 (unreleased)
 
+- Simplified everything by removing tox for now.
 
-- Added `build_package` tox environemnt for building and checking a python package.
 
 
 ## 0.4 (2024-02-20)

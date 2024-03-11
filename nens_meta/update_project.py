@@ -129,23 +129,6 @@ class Precommitconfig(TemplatedFile):
     section_name = "pre-commit-config"
 
 
-class ToxIni(TemplatedFile):
-    """Wrapper around a project's tox.ini"""
-
-    template_name = "tox.ini.j2"
-    target_name = "tox.ini"
-    section_name = "tox"
-
-    def envlist(self) -> str:
-        """Return formatted indented envlist, possibly with default content"""
-        environments = self.our_options["default_environments"]
-        lines = [f"    {environment}" for environment in environments]
-        return "\n".join(lines)
-
-    def extra_options(self) -> dict:
-        return {"envlist": self.envlist()}
-
-
 class DependabotYml(TemplatedFile):
     """Wrapper around a dependabot.yml file"""
 
@@ -160,34 +143,6 @@ class MetaWorkflowYml(TemplatedFile):
     template_name = "meta_workflow.yml.j2"
     target_name = ".github/workflows/nens-meta.yml"
     section_name = "meta_workflow"
-
-    def python_tox_pairs(self) -> list[dict]:
-        environments = self.our_options["environments"]
-        result = []
-
-        main_python_version = self.our_options["main_python_version"]
-        python_versions = self.our_options["python_versions"]
-
-        for environment in environments:
-            if environment == "TEST":
-                pairs = [
-                    {
-                        "python": python_version,
-                        "tox": f"py{python_version.replace('.', '')}",
-                    }
-                    for python_version in python_versions
-                ]
-            else:
-                pairs = [{"python": main_python_version, "tox": environment}]
-            result += pairs
-        logger.debug(f"Adding the following pairs to the test matrix: {result}")
-        return result
-
-    def extra_options(self) -> dict:
-        return {
-            "python_tox_pairs": self.python_tox_pairs(),
-            "workflow_name": "nens-meta",
-        }
 
 
 def check_prerequisites(project_dir: Path):
@@ -217,6 +172,8 @@ def do_some_python_checks(project_dir: Path):
                 f"The text '{dev_indicator1}' and '{dev_indicator2}' are "
                 f"not both found in {requirementstxt}"
             )
+        if "coverage" not in requirementstxt.read_text():
+            logger.warning("You might want to add 'coverage' to requirements.txt")
     for file_to_check in project_dir.glob("*.outdated"):
         logger.warning(
             f"Check the old {file_to_check}: move settings to pyproject.toml, perhaps?"
@@ -260,8 +217,6 @@ def update_project(
     gitignore.write()
     precommitconfig = Precommitconfig(project_dir, our_config)
     precommitconfig.write()
-    tox_ini = ToxIni(project_dir, our_config)
-    tox_ini.write()
     dependabot_yml = DependabotYml(project_dir, our_config)
     dependabot_yml.write()
     meta_workflow_yml = MetaWorkflowYml(project_dir, our_config)
