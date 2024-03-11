@@ -2,8 +2,8 @@
 [tox]
 # If locally you don't have all the various python versions: that's OK, we'll skip them.
 skip_missing_interpreters = true
-# We need 4.4.0 for constrain_package_deps.
-min_version = 4.4.0
+# We need 4.4.0 for proper 'uv' support if we use that.
+min_version = 4.14.0
 # envlist is what gets run by default if you just type "tox".
 # The idea is that just running "tox" is equivalent to the checks that happen on github.
 envlist =
@@ -45,7 +45,9 @@ commands =
     - sh -c 'coverage report --format markdown > for_step_summary.md'
     coverage report {% if minimum_coverage %}--fail-under {{ minimum_coverage }}{% endif %} --format text
     {# Adjust minimum coverage in .nens.toml, [tox] > minimum_coverage #}
+{% endif %}
 
+{% if is_python_project %}
 [testenv:build_package]
 description = Build and check python package
 skip_install = true

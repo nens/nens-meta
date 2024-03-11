@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=69"]
 
 [project]
 name = "nens-meta"
@@ -31,7 +31,6 @@ Changelog = "https://github.com/nens/nens-meta/blob/main/CHANGES.md"
 
 [tool.setuptools]
 packages = ["nens_meta"]
-zip-safe = false
 
 [tool.setuptools.dynamic]
 version = {attr = "nens_meta.__version__"}

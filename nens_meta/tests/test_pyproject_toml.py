@@ -72,7 +72,6 @@ def test_adjust_setuptools1(empty_python_config: pyproject_toml.PyprojectToml):
     }
     empty_python_config.adjust_setuptools()
     empty_python_config.write()
-    assert "zip-safe" in empty_python_config._config_file.read_text()
     assert (
         'packages = ["pietje_klaasje"]' in empty_python_config._config_file.read_text()
     )

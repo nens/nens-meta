@@ -16,7 +16,6 @@ test = ["pytest"] # pytest added by nens-meta
 
 [tool.setuptools]
 packages = ["example_project"]
-zip-safe = false
 
 [tool.pytest.ini_options]
 testpaths = ["example_project"]

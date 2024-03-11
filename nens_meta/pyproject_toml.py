@@ -104,7 +104,9 @@ class PyprojectToml:
             logger.info(f"pyproject.toml: suggesting [{section_name}]->{key}")
         if strongly:
             if section[key] != value:
-                logger.info(f"    Note: our suggested value: {value}")
+                logger.info(
+                    f"    Note: our suggested pyproject.toml value for [{section_name}]->{key}: {value}"
+                )
 
     def _force(self, section_name: str, key: str, value: Any):
         section = self.get_or_create_section(section_name)
@@ -148,7 +150,6 @@ class PyprojectToml:
         section_name = "tool.setuptools"
         # TODO: optional extra packages
         self._suggest(section_name, "packages", [self.package_name], strongly=True)
-        self._suggest(section_name, "zip-safe", False)
 
     def adjust_pytest(self):
         section_name = "tool.pytest.ini_options"
