@@ -9,25 +9,11 @@ is_python_project = false
 uses_ansible = false
 # Name of the main python package
 package_name = ''
+# Minimum code coverage percentage
+minimum_coverage = ''
 
 [pyprojecttoml]
 
-[tox]
-# Minimum code coverage percentage
-minimum_coverage = ''
-# List of envs to run when you call 'tox'
-default_environments = ['lint']
-# In case of a python project:
-# default_environments = ['lint', 'py310', 'py311', 'py312', 'coverage']
-
 [meta_workflow]
-# Tox environments that should be called, 'TEST' means 'py*'
-environments = ['lint']
-# In case of a python project:
-# environments = ['lint', 'coverage', 'TEST']
 # Python version to use for linting and so
 main_python_version = '3.11'
-# Python version(s) to run tests as
-python_versions = ['3.11']
-# In case of a python project:
-# python_versions = ['3.10', '3.11', '3.12']
