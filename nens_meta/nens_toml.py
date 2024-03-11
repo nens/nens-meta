@@ -45,47 +45,14 @@ KNOWN_SECTIONS["meta"] = [
         value_type=bool,
     ),
     Option(key="package_name", description="Name of the main python package"),
+    Option(key="minimum_coverage", description="Minimum code coverage percentage"),
 ]
 KNOWN_SECTIONS["pyprojecttoml"] = []
-KNOWN_SECTIONS["tox"] = [
-    Option(key="minimum_coverage", description="Minimum code coverage percentage"),
-    Option(
-        key="default_environments",
-        description="List of envs to run when you call 'tox'",
-        value_type=list,
-        default=["lint"],
-        default_if_python=[
-            "lint",
-            "py310",
-            "py311",
-            "py312",
-            "coverage",
-        ],
-    ),
-]
 KNOWN_SECTIONS["meta_workflow"] = [
-    Option(
-        key="environments",
-        description="Tox environments that should be called, 'TEST' means 'py*'",
-        value_type=list,
-        default=["lint"],
-        default_if_python=[
-            "lint",
-            "coverage",
-            "TEST",
-        ],
-    ),
     Option(
         key="main_python_version",
         description="Python version to use for linting and so",
         default="3.11",
-    ),
-    Option(
-        key="python_versions",
-        description="Python version(s) to run tests as",
-        value_type=list,
-        default=["3.11"],
-        default_if_python=["3.10", "3.11", "3.12"],
     ),
 ]
 
@@ -121,17 +88,6 @@ def create_if_missing(project: Path):
     our_config.read()
     our_config.update_meta_options()
     our_config.write()
-
-
-def _default_for_key(key: str) -> str | bool | list:
-    """Return default (''), but handle the _TRUE/_FALSE postfix tricks"""
-    if "_TRUE" in key:
-        return True
-    if "_FALSE" in key:
-        return False
-    if "_LIST" in key:
-        return []
-    return ""
 
 
 def detected_meta_values(project: Path) -> dict[str, str | bool | list]:

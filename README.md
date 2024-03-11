@@ -15,13 +15,16 @@ Note that [our cookiecutter template](https://github.com/nens/cookiecutter-pytho
 
 For the basic instructions, see [our own documentation](https://nens-meta.readthedocs.io/en/latest/usage.html). So:
 
-    $ pip install tox
-    $ tox -q
+    $ python3 -m venv .venv
+    $ source .venv/bin/activate
+    $ pip install -r requirements
+    $ pytest
+    $ pre-commit run --all
 
 
 ## TODO
 
-- manifest.ini
+- manifest.in
 
 - docker-compose
 
