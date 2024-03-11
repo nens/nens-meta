@@ -16,12 +16,11 @@ NenS-meta is mostly intended for use within https://www.nelen-schuurmans.nl, so 
 
 ## Documentation contents
 
-There are *three* ways of looking at what's configured by nens-meta.
-
 ```{toctree}
 self
 usage.md
 tools.md
 config-files.md
+tox.md
 background.md
 ```
