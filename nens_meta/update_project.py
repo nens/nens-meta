@@ -172,6 +172,8 @@ def do_some_python_checks(project_dir: Path):
                 f"The text '{dev_indicator1}' and '{dev_indicator2}' are "
                 f"not both found in {requirementstxt}"
             )
+        if "coverage" not in requirementstxt.read_text():
+            logger.warning("You might want to add 'coverage' to requirements.txt")
     for file_to_check in project_dir.glob("*.outdated"):
         logger.warning(
             f"Check the old {file_to_check}: move settings to pyproject.toml, perhaps?"
