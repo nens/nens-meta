@@ -1,1 +1,4 @@
 -e .[test]
+
+# Project tools
+coverage
