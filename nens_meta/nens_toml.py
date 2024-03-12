@@ -45,6 +45,12 @@ KNOWN_SECTIONS["meta"] = [
         value_type=bool,
     ),
     Option(key="package_name", description="Name of the main python package"),
+    Option(
+        key="extra_package_names",
+        description="Extra dirs with packages, in addition to package_name",
+        default=[],
+        value_type=list,
+    ),
     Option(key="minimum_coverage", description="Minimum code coverage percentage"),
 ]
 KNOWN_SECTIONS["pyprojecttoml"] = []

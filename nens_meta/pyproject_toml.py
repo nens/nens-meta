@@ -146,22 +146,33 @@ class PyprojectToml:
             logger.error(f"Python package {name} doesn't exist in the current project")
         return name
 
+    @property
+    def extra_package_names(self) -> list[str]:
+        extra_names = self._options.get("extra_package_names")
+        if not extra_names:
+            return []
+        return extra_names
+
+    @property
+    def package_names(self) -> list[str]:
+        return [self.package_name] + self.extra_package_names
+
     def adjust_setuptools(self):
         section_name = "tool.setuptools"
         # TODO: optional extra packages
-        self._suggest(section_name, "packages", [self.package_name], strongly=True)
+        self._suggest(section_name, "packages", self.package_names, strongly=True)
 
     def adjust_pytest(self):
         section_name = "tool.pytest.ini_options"
         self._force(
-            section_name, "testpaths", [self.package_name]
+            section_name, "testpaths", self.package_names
         )  # TODO: optional extra packages
         self._suggest(section_name, "log_level", "DEBUG")
 
     def adjust_coverage(self):
         section_name = "tool.coverage.run"
         self._force(
-            section_name, "source", [self.package_name]
+            section_name, "source", self.package_names
         )  # TODO: optional extra packages
 
         section_name = "tool.coverage.report"
@@ -178,7 +189,7 @@ class PyprojectToml:
     def adjust_pyright(self):
         section_name = "tool.pyright"
         self._force(
-            section_name, "include", [self.package_name]
+            section_name, "include", self.package_names
         )  # TODO: optional extra packages
         self._suggest(section_name, "venvPath", ".", strongly=True)
         self._suggest(section_name, "venv", ".venv", strongly=True)
