@@ -1,6 +1,12 @@
 # Changelog of nens-meta
 
 
+## 0.6 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 0.5 (2024-04-08)
 
 - Simplified everything by removing tox for now.
