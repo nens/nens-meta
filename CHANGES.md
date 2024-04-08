@@ -4,7 +4,7 @@
 ## 0.5 (unreleased)
 
 - Simplified everything by removing tox for now.
-
+- Suggesting initial `requirements.yml` for ansible projects as ansible-lint almost always needs it.
 
 
 ## 0.4 (2024-02-20)

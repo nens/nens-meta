@@ -29,6 +29,7 @@ class TemplatedFile:
     template_name: str
     target_name: str  # Note: can be "subdir/some-file.txt"
     section_name: str
+    only_create_dont_change: bool = False
 
     def __init__(self, project_dir: Path, our_config: nens_toml.OurConfig) -> None:
         self.project_dir = project_dir
@@ -102,7 +103,17 @@ class TemplatedFile:
     def write(self):
         """Copy the source template to the target, doing the jinja2 stuff"""
         self.create_dirs_if_needed()
-        utils.write_if_changed(self.target, self.content)
+        handle_extra_lines = True  # default
+        if self.only_create_dont_change:
+            handle_extra_lines = (
+                False  # No need for this if we're not updating the file.
+            )
+            if self.target.exists():
+                logger.debug(f"{self.target} already exists, skipping")
+                return
+        utils.write_if_changed(
+            self.target, self.content, handle_extra_lines=handle_extra_lines
+        )
 
 
 class Editorconfig(TemplatedFile):
@@ -143,6 +154,15 @@ class MetaWorkflowYml(TemplatedFile):
     template_name = "meta_workflow.yml.j2"
     target_name = ".github/workflows/nens-meta.yml"
     section_name = "meta_workflow"
+
+
+class RequirementsYml(TemplatedFile):
+    """Wrapper around an ansible requirements.yml file"""
+
+    template_name = "requirements.yml.j2"
+    target_name = "requirements.yml"
+    section_name = "ansible"
+    only_create_dont_change = True
 
 
 def check_prerequisites(project_dir: Path):
@@ -221,6 +241,10 @@ def update_project(
     dependabot_yml.write()
     meta_workflow_yml = MetaWorkflowYml(project_dir, our_config)
     meta_workflow_yml.write()
+
+    if our_config.section_options("meta")["uses_ansible"]:
+        requirements_yml = RequirementsYml(project_dir, our_config)
+        requirements_yml.write()
 
     if our_config.section_options("meta")["is_python_project"]:
         do_some_python_checks(project_dir)
