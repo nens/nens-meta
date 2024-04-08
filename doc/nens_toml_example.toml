@@ -9,6 +9,8 @@ is_python_project = false
 uses_ansible = false
 # Name of the main python package
 package_name = ''
+# Extra dirs with packages, in addition to package_name
+extra_package_names = []
 # Minimum code coverage percentage
 minimum_coverage = ''
 

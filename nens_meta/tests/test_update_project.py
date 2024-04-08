@@ -51,3 +51,37 @@ def test_metaworkflowyml(tmp_path: Path):
     meta_workflow_yml = update_project.MetaWorkflowYml(tmp_path, our_config)
     assert "workflow_dispatch" in meta_workflow_yml.content
     meta_workflow_yml.write()
+
+
+def test_requirements_yml1(tmp_path):
+    # requirements.yml should be created if it doesn't exist yet.
+    nens_toml.create_if_missing(tmp_path)
+    our_config = nens_toml.OurConfig(tmp_path)
+    requirements_yml = update_project.RequirementsYml(tmp_path, our_config)
+    requirements_yml.write()
+    content = (tmp_path / "requirements.yml").read_text()
+    assert "ansible.posix" in content
+
+
+def test_requirements_yml2(tmp_path: Path):
+    # requirements.yml should only be created if it doesn't exist yet.
+    nens_toml.create_if_missing(tmp_path)
+    existing_file = tmp_path / "requirements.yml"
+    existing_file.write_text("Hurray, some existing content")
+    our_config = nens_toml.OurConfig(tmp_path)
+    requirements_yml = update_project.RequirementsYml(tmp_path, our_config)
+    requirements_yml.write()
+    content = (tmp_path / "requirements.yml").read_text()
+    assert "ansible.posix" not in content
+    assert "Hurray" in content
+
+
+def test_requirements_yml(tmp_path):
+    # requirements.yml should be only be created if it doesn't exist yet, so there
+    # should not be the "Extra lines below are preserved" instruction in there.
+    nens_toml.create_if_missing(tmp_path)
+    our_config = nens_toml.OurConfig(tmp_path)
+    requirements_yml = update_project.RequirementsYml(tmp_path, our_config)
+    requirements_yml.write()
+    content = (tmp_path / "requirements.yml").read_text()
+    assert "Extra lines below" not in content
