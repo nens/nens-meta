@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.5 (unreleased)
+## 0.5 (2024-04-08)
 
 - Simplified everything by removing tox for now.
 - Suggesting initial `requirements.yml` for ansible projects as ansible-lint almost always needs it.
