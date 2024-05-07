@@ -192,9 +192,9 @@ def do_some_python_checks(project_dir: Path):
 
 
 def update_project(
-    project_dir: Annotated[Path, typer.Argument(exists=True)],
     verbose: Annotated[bool, typer.Option(help="Verbose logging")] = False,
 ):  # pragma: no cover
+    project_dir = Path(".")
     log_level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=log_level, format="%(levelname)-7s: %(message)s")
     check_prerequisites(project_dir)
