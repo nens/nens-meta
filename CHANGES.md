@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.6 (unreleased)
+## 0.6 (2024-05-07)
 
 
 - Removed most of the python library/packaging/testing stuff, leaving basically only the ruff/precommit parts. This simplifies it a lot.
