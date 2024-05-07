@@ -18,7 +18,6 @@ class Option:
     description: str
     value_type: type = str
     default: Any = ""
-    default_if_python: Any = ""
 
 
 META_FILENAME = ".nens.toml"
@@ -33,8 +32,8 @@ KNOWN_SECTIONS["meta"] = [
         description="Project name (normally the name of the directory)",
     ),
     Option(
-        key="is_python_project",
-        description="Whether we are a python project",
+        key="uses_python",
+        description="Whether we use python",
         default=False,
         value_type=bool,
     ),
@@ -44,21 +43,13 @@ KNOWN_SECTIONS["meta"] = [
         default=False,
         value_type=bool,
     ),
-    Option(key="package_name", description="Name of the main python package"),
-    Option(
-        key="extra_package_names",
-        description="Extra dirs with packages, in addition to package_name",
-        default=[],
-        value_type=list,
-    ),
-    Option(key="minimum_coverage", description="Minimum code coverage percentage"),
 ]
 KNOWN_SECTIONS["pyprojecttoml"] = []
 KNOWN_SECTIONS["meta_workflow"] = [
     Option(
         key="main_python_version",
         description="Python version to use for linting and so",
-        default="3.11",
+        default="3.12",
     ),
 ]
 
@@ -73,9 +64,6 @@ def write_documentation():
         for option in KNOWN_SECTIONS[section]:
             lines.append(f"# {option.description}")
             lines.append(f"{option.key} = {repr(option.default)}")
-            if option.default_if_python:
-                lines.append("# In case of a python project:")
-                lines.append(f"# {option.key} = {option.default_if_python}")
         lines.append("")
 
     content = "\n".join(lines)
@@ -99,13 +87,11 @@ def create_if_missing(project: Path):
 def detected_meta_values(project: Path) -> dict[str, str | bool | list]:
     """Return values we can detect about the project, normally set in [meta]"""
     detected: dict[str, str | bool | list] = {}
-    detected["is_python_project"] = utils.is_python_project(project)
+    detected["uses_python"] = utils.uses_python(project)
     detected["uses_ansible"] = utils.uses_ansible(project)
     detected["meta_version"] = __version__
     name = project.resolve().name
     detected["project_name"] = name
-    if detected["is_python_project"]:
-        detected["package_name"] = name.replace("-", "_")
     return detected
 
 
@@ -168,14 +154,7 @@ class OurConfig:
             section = {}
         options: dict[str, str | bool | list] = {}
         for option in KNOWN_SECTIONS[section_name]:
-            if (
-                self._contents.get("meta")
-                and self._contents.get("meta")["is_python_project"]
-            ):
-                default = option.default_if_python or option.default
-            else:
-                default = option.default
-            value = section.get(option.key, copy.deepcopy(default))
+            value = section.get(option.key, copy.deepcopy(option.default))
             if not isinstance(value, option.value_type):
                 raise ValueError(
                     f"{option.key} should be of type {option.value_type}, not {type(value)}"

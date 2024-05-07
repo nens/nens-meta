@@ -59,15 +59,15 @@ def test_write_if_changed4(tmp_path: Path):
     assert (tmp_path / "sample.txt.suggestion").exists()
 
 
-def test_is_python_project1():
+def test_uses_python1():
     # We ourselves are a python project.
     ourselves = Path(__file__).parent.parent.parent
-    assert utils.is_python_project(ourselves)
+    assert utils.uses_python(ourselves)
 
 
-def test_is_python_project2(tmp_path: Path):
+def test_uses_python2(tmp_path: Path):
     # An empty dir is not a python project
-    assert not utils.is_python_project(tmp_path)
+    assert not utils.uses_python(tmp_path)
 
 
 def test_uses_ansible1():

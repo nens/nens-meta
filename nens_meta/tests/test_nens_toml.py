@@ -71,11 +71,11 @@ def test_section_options_boolean1(tmp_path: Path):
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
     [meta]
-    is_python_project = true
+    uses_python = true
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert config.section_options("meta")["is_python_project"] is True
+    assert config.section_options("meta")["uses_python"] is True
 
 
 def test_section_options_boolean2(tmp_path: Path):
@@ -83,11 +83,11 @@ def test_section_options_boolean2(tmp_path: Path):
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
     [meta]
-    # is_python_project has a default of false
+    # uses_python has a default of false
     """
     )
     config = nens_toml.OurConfig(tmp_path)
-    assert config.section_options("meta")["is_python_project"] is False
+    assert config.section_options("meta")["uses_python"] is False
 
 
 def test_section_options_boolean3(tmp_path: Path):
@@ -95,12 +95,12 @@ def test_section_options_boolean3(tmp_path: Path):
     nens_toml.nens_toml_file(tmp_path).write_text(
         """
     [meta]
-    is_python_project = "1972"
+    uses_python = "1972"
     """
     )
     config = nens_toml.OurConfig(tmp_path)
     with pytest.raises(ValueError):
-        config.section_options("meta")["is_python_project"]
+        config.section_options("meta")["uses_python"]
 
 
 def test_update_meta_options1(tmp_path: Path):
@@ -119,20 +119,6 @@ def test_update_meta_options2(tmp_path: Path):
     meta_section = config.section_options("meta")
     assert "meta_version" in meta_section
     assert "project_name" in meta_section
-
-
-def test_update_meta_options3(tmp_path: Path):
-    # package_name is updated/guessed for python packages.
-    project_dir = tmp_path / "my-project"
-    project_dir.mkdir()
-    python_indicator = project_dir / "pyproject.toml"
-    python_indicator.write_text("")
-    nens_toml.nens_toml_file(project_dir).write_text("")
-    config = nens_toml.OurConfig(project_dir)
-    # the init automatically calls config.update_meta_options()
-    meta_section = config.section_options("meta")
-    assert meta_section["project_name"] == "my-project"
-    assert meta_section["package_name"] == "my_project"
 
 
 def test_update_meta_options4(tmp_path: Path):

@@ -27,7 +27,7 @@ def create_if_missing(project: Path):
 
 
 def write_documentation():
-    options = {"project_name": "example-project", "package_name": "example_project"}
+    options = {"project_name": "example-project"}
     target = Path(__file__).parent.parent / "doc" / "pyproject_toml_example.toml"
     with TemporaryDirectory() as project_dir:
         project_dir = Path(project_dir)
@@ -87,14 +87,8 @@ class PyprojectToml:
         sections.
         """
 
-        self.adjust_build_system()
-        self.adjust_project()
-        self.adjust_setuptools()
-        self.adjust_pytest()
-        self.adjust_coverage()
         self.adjust_ruff()
         self.adjust_zestreleaser()
-        self.adjust_pyright()
         self.remove_old_sections()
 
     def _suggest(self, section_name: str, key: str, value: Any, strongly=False):
@@ -114,108 +108,16 @@ class PyprojectToml:
             section[key] = value
             logger.info(f"pyproject.toml: setting [{section_name}]->{key}")
 
-    def adjust_build_system(self):
-        section_name = "build-system"
-        self._suggest(section_name, "requires", ["setuptools>=69"])
-
-    def adjust_project(self):
-        section_name = "project"
-        self._force(section_name, "name", self._options["project_name"])
-
-        self._suggest(section_name, "requires-python", ">=3.11")
-        self._suggest(section_name, "dependencies", [])
-        self._suggest(section_name, "description", "I really need to set this")
-        self._suggest(section_name, "authors", [])
-        self._suggest(section_name, "readme", "README.md")
-
-        section = self.get_or_create_section("project.optional-dependencies")
-        if "test" not in section:
-            section["test"] = []
-        test_dependencies: list = section["test"]  # type ignore
-        if "pytest" not in test_dependencies:
-            test_dependencies.append("pytest")
-            section["test"].comment("pytest added by nens-meta")
-
-    @property
-    def package_name(self) -> str:
-        name = self._options.get("package_name")
-        if not name:
-            logger.error("package_name not set in `.nens.toml` [meta]")
-            name = "not_set"
-        if not (self._project / name).exists():
-            logger.error(f"Python package {name} doesn't exist in the current project")
-        return name
-
-    @property
-    def extra_package_names(self) -> list[str]:
-        extra_names = self._options.get("extra_package_names")
-        if not extra_names:
-            return []
-        return extra_names
-
-    @property
-    def package_names(self) -> list[str]:
-        return [self.package_name] + self.extra_package_names
-
-    def adjust_setuptools(self):
-        section_name = "tool.setuptools"
-        # TODO: optional extra packages
-        self._suggest(section_name, "packages", self.package_names, strongly=True)
-
-    def adjust_pytest(self):
-        section_name = "tool.pytest.ini_options"
-        self._force(
-            section_name, "testpaths", self.package_names
-        )  # TODO: optional extra packages
-        self._suggest(section_name, "log_level", "DEBUG")
-
-    def adjust_coverage(self):
-        section_name = "tool.coverage.run"
-        self._force(
-            section_name, "source", self.package_names
-        )  # TODO: optional extra packages
-
-        section_name = "tool.coverage.report"
-        self._force(section_name, "show_missing", True)
-        self._force(section_name, "skip_empty", True)
-
     def adjust_ruff(self):
         section_name = "tool.ruff"
-        self._suggest(section_name, "target-version", "py38")
+        self._suggest(section_name, "target-version", "py310")
 
         section_name = "tool.ruff.lint"
         self._suggest(section_name, "select", ["E4", "E7", "E9", "F", "I", "UP"])
 
-    def adjust_pyright(self):
-        section_name = "tool.pyright"
-        self._force(
-            section_name, "include", self.package_names
-        )  # TODO: optional extra packages
-        self._suggest(section_name, "venvPath", ".", strongly=True)
-        self._suggest(section_name, "venv", ".venv", strongly=True)
-
     def adjust_zestreleaser(self):
         section_name = "tool.zest-releaser"
         self._suggest(section_name, "release", False)
-
-    def move_outdated_files(self):
-        """There are various old config files that have to be taken care off
-
-        They shouldn't exist anymore as they can disturb our pyproject.toml
-        configuration. But sometimes you need to copy over data (like from the
-        setup.py), so they're best moved aside with a postfix.
-        """
-        for source_name in [".flake8", "setup.py", "setup.cfg", ".coveragerc"]:
-            target_name = source_name + ".outdated"
-            source = self._project / source_name
-            if not source.exists():
-                continue
-            target = self._project / target_name
-            if target.exists():
-                target.unlink()
-                logger.debug(f"Removed existing {target}")
-            source.rename(target)
-            logger.info(f"{source} is no longer needed, moved it to {target}")
 
     def remove_old_sections(self):
         """Remove sections of old tools.

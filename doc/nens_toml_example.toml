@@ -3,19 +3,13 @@
 meta_version = ''
 # Project name (normally the name of the directory)
 project_name = ''
-# Whether we are a python project
-is_python_project = false
+# Whether we use python
+uses_python = false
 # Whether we have an ansible dir
 uses_ansible = false
-# Name of the main python package
-package_name = ''
-# Extra dirs with packages, in addition to package_name
-extra_package_names = []
-# Minimum code coverage percentage
-minimum_coverage = ''
 
 [pyprojecttoml]
 
 [meta_workflow]
 # Python version to use for linting and so
-main_python_version = '3.11'
+main_python_version = '3.12'
