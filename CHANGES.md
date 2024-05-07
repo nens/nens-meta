@@ -4,7 +4,8 @@
 ## 0.6 (unreleased)
 
 
-- Nothing changed yet.
+- Removed most of the python library/packaging/testing stuff, leaving basically only the ruff/precommit parts. This simplifies it a lot.
+- The `is_python_project` config variable is now `uses_python`.
 
 
 ## 0.5 (2024-04-08)
