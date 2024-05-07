@@ -178,22 +178,6 @@ def check_prerequisites(project_dir: Path):
 
 def do_some_python_checks(project_dir: Path):
     """Run some checks to help identify issues and things you still need to do"""
-    requirementstxt = project_dir / "requirements.txt"
-    if not requirementstxt.exists():
-        logger.warning(f"There is no {requirementstxt}")
-    else:
-        dev_indicator1 = "-e "
-        dev_indicator2 = "[test]"
-        if not (
-            dev_indicator1 in requirementstxt.read_text()
-            and dev_indicator2 in requirementstxt.read_text()
-        ):
-            logger.warning(
-                f"The text '{dev_indicator1}' and '{dev_indicator2}' are "
-                f"not both found in {requirementstxt}"
-            )
-        if "coverage" not in requirementstxt.read_text():
-            logger.warning("You might want to add 'coverage' to requirements.txt")
     for file_to_check in project_dir.glob("*.outdated"):
         logger.warning(
             f"Check the old {file_to_check}: move settings to pyproject.toml, perhaps?"
@@ -217,7 +201,7 @@ def update_project(
     our_config = nens_toml.OurConfig(project_dir)
     our_config.write()
 
-    if our_config.section_options("meta")["is_python_project"]:
+    if our_config.section_options("meta")["uses_python"]:
         if not pyproject_toml.pyproject_toml_file(project_dir).exists():
             pyproject_toml.create_if_missing(project_dir)
         options_for_project_config = {}
@@ -228,7 +212,6 @@ def update_project(
         )
         project_config.update()
         project_config.write()
-        project_config.move_outdated_files()
 
     # Grab editorconfig table and pass it along. Or rather the whole thing?
     editorconfig = Editorconfig(project_dir, our_config)
@@ -246,7 +229,7 @@ def update_project(
         requirements_yml = RequirementsYml(project_dir, our_config)
         requirements_yml.write()
 
-    if our_config.section_options("meta")["is_python_project"]:
+    if our_config.section_options("meta")["uses_python"]:
         do_some_python_checks(project_dir)
 
 

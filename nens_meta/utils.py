@@ -66,12 +66,11 @@ def write_if_changed(target: Path, desired_content: str, handle_extra_lines=True
     logger.info(f"Wrote {target}")
 
 
-def is_python_project(project: Path) -> bool:
+def uses_python(project: Path) -> bool:
     """Return whether we detect a python project"""
-    for indicator in ["setup.py", "pyproject.toml", "setup.cfg"]:
-        if (project / indicator).exists():
-            logger.debug(f"{indicator} found, assuming it is a python project")
-            return True
+    if any(project.glob("**/*.py")):
+        logger.debug("*.py found, assuming we use python")
+        return True
     return False
 
 
