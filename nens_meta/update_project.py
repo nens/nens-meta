@@ -168,8 +168,12 @@ class RequirementsYml(TemplatedFile):
 def check_prerequisites(project_dir: Path):
     """Check prerequisites, exit if not met"""
     if not (project_dir / ".git").exists():
-        logger.error("Project has no .git dir")
-        sys.exit(1)
+        if project_dir.absolute().name.startswith("{{ cookiecutter"):
+            logger.info("Cookiecutter project dir detected")
+        else:
+            # No git and not the cookiecutter special case.
+            logger.error("Project has no .git dir")
+            sys.exit(1)
     if not nens_toml.nens_toml_file(project_dir).exists():
         nens_toml.create_if_missing(project_dir)
         logger.warning("No .nens.toml found, created one. Re-run after checking.")

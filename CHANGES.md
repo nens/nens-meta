@@ -4,7 +4,7 @@
 ## 0.7 (unreleased)
 
 
-- Nothing changed yet.
+- Allow running nens-update-project inside a cookiecutter template directory.
 
 
 ## 0.6 (2024-05-07)
