@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.7 (unreleased)
+## 0.7 (2024-05-08)
 
 
 - Allow running nens-update-project inside a cookiecutter template directory.
