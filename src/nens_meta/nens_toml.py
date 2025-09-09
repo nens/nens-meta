@@ -53,7 +53,7 @@ KNOWN_SECTIONS["meta_workflow"] = [
     ),
     Option(
         key="run_pytest",
-        description="Wheter to run pytest in the workflow",
+        description="Whether to run pytest in the workflow",
         default=False,
         value_type=bool,
     ),
