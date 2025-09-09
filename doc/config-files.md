@@ -71,7 +71,7 @@ $ pre-commit autoupdate
 We want dependabot to keep our github actions up to date regarding the versions of the actions. Drawback: this results in some PR spam. Advantage: no more actions that stop working because of old versions.
 
 
-## `.github/workflows/meta_workflow.yml`
+## `.github/workflows/nens_meta.yml`
 
 A basic github action workflow that runs pre-commit. If it is a python project, also pytest is run.
 
