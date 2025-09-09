@@ -110,10 +110,12 @@ class PyprojectToml:
 
     def adjust_ruff(self):
         section_name = "tool.ruff"
-        self._suggest(section_name, "target-version", "py310")
+        self._suggest(section_name, "target-version", "py312")
 
         section_name = "tool.ruff.lint"
-        self._suggest(section_name, "select", ["E4", "E7", "E9", "F", "I", "UP"])
+        self._suggest(
+            section_name, "select", ["E4", "E7", "E9", "F", "I", "UP", "C901"]
+        )
 
     def adjust_zestreleaser(self):
         section_name = "tool.zest-releaser"
