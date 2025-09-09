@@ -23,9 +23,6 @@ dist/
 var/
 *.suggestion
 
-# Our generated files
-for_step_summary.md
-
 # Unit test / coverage reports
 .coverage
 .tox
