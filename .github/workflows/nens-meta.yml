@@ -37,3 +37,5 @@ jobs:
         # Use 'addopts' in [tool.pytest.ini_options] to add command line args.
 
 ### Extra lines below are preserved ###
+      - name: Run ty typchecker
+        run: uv run ty check

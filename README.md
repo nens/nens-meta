@@ -18,7 +18,7 @@ For the basic instructions, see [our own documentation](https://nens-meta.readth
     $ uv sync
     $ pre-commit run --all
     $ uv run pytest
-
+    $ uv run ty check
 
 ## TODO
 
