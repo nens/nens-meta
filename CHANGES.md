@@ -8,6 +8,7 @@
 - Removed tox.
 - Using uv instead of plain pip/virtualenv.
 - Added `[workflow_meta] > run_pytest` for running pytest on github. Documented `addopts` in `[tool.pytest.ini_options]` as method for adding command line arguments.
+- Moved the code into a `src/` dir to match other new projects.
 
 
 ## 0.7 (2024-05-08)
