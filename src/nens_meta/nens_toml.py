@@ -1,5 +1,5 @@
-"""Purpose: read and manage the .nens.toml config file
-"""
+"""Purpose: read and manage the .nens.toml config file"""
+
 import copy
 import logging
 from dataclasses import dataclass

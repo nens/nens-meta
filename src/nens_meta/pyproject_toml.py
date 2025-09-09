@@ -1,5 +1,5 @@
-"""Purpose: read and manage the pyproject.toml config file
-"""
+"""Purpose: read and manage the pyproject.toml config file"""
+
 import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
