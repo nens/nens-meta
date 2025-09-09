@@ -20,14 +20,9 @@ For the basic instructions, see [our own documentation](https://nens-meta.readth
     $ uv run pytest
     $ uv run ty check
 
+
 ## TODO
-
-- manifest.in
-
-- docker-compose
 
 - Projectnummer
 
 - testen met vscode
-
-- `DJANGO_SETTINGS_MODULE = artifact_handler.developmentsettings` in tool:pytest?
