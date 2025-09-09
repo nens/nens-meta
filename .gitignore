@@ -44,3 +44,4 @@ docker-compose.override.yml
 ### Extra lines below are preserved ###
 dependencies.png
 dependencies.md
+/doc/_build/

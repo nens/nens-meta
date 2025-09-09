@@ -8,8 +8,6 @@ Basic idea:
 - Commandline usage too.
 - It works on linux, mac and windows.
 
-Start at [](usage.md)!
-
 :::{note}
 NenS-meta is mostly intended for use within https://www.nelen-schuurmans.nl, so the defaults are those that are handy for *our* projects.
 :::
@@ -18,9 +16,7 @@ NenS-meta is mostly intended for use within https://www.nelen-schuurmans.nl, so 
 
 ```{toctree}
 self
-usage.md
 tools.md
 config-files.md
-tox.md
 background.md
 ```

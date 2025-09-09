@@ -19,6 +19,7 @@ For the basic instructions, see [our own documentation](https://nens-meta.readth
     $ pre-commit run --all
     $ uv run pytest
     $ uv run ty check
+    $ ./build-docs.sh
 
 
 ## TODO
