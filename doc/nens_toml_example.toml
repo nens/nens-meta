@@ -15,5 +15,3 @@ uses_ansible = false
 python_version = '3.12'
 # Wheter to run pytest in the workflow
 run_pytest = false
-# Optional minimal pytest coverage percentage
-coverage_percentage = ''

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=70"]
 
 [project]
 name = "nens-meta"
@@ -32,15 +32,7 @@ version = {attr = "nens_meta.__version__"}
 nens-update-project = "nens_meta.update_project:main"
 
 [tool.pytest.ini_options]
-log_level = "DEBUG"
-testpaths = ["nens_meta"]
-
-[tool.coverage.run]
-source = ["nens_meta"]
-
-[tool.coverage.report]
-show_missing = true
-skip_empty = true
+addopts = "--cov --cov-fail-under=95"
 
 [tool.zest-releaser]
 release = true

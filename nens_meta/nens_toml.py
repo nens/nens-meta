@@ -57,12 +57,6 @@ KNOWN_SECTIONS["meta_workflow"] = [
         default=False,
         value_type=bool,
     ),
-    Option(
-        key="coverage_percentage",
-        description="Optional minimal pytest coverage percentage",
-        default=0,
-        value_type=int,
-    ),
 ]
 
 logger = logging.getLogger(__name__)

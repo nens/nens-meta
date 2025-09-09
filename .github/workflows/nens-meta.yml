@@ -33,6 +33,7 @@ jobs:
       - name: Install python project
         run: uv sync
       - name: Run pytest
-        run: uv run pytest  --cov --cov-fail-under=95
+        run: uv run pytest
+        # Use 'addopts' in [tool.pytest.ini_options] to add command line args.
 
 ### Extra lines below are preserved ###

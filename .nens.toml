@@ -7,4 +7,3 @@ uses_python = true
 [meta_workflow]
 python_version = "3.13"
 run_pytest = true
-coverage_percentage = 95
