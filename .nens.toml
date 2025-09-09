@@ -10,5 +10,4 @@ default_environments = ["lint", "py311", "py312", "doc", "coverage", "dependenci
 minimum_coverage = "95"
 
 [meta_workflow]
-python_versions = ["3.11", "3.12"]
-environments = ["lint", "coverage", "dependencies", "dependencies-graph", "TEST"]
+main_python_version = "3.13"
