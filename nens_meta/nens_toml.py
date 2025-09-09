@@ -47,7 +47,7 @@ KNOWN_SECTIONS["meta"] = [
 KNOWN_SECTIONS["pyprojecttoml"] = []
 KNOWN_SECTIONS["meta_workflow"] = [
     Option(
-        key="main_python_version",
+        key="python_version",
         description="Python version to use for linting and so",
         default="3.12",
     ),

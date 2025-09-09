@@ -4,7 +4,9 @@
 ## 0.8 (unreleased)
 
 
-- Nothing changed yet.
+- Changed `[workflow_meta] > main_python_version` into just `python_version`.
+- Removed tox.
+- Using uv instead of plain pip/virtualenv.
 
 
 ## 0.7 (2024-05-08)
