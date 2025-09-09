@@ -5,9 +5,5 @@ package_name = "nens_meta"
 uses_ansible = false
 uses_python = true
 
-[tox]
-default_environments = ["lint", "py311", "py312", "doc", "coverage", "dependencies", "dependencies-graph"]
-minimum_coverage = "95"
-
 [meta_workflow]
 main_python_version = "3.13"
