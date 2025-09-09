@@ -1,5 +1,5 @@
-"""Purpose: read and manage the .nens.toml config file
-"""
+"""Purpose: read and manage the .nens.toml config file"""
+
 import copy
 import logging
 from dataclasses import dataclass
@@ -47,9 +47,15 @@ KNOWN_SECTIONS["meta"] = [
 KNOWN_SECTIONS["pyprojecttoml"] = []
 KNOWN_SECTIONS["meta_workflow"] = [
     Option(
-        key="main_python_version",
+        key="python_version",
         description="Python version to use for linting and so",
         default="3.12",
+    ),
+    Option(
+        key="run_pytest",
+        description="Whether to run pytest in the workflow",
+        default=False,
+        value_type=bool,
     ),
 ]
 
@@ -57,7 +63,7 @@ logger = logging.getLogger(__name__)
 
 
 def write_documentation():
-    target = Path(__file__).parent.parent / "doc" / "nens_toml_example.toml"
+    target = Path(__file__).parent.parent.parent / "doc" / "nens_toml_example.toml"
     lines = []
     for section in KNOWN_SECTIONS:
         lines.append(f"[{section}]")
@@ -160,6 +166,14 @@ class OurConfig:
                     f"{option.key} should be of type {option.value_type}, not {type(value)}"
                 )
             options[option.key] = value
+
+        # Warn for old/misspelled options.
+        known_keys = [option.key for option in KNOWN_SECTIONS[section_name]]
+        for key in section:
+            if key not in known_keys:
+                logger.warning(
+                    f"Parameter {key} in section [{section_name}] is not known"
+                )
         logger.debug(f"Contents of section {section_name}: {options}")
         return options
 

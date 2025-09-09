@@ -1,5 +1,5 @@
-"""Purpose: read and manage the pyproject.toml config file
-"""
+"""Purpose: read and manage the pyproject.toml config file"""
+
 import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -28,7 +28,7 @@ def create_if_missing(project: Path):
 
 def write_documentation():
     options = {"project_name": "example-project"}
-    target = Path(__file__).parent.parent / "doc" / "pyproject_toml_example.toml"
+    target = Path(__file__).parent.parent.parent / "doc" / "pyproject_toml_example.toml"
     with TemporaryDirectory() as project_dir:
         project_dir = Path(project_dir)
         package_dir = project_dir / "example_project"
@@ -89,6 +89,7 @@ class PyprojectToml:
 
         self.adjust_ruff()
         self.adjust_zestreleaser()
+        self.adjust_dev_packages()
         self.remove_old_sections()
 
     def _suggest(self, section_name: str, key: str, value: Any, strongly=False):
@@ -110,14 +111,28 @@ class PyprojectToml:
 
     def adjust_ruff(self):
         section_name = "tool.ruff"
-        self._suggest(section_name, "target-version", "py310")
+        self._suggest(section_name, "target-version", "py312")
 
         section_name = "tool.ruff.lint"
-        self._suggest(section_name, "select", ["E4", "E7", "E9", "F", "I", "UP"])
+        self._suggest(
+            section_name, "select", ["E4", "E7", "E9", "F", "I", "UP", "C901"]
+        )
 
     def adjust_zestreleaser(self):
         section_name = "tool.zest-releaser"
         self._suggest(section_name, "release", False)
+
+    def adjust_dev_packages(self):
+        section_name = "dependency-groups"
+        self._suggest(
+            section_name,
+            "dev",
+            [
+                "pytest>=8.4.2",
+                "pytest-cov>=6.3.0",
+                "pytest-sugar>=1.1.1",
+            ],
+        )
 
     def remove_old_sections(self):
         """Remove sections of old tools.

@@ -61,7 +61,7 @@ def test_write_if_changed4(tmp_path: Path):
 
 def test_uses_python1():
     # We ourselves are a python project.
-    ourselves = Path(__file__).parent.parent.parent
+    ourselves = Path(__file__).parent.parent.parent.parent
     assert utils.uses_python(ourselves)
 
 
@@ -72,7 +72,7 @@ def test_uses_python2(tmp_path: Path):
 
 def test_uses_ansible1():
     # We ourselves have no ansible/ dir.
-    ourselves = Path(__file__).parent.parent.parent
+    ourselves = Path(__file__).parent.parent.parent.parent
     assert not utils.uses_ansible(ourselves)
 
 

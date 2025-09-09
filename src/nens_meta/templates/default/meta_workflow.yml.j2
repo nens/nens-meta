@@ -21,7 +21,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: {{ main_python_version }}
+          python-version: {{ python_version }}
           {# You can customise the python version in .nens.toml: #}
-          {# [workflow_meta] > main_python_version. #}
+          {# [workflow_meta] > python_version. #}
       - uses: pre-commit/action@v3.0.1
+{% if uses_python %}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install python project
+        run: uv sync
+{% endif %}
+{% if run_pytest %}
+      - name: Run pytest
+        run: uv run pytest
+        # Use 'addopts' in [tool.pytest.ini_options] to add command line args.
+{% endif %}

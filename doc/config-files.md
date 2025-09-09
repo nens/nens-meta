@@ -9,12 +9,15 @@ Nens-meta tries to be only as invasive as necessary and to get out of your way w
 
 - Most files have an `### Extra lines below are preserved ###` line at the end. All content below it is preserved, ideal for custom content. `.nens.toml` and `pyproject.toml` are excluded, they don't need it.
 
+In practice, you can just let nens-meta update your config files: just revert the changes with git if you don't like them.
+
 
 ## `.nens.toml`
 
 The file for our own configuration. The defaults are below:
 
 ```{literalinclude} nens_toml_example.toml
+:language: toml
 ```
 
 ## `.editorconfig`
@@ -39,48 +42,38 @@ See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/ for th
 
 There are many settings in this file, so nens-meta leaves it **mostly** alone so that you can have your own custom content in there. Many tools have their configuration in here:
 
-- coverage, see https://coverage.readthedocs.io/en/latest/config.html .
-- pyright/pylance
-- pytest, see https://docs.pytest.org/en/stable/reference/customize.html .
+- pytest, see https://docs.pytest.org/en/stable/reference/customize.html#pyproject-toml .
 - ruff, see https://docs.astral.sh/ruff/configuration/ for defaults.
 - setuptools, see https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html .
-- z3c.dependencychecker, see https://pypi.org/project/z3c.dependencychecker/#ignore-packages .
 - zest.releaser, see https://zestreleaser.readthedocs.io/en/latest/options.html .
+- pyright/pylance, see https://microsoft.github.io/pyright/#/configuration?id=sample-pyprojecttoml-file .
 
 In an empty project, nens-meta generates the following default settings:
 
 ```{literalinclude} pyproject_toml_example.toml
+:language: toml
 ```
-
-There are three types of settings:
-
-- The settings not mentioned here: nens-meta doesn't touch them, feel free to add and adjust them as needed.
-- The `# Suggested by nens-meta` settings. They should be present and nens-meta suggests a default value, but you're free to change it.
-- The `# Set by nens-meta` settings. They'll be overwritten when you let nens-meta update your project. So they're governed by [settings in `.nens.toml`](config-files.md#nenstoml).
-  - `project_name`
-  - `package_name` is used in several places where a list of the project's package dirs with the source code in it is needed.
 
 
 ## `.pre-commit-config.yaml`
 
-By default, a few standard pre-commit checkers like `trailing-whitespace` and `check-yaml` are run. For python projects, [](tools.md#ruff) is added.
+By default, a few standard pre-commit checkers like `trailing-whitespace` and `check-yaml` are run. For python projects, [](tools.md#ruff) is added, for projects with ansible, [](tools.md#ansible-lint).
+
+From time to time, update the various plugins:
+
+```console
+$ pre-commit autoupdate
+```
 
 
 ## `.github/dependabot.yml`
 
-We want dependabot to keep our github actions up to date regarding the versions of the actions.
+We want dependabot to keep our github actions up to date regarding the versions of the actions. Drawback: this results in some PR spam. Advantage: no more actions that stop working because of old versions.
 
 
-## `.github/workflows/meta_workflow.yml`
+## `.github/workflows/nens_meta.yml`
 
-A basic workflow that runs pre-commit. If it is a python project, also pytest is run.
-
-If you've set `[meta] > mimum_coverage` in [`.nens.toml`](config-files.md#nenstoml), the coverage is also generated and reported.
-
-
-## `requirements.txt`
-
-We really need a line like `-e .[test]` in there.
+A basic github action workflow that runs pre-commit. If it is a python project, also pytest is run.
 
 
 ## `requirements.yml`
@@ -96,3 +89,5 @@ collections:
     version: ">=8.3.0"
   - name: ansible.posix
 ```
+
+You enable ansible linting by putting `uses_ansible = true` in `.nens.toml`. An example `requirements.yml` is generated if it doesn't exist yet.

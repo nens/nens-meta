@@ -15,21 +15,15 @@ Note that [our cookiecutter template](https://github.com/nens/cookiecutter-pytho
 
 For the basic instructions, see [our own documentation](https://nens-meta.readthedocs.io/en/latest/usage.html). So:
 
-    $ python3 -m venv .venv
-    $ source .venv/bin/activate
-    $ pip install -r requirements
-    $ pytest
+    $ uv sync
     $ pre-commit run --all
+    $ uv run pytest
+    $ uv run ty check
+    $ ./build-docs.sh
 
 
 ## TODO
 
-- manifest.in
-
-- docker-compose
-
 - Projectnummer
 
 - testen met vscode
-
-- `DJANGO_SETTINGS_MODULE = artifact_handler.developmentsettings` in tool:pytest?

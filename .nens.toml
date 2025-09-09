@@ -1,14 +1,9 @@
 [meta]
-meta_version = "0.6.dev0" # Set by nens-meta
+meta_version = "0.8.dev0" # Set by nens-meta
 project_name = "nens-meta"
-package_name = "nens_meta"
 uses_ansible = false
 uses_python = true
 
-[tox]
-default_environments = ["lint", "py311", "py312", "doc", "coverage", "dependencies", "dependencies-graph"]
-minimum_coverage = "95"
-
 [meta_workflow]
-python_versions = ["3.11", "3.12"]
-environments = ["lint", "coverage", "dependencies", "dependencies-graph", "TEST"]
+python_version = "3.13"
+run_pytest = true

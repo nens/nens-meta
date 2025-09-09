@@ -1,4 +1,5 @@
 """Tests for update_project.py"""
+
 from pathlib import Path
 
 import pytest
