@@ -61,3 +61,9 @@ dev = [
     "pytest-sugar>=1.1.1",
     "ty>=0.0.1a20",
 ]
+docs = [
+    "linkify-it-py>=2.0.3",
+    "myst-parser>=4.0.1",
+    "sphinx>=2.1",
+    "sphinx-immaterial>=0.13.6",
+]
