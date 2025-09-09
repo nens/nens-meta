@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.8 (unreleased)
+## 0.8 (2025-09-09)
 
 
 - Changed `[workflow_meta] > main_python_version` into just `python_version`.
