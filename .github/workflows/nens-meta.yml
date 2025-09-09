@@ -18,45 +18,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  tox:
-    name: tox
+  nens-meta:
+    name: nens-meta
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        include:
-          - python-version: "3.11"
-            tox-env: "lint"
-          - python-version: "3.11"
-            tox-env: "coverage"
-          - python-version: "3.11"
-            tox-env: "dependencies"
-          - python-version: "3.11"
-            tox-env: "dependencies-graph"
-          - python-version: "3.11"
-            tox-env: "py311"
-          - python-version: "3.12"
-            tox-env: "py312"
     steps:
-
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: python -m pip install tox
-      - name: Actually run ${{ matrix.tox-env }}
-        run: |
-            touch for_step_summary.md
-            tox -e ${{ matrix.tox-env }}
-            cat for_step_summary.md >> $GITHUB_STEP_SUMMARY
+          python-version: 3.12
+      - uses: pre-commit/action@v3.0.1
 
 ### Extra lines below are preserved ###
