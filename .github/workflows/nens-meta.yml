@@ -28,5 +28,9 @@ jobs:
         with:
           python-version: 3.12
       - uses: pre-commit/action@v3.0.1
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install python project
+        run: uv sync
 
 ### Extra lines below are preserved ###

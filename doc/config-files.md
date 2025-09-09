@@ -75,8 +75,6 @@ We want dependabot to keep our github actions up to date regarding the versions 
 
 A basic workflow that runs pre-commit. If it is a python project, also pytest is run.
 
-If you've set `[meta] > mimum_coverage` in [`.nens.toml`](config-files.md#nenstoml), the coverage is also generated and reported.
-
 
 ## `requirements.txt`
 
