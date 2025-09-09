@@ -26,11 +26,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: 3.13
       - uses: pre-commit/action@v3.0.1
       - name: Install uv
         uses: astral-sh/setup-uv@v6
       - name: Install python project
         run: uv sync
+      - name: Run pytest
+        run: uv run pytest  --cov --cov-fail-under=95
 
 ### Extra lines below are preserved ###

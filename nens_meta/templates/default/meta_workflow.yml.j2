@@ -31,3 +31,7 @@ jobs:
       - name: Install python project
         run: uv sync
 {% endif %}
+{% if run_pytest %}
+      - name: Run pytest
+        run: uv run pytest {%if coverage_percentage %} --cov --cov-fail-under={{ coverage_percentage }}{% endif %}
+{% endif %}

@@ -60,6 +60,8 @@ KNOWN_SECTIONS["meta_workflow"] = [
     Option(
         key="coverage_percentage",
         description="Optional minimal pytest coverage percentage",
+        default=0,
+        value_type=int,
     ),
 ]
 
@@ -170,6 +172,14 @@ class OurConfig:
                     f"{option.key} should be of type {option.value_type}, not {type(value)}"
                 )
             options[option.key] = value
+
+        # Warn for old/misspelled options.
+        known_keys = [option.key for option in KNOWN_SECTIONS[section_name]]
+        for key in section:
+            if key not in known_keys:
+                logger.warning(
+                    f"Parameter {key} in section [{section_name}] is not known"
+                )
         logger.debug(f"Contents of section {section_name}: {options}")
         return options
 
