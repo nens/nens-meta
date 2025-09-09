@@ -7,6 +7,7 @@
 - Changed `[workflow_meta] > main_python_version` into just `python_version`.
 - Removed tox.
 - Using uv instead of plain pip/virtualenv.
+- Added `[workflow_meta] > run_pytest` and `[workflow_meta] > coverage_percentage`, mimicking what was in the tox.ini generation previously.
 
 
 ## 0.7 (2024-05-08)
