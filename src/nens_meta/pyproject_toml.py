@@ -28,7 +28,7 @@ def create_if_missing(project: Path):
 
 def write_documentation():
     options = {"project_name": "example-project"}
-    target = Path(__file__).parent.parent / "doc" / "pyproject_toml_example.toml"
+    target = Path(__file__).parent.parent.parent / "doc" / "pyproject_toml_example.toml"
     with TemporaryDirectory() as project_dir:
         project_dir = Path(project_dir)
         package_dir = project_dir / "example_project"

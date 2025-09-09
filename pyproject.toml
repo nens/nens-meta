@@ -22,9 +22,6 @@ Documentation = "https://nens-meta.readthedocs.io/"
 Repository = "https://github.com/nens/nens-meta"
 Changelog = "https://github.com/nens/nens-meta/blob/main/CHANGES.md"
 
-[tool.setuptools]
-packages = ["nens_meta"]
-
 [tool.setuptools.dynamic]
 version = {attr = "nens_meta.__version__"}
 
@@ -36,7 +33,7 @@ addopts = "--cov --cov-fail-under=95"
 
 [tool.zest-releaser]
 release = true
-python-file-with-version = "nens_meta/__init__.py"
+python-file-with-version = "src/nens_meta/__init__.py"
 
 [tool.dependencychecker]
 ignore-packages = ["pytest-sugar"]

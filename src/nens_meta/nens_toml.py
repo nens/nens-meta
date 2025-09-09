@@ -63,7 +63,7 @@ logger = logging.getLogger(__name__)
 
 
 def write_documentation():
-    target = Path(__file__).parent.parent / "doc" / "nens_toml_example.toml"
+    target = Path(__file__).parent.parent.parent / "doc" / "nens_toml_example.toml"
     lines = []
     for section in KNOWN_SECTIONS:
         lines.append(f"[{section}]")
