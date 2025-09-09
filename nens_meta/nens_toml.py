@@ -51,6 +51,16 @@ KNOWN_SECTIONS["meta_workflow"] = [
         description="Python version to use for linting and so",
         default="3.12",
     ),
+    Option(
+        key="run_pytest",
+        description="Wheter to run pytest in the workflow",
+        default=False,
+        value_type=bool,
+    ),
+    Option(
+        key="coverage_percentage",
+        description="Optional minimal pytest coverage percentage",
+    ),
 ]
 
 logger = logging.getLogger(__name__)
