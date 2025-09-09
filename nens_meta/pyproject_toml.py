@@ -89,6 +89,7 @@ class PyprojectToml:
 
         self.adjust_ruff()
         self.adjust_zestreleaser()
+        self.adjust_dev_packages()
         self.remove_old_sections()
 
     def _suggest(self, section_name: str, key: str, value: Any, strongly=False):
@@ -120,6 +121,18 @@ class PyprojectToml:
     def adjust_zestreleaser(self):
         section_name = "tool.zest-releaser"
         self._suggest(section_name, "release", False)
+
+    def adjust_dev_packages(self):
+        section_name = "dependency-groups"
+        self._suggest(
+            section_name,
+            "dev",
+            [
+                "pytest>=8.4.2",
+                "pytest-cov>=6.3.0",
+                "pytest-sugar>=1.1.1",
+            ],
+        )
 
     def remove_old_sections(self):
         """Remove sections of old tools.
