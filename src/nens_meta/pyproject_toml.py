@@ -103,12 +103,6 @@ class PyprojectToml:
                     f"    Note: our suggested pyproject.toml value for [{section_name}]->{key}: {value}"
                 )
 
-    def _force(self, section_name: str, key: str, value: Any):
-        section = self.get_or_create_section(section_name)
-        if section.get(key) != value:
-            section[key] = value
-            logger.info(f"pyproject.toml: setting [{section_name}]->{key}")
-
     def adjust_ruff(self):
         section_name = "tool.ruff"
         self._suggest(section_name, "target-version", "py312")
