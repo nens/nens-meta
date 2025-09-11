@@ -43,6 +43,15 @@ def test_adjust_ruff(empty_python_config: pyproject_toml.PyprojectToml):
     assert "target-version" in empty_python_config._config_file.read_text()
 
 
+def test_suggest_strongly(empty_python_config: pyproject_toml.PyprojectToml):
+    empty_python_config._suggest("section", "key", "value1")
+    empty_python_config._suggest("section", "key", "value2", strongly=True)
+    empty_python_config.write()
+    # The second _suggest should only print a log line with the really suggested value,
+    # it should not actually *change* the value.
+    assert "value1" in empty_python_config._config_file.read_text()
+
+
 def test_adjust_zestreleaser(empty_python_config: pyproject_toml.PyprojectToml):
     empty_python_config.adjust_zestreleaser()
     empty_python_config.write()
