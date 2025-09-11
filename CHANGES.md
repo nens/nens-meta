@@ -4,7 +4,7 @@
 ## 0.9 (unreleased)
 
 
-- Nothing changed yet.
+- Providing script `nens-meta` in addition to `nens-update-project`, both running the same code. This makes it possible to run `uvx nens-meta.
 
 
 ## 0.8 (2025-09-09)

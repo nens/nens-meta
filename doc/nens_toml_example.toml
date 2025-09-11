@@ -13,5 +13,5 @@ uses_ansible = false
 [meta_workflow]
 # Python version to use for linting and so
 python_version = '3.12'
-# Wheter to run pytest in the workflow
+# Whether to run pytest in the workflow
 run_pytest = false
