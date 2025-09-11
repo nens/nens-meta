@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.9 (unreleased)
+## 0.9 (2025-09-11)
 
 
 - Providing script `nens-meta` in addition to `nens-update-project`, both running the same code. This makes it possible to run `uvx nens-meta.
