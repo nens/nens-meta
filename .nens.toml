@@ -1,5 +1,5 @@
 [meta]
-meta_version = "0.8.dev0" # Set by nens-meta
+meta_version = "0.9.dev0" # Set by nens-meta
 project_name = "nens-meta"
 uses_ansible = false
 uses_python = true
