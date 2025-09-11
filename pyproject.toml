@@ -30,7 +30,7 @@ nens-update-project = "nens_meta.update_project:main"
 nens-meta = "nens_meta.update_project:main"
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-fail-under=95"
+addopts = "--cov --cov-fail-under=95 --cov-report=term-missing"
 
 [tool.zest-releaser]
 release = true
