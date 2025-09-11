@@ -1,7 +1,7 @@
 # Changelog of nens-meta
 
 
-## 0.10 (unreleased)
+## 1.0 (unreleased)
 
 
 - Small cleanup + coverage improvement (now at 98%).
