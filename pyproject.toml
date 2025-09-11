@@ -27,6 +27,7 @@ version = {attr = "nens_meta.__version__"}
 
 [project.scripts]
 nens-update-project = "nens_meta.update_project:main"
+nens-meta = "nens_meta.update_project:main"
 
 [tool.pytest.ini_options]
 addopts = "--cov --cov-fail-under=95"
