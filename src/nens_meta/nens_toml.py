@@ -178,6 +178,6 @@ class OurConfig:
         return options
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     # Only called to write the documentation file.
     write_documentation()
