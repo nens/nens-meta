@@ -4,7 +4,7 @@
 ## 0.10 (unreleased)
 
 
-- Nothing changed yet.
+- Small cleanup + coverage improvement (now at 98%).
 
 
 ## 0.9 (2025-09-11)
