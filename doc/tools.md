@@ -66,6 +66,13 @@ $ ruff check        # Syntax checks
 $ ruff check --fix  # Safe fixes for syntax errors
 ```
 
+Special tip when you have a library where you explicitly specify `__all__` in the modules and use "star imports" in the `__init__.py` file to create a nice API:
+
+    [tool.ruff.lint.per-file-ignores]
+    # Allow star imports and unused imports in init files:
+    "__init__.py" = ["F401", "F403"]
+
+
 ## Pytest
 
 [Pytest](https://docs.pytest.org) is the best test runner. Nicer to work with than python's standard `unittest` framework. Tests are discovered automatically when they're called `test_*.py` and they work with simple `assert` statements. Just look at [the test of nens-meta itself](https://github.com/nens/nens-meta/tree/main/src/nens_meta/tests). Ask a programmer about a quick demo or read the [Pytest documentation](https://docs.pytest.org).

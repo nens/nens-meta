@@ -4,7 +4,7 @@
 ## 1.1 (unreleased)
 
 
-- Nothing changed yet.
+- Documented configuration to allow  "star imports" in `__init__.py` for explicit APIs.
 
 
 ## 1.0 (2025-09-11)
